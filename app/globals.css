@@ -1,26 +1,185 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================================
+   NURVANA CAFÉ — Design System
+   Translated from Stitch Figma export (Tailwind config → CSS vars)
+   Fonts are loaded via <link> tags in layout.tsx
+   ============================================================ */
 
+/* --- Nurvana Design Tokens --- */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors — warm earthy material palette */
+  --color-primary:                  #33210d;
+  --color-on-primary:               #ffffff;
+  --color-primary-container:        #4b3621;
+  --color-on-primary-container:     #bd9f83;
+  --color-primary-fixed:            #fedcbe;
+  --color-primary-fixed-dim:        #e1c1a4;
+  --color-on-primary-fixed:         #291806;
+  --color-on-primary-fixed-variant: #59422c;
+  --color-inverse-primary:          #e1c1a4;
+
+  --color-secondary:                #6c5c3d;
+  --color-on-secondary:             #ffffff;
+  --color-secondary-container:      #f3ddb6;
+  --color-on-secondary-container:   #706141;
+  --color-secondary-fixed:          #f6e0b9;
+  --color-secondary-fixed-dim:      #d9c49e;
+  --color-on-secondary-fixed:       #251a03;
+  --color-on-secondary-fixed-variant: #534528;
+
+  --color-tertiary:                 #1a2908;
+  --color-on-tertiary:              #ffffff;
+  --color-tertiary-container:       #2f3f1c;
+  --color-on-tertiary-container:    #97ab7e;
+  --color-tertiary-fixed:           #d5eab9;
+  --color-tertiary-fixed-dim:       #b9cd9e;
+  --color-on-tertiary-fixed:        #111f02;
+  --color-on-tertiary-fixed-variant: #3b4c28;
+
+  --color-background:               #fdf9f4;
+  --color-on-background:            #1c1c19;
+
+  --color-surface:                  #fdf9f4;
+  --color-on-surface:               #1c1c19;
+  --color-surface-variant:          #e6e2dd;
+  --color-on-surface-variant:       #4e453d;
+  --color-surface-bright:           #fdf9f4;
+  --color-surface-dim:              #ddd9d5;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low:    #f7f3ee;
+  --color-surface-container:        #f1ede8;
+  --color-surface-container-high:   #ebe8e3;
+  --color-surface-container-highest: #e6e2dd;
+  --color-surface-tint:             #725a42;
+
+  --color-outline:                  #80756c;
+  --color-outline-variant:          #d2c4ba;
+  --color-inverse-surface:          #31302d;
+  --color-inverse-on-surface:       #f4f0eb;
+
+  --color-error:                    #ba1a1a;
+  --color-on-error:                 #ffffff;
+  --color-error-container:          #ffdad6;
+  --color-on-error-container:       #93000a;
+
+  /* Typography */
+  --font-display:     "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body:        "Be Vietnam Pro", system-ui, sans-serif;
+  --font-label:       "Space Mono", monospace;
+  --font-handwritten: "Epilogue", serif;
+
+  /* Spacing */
+  --spacing-unit:              8px;
+  --spacing-gutter:            24px;
+  --spacing-margin-mobile:     16px;
+  --spacing-margin-desktop:    48px;
+  --spacing-container-max:     1200px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ---- Base ---- */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Material Symbols icon font */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Texture overlay (noise film grain) ---- */
+.texture-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ---- Organic clip paths ---- */
+.organic-clip {
+  clip-path: polygon(5% 5%, 95% 0%, 100% 90%, 0% 100%);
+}
+.organic-clip-alt {
+  clip-path: polygon(0% 10%, 100% 0%, 95% 95%, 5% 100%);
+}
+
+/* ---- Organic blob shape (used on menu cards) ---- */
+.organic-shape {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: morph 8s ease-in-out infinite;
+}
+
+@keyframes morph {
+  0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50%  { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+/* ---- Sketch underline (used on menu heading) ---- */
+.sketch-underline {
+  position: relative;
+}
+.sketch-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q 50 10 100 5' stroke='%2333210d' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 100% 100%;
+}
+
+/* ---- Nurvana hover utility classes (used by Server Components) ---- */
+.nurvana-bento-card {
+  background-color: var(--color-surface-container);
+}
+.nurvana-bento-card:hover {
+  background-color: var(--color-surface-container-high);
+}
+
+.nurvana-btn-outline {
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-family: var(--font-label);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+.nurvana-btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.nurvana-story-link {
+  color: var(--color-primary);
+}
+.nurvana-story-link:hover {
+  color: var(--color-secondary);
 }
