@@ -253,7 +253,7 @@ export default function Navbar() {
                 color: "var(--color-on-surface-variant)",
               }}
             >
-              <span>Group Members</span>
+              <span>Our Team</span>
               <span
                 className="material-symbols-outlined transition-transform duration-200"
                 style={{
