@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { menu, type MenuItem, type MenuCategory } from "@/data/menu";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "The Menu",
@@ -258,7 +259,8 @@ function CategorySection({ category }: { category: MenuCategory }) {
 
 export default function MenuPage() {
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 md:px-12 py-12 md:py-24 space-y-24 overflow-hidden relative">
+    <>
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-12 py-12 md:py-24 space-y-24 overflow-hidden relative">
       {/* Abstract blurred bg blobs */}
       <div
         className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2 pointer-events-none"
@@ -312,6 +314,8 @@ export default function MenuPage() {
       {menu.map((category) => (
         <CategorySection key={category.id} category={category} />
       ))}
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }

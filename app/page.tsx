@@ -6,6 +6,7 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { menu } from "@/data/menu";
+import Footer from "@/components/Footer";
 
 const teamMembers = [
   { name: "Sent Japhet M. Cagas", role: "Head Roaster & Founder", icon: "badge" },
@@ -646,45 +647,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SECTION 5: FOOTER (Clean, Grounded Release) ────────────────── */}
-      <footer
-        id="footer"
-        className="w-full py-16 text-stone-200 relative z-20"
-        style={{ backgroundColor: "var(--color-primary)" }}
-      >
-        <div className="max-w-[1300px] mx-auto px-6 md:px-16 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-center md:text-left space-y-2">
-            <h2
-              className="text-3xl font-extrabold tracking-tight text-white"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Nurvana Café
-            </h2>
-            <p
-              className="text-lg italic text-amber-200/90 font-light"
-              style={{ fontFamily: "var(--font-handwritten)" }}
-            >
-              &ldquo;We&apos;re not just serving coffee — we&apos;re serving moments.&rdquo;
-            </p>
-          </div>
-
-          <nav aria-label="Footer Navigation">
-            <ul className="flex flex-wrap justify-center gap-6 text-xs font-mono uppercase tracking-wider text-amber-100/70">
-              {["Privacy Policy", "Terms of Service", "Contact", "Careers"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="hover:text-amber-200 transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <p className="text-xs font-mono text-stone-400 text-center md:text-right">
-            © 2024 Nurvana Café. Handcrafted with intention.
-          </p>
-        </div>
-      </footer>
+      {/* ─── SECTION 5: FOOTER (Enhanced Roastery Experience) ─────────── */}
+      <Footer />
     </div>
   );
 }
