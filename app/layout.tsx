@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import LogoRevealLoader from "@/components/LogoRevealLoader";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <head>
         {/* Google Fonts preconnect */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,79 +35,21 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
       </head>
-      <body className="min-h-screen flex flex-col antialiased">
+      <body className="min-h-screen flex flex-col antialiased selection:bg-amber-900 selection:text-amber-100">
         {/* Film-grain texture overlay */}
         <div className="texture-overlay" aria-hidden="true" />
 
-        {/* Persistent navbar */}
-        <Navbar />
+        {/* 0:00-0:04 Video Logo Reveal Loader with Session Cache */}
+        <LogoRevealLoader />
 
-        {/* Page content */}
-        <main className="flex-grow">{children}</main>
+        {/* Smooth Scroll Engine + GSAP ScrollTrigger Integration */}
+        <SmoothScrollProvider>
+          {/* Floating Minimal HUD Navbar */}
+          <Navbar />
 
-        {/* Footer */}
-        <footer
-          className="py-12"
-          style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
-        >
-          <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-12 max-w-[1200px] mx-auto gap-6">
-            {/* Brand */}
-            <div className="text-center md:text-left">
-              <h2
-                className="text-2xl md:text-3xl font-bold mb-2 tracking-tight"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Nurvana Café
-              </h2>
-              <p
-                className="text-lg italic"
-                style={{
-                  fontFamily: "var(--font-handwritten)",
-                  color: "color-mix(in srgb, var(--color-on-primary) 80%, transparent)",
-                }}
-              >
-                We&apos;re not just serving coffee — we&apos;re serving moments.
-              </p>
-            </div>
-
-            {/* Links */}
-            <nav aria-label="Footer links">
-              <ul className="flex flex-wrap justify-center gap-6 text-sm">
-                {["Privacy Policy", "Terms of Service", "Contact Us", "Careers"].map(
-                  (item) => (
-                    <li key={item}>
-                      <a
-                        href="#"
-                        className="transition-all hover:underline underline-offset-4"
-                        style={{
-                          fontFamily: "var(--font-label)",
-                          fontSize: "14px",
-                          letterSpacing: "0.05em",
-                          color: "color-mix(in srgb, var(--color-on-primary) 80%, transparent)",
-                          textDecorationColor: "var(--color-secondary-fixed)",
-                        }}
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  )
-                )}
-              </ul>
-            </nav>
-
-            {/* Copyright */}
-            <p
-              className="text-sm text-center md:text-right mt-4 md:mt-0"
-              style={{
-                fontFamily: "var(--font-label)",
-                fontSize: "12px",
-                color: "color-mix(in srgb, var(--color-on-primary) 60%, transparent)",
-              }}
-            >
-              © 2024 Nurvana Café. Brewed for you with love.
-            </p>
-          </div>
-        </footer>
+          {/* Page content */}
+          <main className="flex-grow">{children}</main>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { menu, type MenuItem, type MenuCategory } from "@/data/menu";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "The Menu",
@@ -257,7 +259,8 @@ function CategorySection({ category }: { category: MenuCategory }) {
 
 export default function MenuPage() {
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 md:px-12 py-12 md:py-24 space-y-24 overflow-hidden relative">
+    <>
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-12 py-12 md:py-24 space-y-24 overflow-hidden relative">
       {/* Abstract blurred bg blobs */}
       <div
         className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2 pointer-events-none"
@@ -269,7 +272,17 @@ export default function MenuPage() {
       />
 
       {/* ── Header ── */}
-      <section className="text-center space-y-6 max-w-3xl mx-auto">
+      <section className="text-center space-y-6 max-w-3xl mx-auto pt-6">
+        <div className="flex justify-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-sm text-xs font-mono uppercase tracking-wider text-stone-700 hover:text-amber-900 transition-colors"
+            style={{ fontFamily: "var(--font-label)" }}
+          >
+            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Back to 3D Experience</span>
+          </Link>
+        </div>
         <h1
           className="text-5xl md:text-6xl font-extrabold inline-block sketch-underline"
           style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
@@ -301,6 +314,8 @@ export default function MenuPage() {
       {menu.map((category) => (
         <CategorySection key={category.id} category={category} />
       ))}
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }

@@ -79,7 +79,7 @@
 
 /* ---- Base ---- */
 html {
-  scroll-behavior: smooth;
+  /* Smooth scroll is powered by Lenis engine */
 }
 
 body {
@@ -152,9 +152,10 @@ body {
   background-size: 100% 100%;
 }
 
-/* ---- Nurvana hover utility classes (used by Server Components) ---- */
+/* ---- Nurvana hover utility classes ---- */
 .nurvana-bento-card {
   background-color: var(--color-surface-container);
+  transition: all 0.3s ease;
 }
 .nurvana-bento-card:hover {
   background-color: var(--color-surface-container-high);
@@ -170,7 +171,7 @@ body {
   font-size: 14px;
   letter-spacing: 0.05em;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
 }
 .nurvana-btn-outline:hover {
   background-color: var(--color-primary);
@@ -183,3 +184,83 @@ body {
 .nurvana-story-link:hover {
   color: var(--color-secondary);
 }
+
+/* ---- 3D Scrollytelling & Transform Utilities ---- */
+.perspective-container {
+  perspective: 1200px;
+  perspective-origin: center center;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.will-change-transform-opacity {
+  will-change: transform, opacity;
+}
+
+/* Hide scrollbar for clean horizontal snap carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glassmorphism surfaces */
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 75%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+}
+
+.glass-panel-dark {
+  background: color-mix(in srgb, var(--color-primary) 85%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, var(--color-outline) 20%, transparent);
+}
+
+/* Lenis smooth scrolling rules */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
