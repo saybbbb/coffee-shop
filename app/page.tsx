@@ -324,7 +324,7 @@ export default function Home() {
             <div ref={storyVisualRef} className="lg:col-span-6 relative preserve-3d">
               <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[4/5] max-w-[440px] mx-auto rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-stone-200">
                 <Image
-                  src="/story/barista.jpg"
+                  src="/story/barista2.jpg"
                   alt="Barista crafting milk latte art"
                   fill
                   className="object-cover"
