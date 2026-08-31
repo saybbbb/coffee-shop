@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { menu, type MenuItem, type MenuCategory } from "@/data/menu";
 
 export const metadata: Metadata = {
@@ -269,7 +270,17 @@ export default function MenuPage() {
       />
 
       {/* ── Header ── */}
-      <section className="text-center space-y-6 max-w-3xl mx-auto">
+      <section className="text-center space-y-6 max-w-3xl mx-auto pt-6">
+        <div className="flex justify-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-sm text-xs font-mono uppercase tracking-wider text-stone-700 hover:text-amber-900 transition-colors"
+            style={{ fontFamily: "var(--font-label)" }}
+          >
+            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Back to 3D Experience</span>
+          </Link>
+        </div>
         <h1
           className="text-5xl md:text-6xl font-extrabold inline-block sketch-underline"
           style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
