@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { allItems, formatPrice } from "@/data/menu";
-import MenuArt from "@/components/menu/MenuArt";
+import { allItems, type MenuItem } from "@/data/menu";
+import ShowcaseCard from "@/components/menu/ShowcaseCard";
+import ItemSheet from "@/components/menu/ItemSheet";
+import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
 
 const teamMembers = [
@@ -29,6 +31,8 @@ export default function Home() {
   const menuCardsRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLElement>(null);
   const teamGridRef = useRef<HTMLDivElement>(null);
+  const [openItem, setOpenItem] = useState<MenuItem | null>(null);
+  const { go } = usePageTransition();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -291,6 +295,22 @@ export default function Home() {
             >
               Artisanal single-origin • Small batch roasted • Daily crafted
             </p>
+
+            {/* Calls to action */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 md:pt-4">
+              <TransitionLink href="/menu" className="hero-cta-primary group w-full max-w-[290px] sm:w-auto">
+                <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  local_mall
+                </span>
+                <span>Order for Pickup</span>
+                <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">
+                  arrow_forward
+                </span>
+              </TransitionLink>
+              <button type="button" onClick={() => go("/#menu")} className="hero-cta-secondary w-full max-w-[290px] sm:w-auto">
+                See the Lineup
+              </button>
+            </div>
           </div>
         </div>
 
@@ -490,79 +510,7 @@ export default function Home() {
             className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory py-2 px-1 no-scrollbar touch-pan-x preserve-3d"
           >
             {featuredMenuItems.slice(0, 5).map((item) => (
-              <div
-                key={item.id}
-                className="menu-scrolly-card snap-center shrink-0 w-[78vw] max-w-[280px] md:w-auto md:max-w-none group rounded-2xl p-4 sm:p-5 flex flex-col justify-between glass-panel hover:shadow-xl transition-all duration-300 preserve-3d will-change-transform-opacity min-h-[310px] sm:min-h-[330px] md:min-h-[340px]"
-                style={{
-                  backgroundColor: "var(--color-surface-container)",
-                }}
-              >
-                {/* Top Image Preview */}
-                <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 md:mb-4 shadow-sm bg-stone-200">
-                  <MenuArt
-                    item={item}
-                    className="group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 260px, 220px"
-                  />
-                  {item.staffPick && (
-                    <span
-                      className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider shadow-sm"
-                      style={{
-                        backgroundColor: "var(--color-primary)",
-                        color: "var(--color-on-primary)",
-                      }}
-                    >
-                      Staff Pick
-                    </span>
-                  )}
-                </div>
-
-                {/* Details */}
-                <div className="space-y-1">
-                  <div className="flex justify-between items-baseline gap-2">
-                    <h3
-                      className="font-bold text-sm sm:text-base leading-snug line-clamp-1"
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        color: "var(--color-primary)",
-                      }}
-                    >
-                      {item.name}
-                    </h3>
-                    <span
-                      className="font-mono font-bold text-sm text-amber-900 shrink-0"
-                      style={{ fontFamily: "var(--font-label)" }}
-                    >
-                      {formatPrice(item.price)}
-                    </span>
-                  </div>
-
-                  <p
-                    className="text-xs text-stone-600 line-clamp-2 leading-relaxed"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-
-                {/* Tags */}
-                {item.tags && item.tags.length > 0 && (
-                  <div className="pt-2 md:pt-3 flex flex-wrap gap-1 mt-auto">
-                    {item.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] font-mono px-2 py-0.5 rounded-full"
-                        style={{
-                          backgroundColor: "var(--color-secondary-fixed)",
-                          color: "var(--color-on-secondary-fixed)",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ShowcaseCard key={item.id} item={item} onOpen={setOpenItem} />
             ))}
           </div>
         </div>
@@ -648,6 +596,8 @@ export default function Home() {
 
       {/* ─── SECTION 5: FOOTER (Enhanced Roastery Experience) ─────────── */}
       <Footer />
+
+      {openItem && <ItemSheet item={openItem} onClose={() => setOpenItem(null)} />}
     </div>
   );
 }

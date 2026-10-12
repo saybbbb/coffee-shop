@@ -6,9 +6,9 @@ import { isPageTransitioning } from "@/components/transition/PageTransition";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { menu, formatPrice, type MenuCategory, type MenuItem, type MenuTag } from "@/data/menu";
-import { useCart } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
 import ItemSheet from "./ItemSheet";
+import QuickAdd, { pressable } from "./QuickAdd";
 
 /* ─── Filters ────────────────────────────────────────────────────────────── */
 
@@ -65,31 +65,6 @@ function useTilt<T extends HTMLElement>() {
   return ref;
 }
 
-function QuickAdd({ item, artRef, dark }: { item: MenuItem; artRef: React.RefObject<HTMLElement | null>; dark?: boolean }) {
-  const { add } = useCart();
-  const [done, setDone] = useState(false);
-  return (
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        add(item, { from: artRef.current });
-        setDone(true);
-        setTimeout(() => setDone(false), 1400);
-      }}
-      className={`relative w-11 h-11 rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-md transition-all duration-300 hover:scale-110 active:scale-95 ${
-        done ? "rotate-[360deg]" : ""
-      }`}
-      style={{
-        backgroundColor: dark ? "var(--color-on-primary)" : "var(--color-primary)",
-        color: dark ? "var(--color-primary)" : "var(--color-on-primary)",
-      }}
-      aria-label={`Quick add ${item.name} to order`}
-    >
-      <span className="material-symbols-outlined text-xl">{done ? "check" : "add"}</span>
-    </button>
-  );
-}
-
 function Tags({ item }: { item: MenuItem }) {
   if (!item.tags?.length) return null;
   return (
@@ -118,7 +93,7 @@ function FeaturedCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
   const artRef = useRef<HTMLDivElement>(null);
   return (
     <article
-      onClick={() => onOpen(item)}
+      {...pressable(() => onOpen(item), `Customize ${item.name}`)}
       className="menu-reveal md:col-span-7 rounded-[32px] relative overflow-hidden flex flex-col justify-end min-h-[440px] md:min-h-[520px] cursor-pointer group shadow-lg"
     >
       <div ref={artRef} className="absolute inset-0 transition-transform duration-[1.2s] ease-out group-hover:scale-105">
@@ -166,7 +141,7 @@ function SmallCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
   return (
     <article
       ref={tiltRef}
-      onClick={() => onOpen(item)}
+      {...pressable(() => onOpen(item), `Customize ${item.name}`)}
       className="menu-reveal tilt-card rounded-3xl p-5 flex items-center gap-5 cursor-pointer hover:shadow-xl group"
       style={{ backgroundColor: "var(--color-surface-container-low)" }}
     >
@@ -196,7 +171,7 @@ function BentoCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
   return (
     <article
       ref={tiltRef}
-      onClick={() => onOpen(item)}
+      {...pressable(() => onOpen(item), `Customize ${item.name}`)}
       className="menu-reveal tilt-card nurvana-bento-card rounded-3xl p-6 md:p-7 flex flex-col sm:flex-row gap-6 relative overflow-hidden group cursor-pointer hover:shadow-xl"
     >
       <div
@@ -235,7 +210,7 @@ function GridCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
   return (
     <article
       ref={tiltRef}
-      onClick={() => onOpen(item)}
+      {...pressable(() => onOpen(item), `Customize ${item.name}`)}
       className="menu-reveal tilt-card rounded-3xl p-3 flex flex-col cursor-pointer group hover:shadow-xl glass-panel"
       style={{ backgroundColor: "var(--color-surface-container)" }}
     >

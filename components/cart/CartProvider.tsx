@@ -183,8 +183,11 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       setBump((b) => b + 1);
     };
 
-    if (opts.from) flyToCart(opts.from).then(commit);
-    else commit();
+    if (opts.from) {
+      // Land the item when the animation finishes — but never later than 1.2s,
+      // so the cart can't depend on animation frames (e.g. a backgrounded tab)
+      Promise.race([flyToCart(opts.from), new Promise((r) => setTimeout(r, 1200))]).then(commit);
+    } else commit();
   }, []);
 
   const setQty = useCallback((key: string, qty: number) => {

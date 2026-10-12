@@ -66,9 +66,19 @@ export default function PageTransitionProvider({ children }: { children: ReactNo
       window.__lenis?.stop();
       if (labelRef.current) labelRef.current.textContent = LABELS[targetPath] ?? "";
 
+      // Navigate when the cover finishes — or after 1s regardless, so a stalled
+      // animation (e.g. backgrounded tab) can never block navigation
+      let pushed = false;
+      const push = () => {
+        if (pushed) return;
+        pushed = true;
+        router.push(href, { scroll: false });
+      };
+      setTimeout(push, 1000);
+
       const curve = "50% 50% 0 0 / 12vh 12vh 0 0";
       gsap
-        .timeline({ onComplete: () => router.push(href, { scroll: false }) })
+        .timeline({ onComplete: push })
         .set(rootRef.current, { autoAlpha: 1 })
         .fromTo(
           caramelRef.current,
@@ -103,6 +113,7 @@ export default function PageTransitionProvider({ children }: { children: ReactNo
     pending.current = null;
 
     let cancelled = false;
+    let fallback: ReturnType<typeof setTimeout> | undefined;
     // Give the new page a moment to mount its own ScrollTriggers and paint
     const t = setTimeout(() => {
       if (cancelled) return;
@@ -112,16 +123,21 @@ export default function PageTransitionProvider({ children }: { children: ReactNo
       else if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true, force: true });
       else window.scrollTo(0, 0);
 
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        gsap.set(rootRef.current, { autoAlpha: 0 });
+        delete document.documentElement.dataset.transitioning;
+        busy.current = false;
+        window.dispatchEvent(new Event("nurvana:page-revealed"));
+      };
+      // Same safety net as the cover: never leave the curtain stuck down
+      fallback = setTimeout(finish, 1500);
+
       const curve = "0 0 50% 50% / 0 0 12vh 12vh";
       gsap
-        .timeline({
-          onComplete: () => {
-            gsap.set(rootRef.current, { autoAlpha: 0 });
-            delete document.documentElement.dataset.transitioning;
-            busy.current = false;
-            window.dispatchEvent(new Event("nurvana:page-revealed"));
-          },
-        })
+        .timeline({ onComplete: finish })
         .to(contentRef.current!.children, { opacity: 0, y: -20, duration: 0.3, stagger: 0.05, ease: "power2.in" })
         .to(espressoRef.current, { yPercent: -100, borderRadius: curve, duration: 0.7, ease: "power3.inOut" }, 0.15)
         .to(caramelRef.current, { yPercent: -100, borderRadius: curve, duration: 0.7, ease: "power3.inOut" }, 0.25);
@@ -130,6 +146,7 @@ export default function PageTransitionProvider({ children }: { children: ReactNo
     return () => {
       cancelled = true;
       clearTimeout(t);
+      clearTimeout(fallback);
     };
   }, [pathname]);
 
