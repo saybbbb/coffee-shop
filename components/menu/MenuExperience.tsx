@@ -27,11 +27,14 @@ function matches(item: MenuItem, filterId: string) {
   return item.tags?.some((t) => f.match.includes(t)) ?? false;
 }
 
+/** Room to leave above a category when scrolling to it: nav + the sticky category bar. */
+const MENU_SCROLL_OFFSET = 200;
+
 function scrollToId(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (window.__lenis) window.__lenis.scrollTo(el, { offset: -150, duration: 1.1 });
-  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 150, behavior: "smooth" });
+  if (window.__lenis) window.__lenis.scrollTo(el, { offset: -MENU_SCROLL_OFFSET, duration: 1.1 });
+  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - MENU_SCROLL_OFFSET, behavior: "smooth" });
 }
 
 /* ─── Shared bits ────────────────────────────────────────────────────────── */
@@ -303,7 +306,7 @@ function CategorySection({
   }
 
   return (
-    <section id={category.id} data-category className="space-y-10 scroll-mt-40" aria-labelledby={`cat-${category.id}`}>
+    <section id={category.id} data-category data-scroll-offset={MENU_SCROLL_OFFSET} className="space-y-10 scroll-mt-40" aria-labelledby={`cat-${category.id}`}>
       <CategoryHeader category={category} index={index} count={items.length} />
       {body}
     </section>

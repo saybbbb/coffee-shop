@@ -78,3 +78,11 @@ export function getOpenStatus(now: Date): OpenStatus {
   const tomorrow = rowFor((day + 1) % 7);
   return { open: false, text: `Closed · opens ${formatTime(tomorrow.open)} tomorrow`, todayIndex };
 }
+
+/** Hero announcement chip. Set to null to hide it. */
+export const ANNOUNCEMENT: { label: string; text: string; short: string; href: string } | null = {
+  label: "New season",
+  text: "Pumpkin Spice Chai & Honey Lavender Latte are back",
+  short: "Pumpkin Spice Chai is back",
+  href: "/menu#seasonal",
+};

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import TransitionLink from "@/components/transition/TransitionLink";
+import AnnouncementChip from "@/components/AnnouncementChip";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { allItems, type MenuItem } from "@/data/menu";
@@ -287,7 +288,13 @@ export default function Home() {
           ref={heroContentRef}
           className="relative z-20 max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 w-full text-center preserve-3d will-change-transform-opacity py-8 md:py-12"
         >
-          <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
+          {/* max-w-5xl lets "Feel Brand New." sit on one line at the largest size */}
+          <div className="max-w-5xl mx-auto space-y-4 md:space-y-6">
+            {/* Seasonal announcement (content in data/cafe.ts) */}
+            <div className="flex justify-center">
+              <AnnouncementChip />
+            </div>
+
             <h1
               className="hero-title text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-[#fdf9f4] leading-[0.95]"
               style={{ fontFamily: "var(--font-display)" }}

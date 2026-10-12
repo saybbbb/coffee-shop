@@ -25,8 +25,10 @@ export function scrollToSection(id: string, opts: { immediate?: boolean } = {}) 
     // else the section itself) just below the floating nav, skipping the top padding
     // so the previous section isn't left peeking in at the top
     const el = document.getElementById(id);
+    // Sections under extra sticky UI (the menu page's category bar) declare more room
     const anchor = el?.querySelector<HTMLElement>("[data-scroll-anchor]") ?? el;
-    if (anchor) target = anchor.getBoundingClientRect().top + window.scrollY - NAV_CLEARANCE;
+    const clearance = Number(el?.dataset.scrollOffset ?? NAV_CLEARANCE);
+    if (anchor) target = anchor.getBoundingClientRect().top + window.scrollY - clearance;
   }
   if (target === null) return;
 
