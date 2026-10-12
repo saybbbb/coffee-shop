@@ -59,7 +59,8 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "nurvana_cart_v1";
+// v2: prices switched from USD to PHP, so carts saved with dollar amounts are discarded
+const STORAGE_KEY = "nurvana_cart_v2";
 
 export function unitPriceFor(item: MenuItem, size?: string, milk?: string) {
   const s = SIZES.find((x) => x.id === size)?.delta ?? 0;

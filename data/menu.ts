@@ -21,7 +21,7 @@ export interface MenuItem {
   id: string;
   name: string;
   description: string;
-  price: number;          // USD, base (Regular size)
+  price: number;          // PHP (₱), base (Regular size)
   image?: string;         // path relative to /public
   focus?: string;         // CSS object-position for cropping, e.g. "25% 50%" (default centre)
   icon?: string;          // Material Symbol shown when there is no image
@@ -56,15 +56,15 @@ export interface MilkOption {
 }
 
 export const SIZES: SizeOption[] = [
-  { id: "small", label: "Small", oz: "8 oz", delta: -0.5 },
+  { id: "small", label: "Small", oz: "8 oz", delta: -20 },
   { id: "regular", label: "Regular", oz: "12 oz", delta: 0 },
-  { id: "large", label: "Large", oz: "16 oz", delta: 0.75 },
+  { id: "large", label: "Large", oz: "16 oz", delta: 25 },
 ];
 
 export const MILKS: MilkOption[] = [
   { id: "whole", label: "Whole", delta: 0 },
-  { id: "oat", label: "Oat", delta: 0.6 },
-  { id: "almond", label: "Almond", delta: 0.6 },
+  { id: "oat", label: "Oat", delta: 30 },
+  { id: "almond", label: "Almond", delta: 30 },
   { id: "none", label: "No milk", delta: 0 },
 ];
 
@@ -80,7 +80,7 @@ export const menu: MenuCategory[] = [
         name: "Nurvana Classic Latte",
         description:
           "Expertly brewed for a rich and comforting taste. Espresso pulled over silky steamed milk with our signature house-made vanilla bean syrup.",
-        price: 5.5,
+        price: 170,
         pairsWith: "butter-croissant",
         image: "/menu/latte.jpg",
         notes: ["Vanilla bean", "Caramelized sugar", "Velvet body"],
@@ -93,7 +93,7 @@ export const menu: MenuCategory[] = [
         name: "Artisanal Espresso",
         description:
           "A double shot of our meticulously sourced single-origin Ethiopian beans. Bright, complex, with notes of dark chocolate and berry.",
-        price: 3.5,
+        price: 120,
         pairsWith: "sea-salt-cookie",
         image: "/menu/espresso.jpg",
         notes: ["Dark chocolate", "Wild berry", "Bright finish"],
@@ -104,7 +104,7 @@ export const menu: MenuCategory[] = [
         name: "Brown Sugar Cortado",
         description:
           "Equal parts espresso and warm milk, sweetened with muscovado and a pinch of sea salt. Small cup, big character.",
-        price: 4.75,
+        price: 150,
         pairsWith: "banana-loaf",
         image: "/menu/cortado.jpg",
         icon: "coffee",
@@ -118,7 +118,7 @@ export const menu: MenuCategory[] = [
         name: "Spanish Latte",
         description:
           "Our espresso softened with condensed milk for a creamy, gently sweet cup — a regulars' favourite.",
-        price: 5.25,
+        price: 180,
         pairsWith: "ube-ensaymada",
         image: "/menu/spanish-latte.jpg",
         icon: "local_cafe",
@@ -141,7 +141,7 @@ export const menu: MenuCategory[] = [
         name: "Iced Kyoto Matcha",
         description:
           "A smooth, chilled blend you'll keep coming back for. Ceremonial grade matcha whisked to perfection over creamy oat milk.",
-        price: 6.0,
+        price: 195,
         pairsWith: "butter-croissant",
         image: "/menu/matcha.jpg",
         icon: "emoji_food_beverage",
@@ -156,7 +156,7 @@ export const menu: MenuCategory[] = [
         id: "cold-brew-reserve",
         name: "Cold Brew Reserve",
         description: "Steeped for 24 hours for ultimate smoothness.",
-        price: 5.0,
+        price: 165,
         pairsWith: "sea-salt-cookie",
         image: "/menu/cold-brew.jpg",
         notes: ["Molasses", "Stone fruit", "Low acidity"],
@@ -167,7 +167,7 @@ export const menu: MenuCategory[] = [
         id: "iced-caramel-cloud",
         name: "Iced Caramel Cloud",
         description: "Espresso over milk with house caramel drizzle.",
-        price: 5.75,
+        price: 185,
         pairsWith: "banana-loaf",
         image: "/menu/iced-macchiato.jpg",
         notes: ["Burnt caramel", "Cream", "Espresso layers"],
@@ -188,7 +188,7 @@ export const menu: MenuCategory[] = [
         name: "Pumpkin Spice Chai",
         description:
           "Masala chai steeped in-house, folded with roasted pumpkin, cinnamon and a whisper of clove.",
-        price: 5.95,
+        price: 195,
         pairsWith: "banana-loaf",
         image: "/menu/pumpkin-chai.jpg",
         icon: "spa",
@@ -203,7 +203,7 @@ export const menu: MenuCategory[] = [
         name: "Honey Lavender Latte",
         description:
           "Wildflower honey and dried lavender syrup over a double shot. Floral, calm, and just sweet enough.",
-        price: 6.25,
+        price: 200,
         pairsWith: "butter-croissant",
         image: "/menu/lavender-latte.jpg",
         icon: "local_florist",
@@ -218,7 +218,7 @@ export const menu: MenuCategory[] = [
         name: "Orange Espresso Tonic",
         description:
           "Sparkling tonic over ice, a splash of blood orange, and a floating shot of espresso.",
-        price: 5.5,
+        price: 180,
         pairsWith: "sea-salt-cookie",
         image: "/menu/espresso-tonic.jpg",
         focus: "25% 50%",
@@ -239,7 +239,7 @@ export const menu: MenuCategory[] = [
         id: "butter-croissant",
         name: "Butter Croissant",
         description: "Seventy-two hour laminated dough, shattering crust, honeycomb crumb.",
-        price: 3.75,
+        price: 110,
         pairsWith: "nurvana-classic-latte",
         image: "/menu/croissant.jpg",
         icon: "bakery_dining",
@@ -251,7 +251,7 @@ export const menu: MenuCategory[] = [
         id: "ube-ensaymada",
         name: "Ube Ensaymada",
         description: "Pillowy brioche swirled with ube halaya, topped with butter, sugar and aged cheese.",
-        price: 4.25,
+        price: 125,
         pairsWith: "spanish-latte",
         image: "/menu/ensaymada.jpg",
         icon: "cake",
@@ -263,7 +263,7 @@ export const menu: MenuCategory[] = [
         id: "sea-salt-cookie",
         name: "Sea Salt Choco Cookie",
         description: "Brown butter dough, dark chocolate puddles, flaky salt. Best with an espresso.",
-        price: 3.25,
+        price: 85,
         pairsWith: "artisanal-espresso",
         image: "/menu/cookie.jpg",
         icon: "cookie",
@@ -274,7 +274,7 @@ export const menu: MenuCategory[] = [
         id: "banana-loaf",
         name: "Banana Walnut Loaf",
         description: "Moist, dark and crackly-topped. Made with overripe bananas and toasted walnuts.",
-        price: 3.95,
+        price: 115,
         pairsWith: "cold-brew-reserve",
         image: "/menu/banana-loaf.jpg",
         icon: "breakfast_dining",
@@ -288,6 +288,9 @@ export const menu: MenuCategory[] = [
 
 export const allItems = menu.flatMap((c) => c.items);
 
+// Philippine peso, whole amounts: ₱170 (₱1,250 for larger totals)
+const PESO = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
 export function formatPrice(n: number) {
-  return `$${n.toFixed(2)}`;
+  return PESO.format(n);
 }
