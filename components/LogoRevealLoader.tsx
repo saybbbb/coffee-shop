@@ -2,68 +2,67 @@
 
 import { useEffect, useRef, useState } from "react";
 
+export const INTRO_KEY = "nurvana_intro_played";
+
+/**
+ * Runs in <head> before the first paint (see app/layout.tsx). If the intro has
+ * already played this session, or the visitor prefers reduced motion, it marks
+ * <html data-intro="skip"> so CSS hides the overlay before anything is drawn.
+ */
+export const INTRO_GATE_SCRIPT = `try{if(sessionStorage.getItem("${INTRO_KEY}")||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.intro="skip"}catch(e){}`;
+
 export default function LogoRevealLoader() {
-  const [shouldShow, setShouldShow] = useState(false);
+  // Rendered in the server HTML so it covers the page from the very first frame;
+  // the head script hides it instantly for visitors who shouldn't see it.
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isRemoved, setIsRemoved] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // 1. Check if reduced motion is preferred
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // 2. Check if already played in this browser session
-    const hasSeenIntro = sessionStorage.getItem("nurvana_intro_played");
-
-    if (prefersReducedMotion || hasSeenIntro) {
+    const root = document.documentElement;
+    if (root.dataset.intro === "skip") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- unmount the hidden overlay
       setIsRemoved(true);
       return;
     }
 
-    // Show loader for first time visitor
-    setShouldShow(true);
+    // Hold the page still while the intro plays (Lenis is created just after this effect)
+    const freeze = setTimeout(() => window.__lenis?.stop(), 0);
 
-    const handleFinish = () => {
-      sessionStorage.setItem("nurvana_intro_played", "true");
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      try {
+        sessionStorage.setItem(INTRO_KEY, "true");
+      } catch {}
+      window.__lenis?.scrollTo(0, { immediate: true, force: true });
+      window.__lenis?.start();
       setIsFadingOut(true);
       setTimeout(() => {
         setIsRemoved(true);
+        root.dataset.intro = "skip";
       }, 700);
     };
 
-    // Safety timeout in case video loading is slow or autoplay fails
-    const timer = setTimeout(() => {
-      handleFinish();
-    }, 4500);
-
-    const videoEl = videoRef.current;
-    if (videoEl) {
-      videoEl.play().catch(() => {
-        // Autoplay may be restricted; end early
-        handleFinish();
-      });
-    }
+    // Safety timeout in case the video is slow to load or autoplay is blocked
+    const timer = setTimeout(finish, 4500);
+    const video = videoRef.current;
+    video?.addEventListener("ended", finish);
+    video?.play().catch(finish);
 
     return () => {
+      clearTimeout(freeze);
       clearTimeout(timer);
+      video?.removeEventListener("ended", finish);
     };
   }, []);
 
-  if (isRemoved || !shouldShow) {
-    return null;
-  }
-
-  const handleVideoEnded = () => {
-    sessionStorage.setItem("nurvana_intro_played", "true");
-    setIsFadingOut(true);
-    setTimeout(() => {
-      setIsRemoved(true);
-    }, 700);
-  };
+  if (isRemoved) return null;
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#33210d] transition-opacity duration-700 ease-in-out ${
+      className={`intro-overlay fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-700 ease-in-out ${
         isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       style={{ backgroundColor: "var(--color-primary, #33210d)" }}
@@ -76,7 +75,7 @@ export default function LogoRevealLoader() {
         autoPlay
         muted
         playsInline
-        onEnded={handleVideoEnded}
+        preload="auto"
         className="w-full h-full object-cover"
       />
     </div>

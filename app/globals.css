@@ -152,6 +152,113 @@ body {
   background-size: 100% 100%;
 }
 
+/* ---- Navigation (top bar + side tracker); colours follow the section behind ---- */
+.nav-root {
+  --nav-bg: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  --nav-border: color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  --nav-ink: var(--color-primary);
+  --nav-muted: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  --nav-accent-bg: var(--color-primary);
+  --nav-accent-ink: var(--color-on-primary);
+  --nav-cta-bg: var(--color-primary);
+  --nav-cta-ink: var(--color-on-primary);
+}
+.nav-root[data-theme="dark"] {
+  --nav-bg: rgba(28, 16, 6, 0.42);
+  --nav-border: rgba(253, 249, 244, 0.16);
+  --nav-ink: #fdf9f4;
+  --nav-muted: rgba(253, 249, 244, 0.7);
+  --nav-accent-bg: var(--color-secondary-fixed);
+  --nav-accent-ink: var(--color-primary);
+  --nav-cta-bg: var(--color-secondary-fixed);
+  --nav-cta-ink: var(--color-primary);
+}
+.nav-glass {
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  color: var(--nav-ink);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 8px 24px -14px rgba(20, 10, 2, 0.45);
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+}
+.nav-link {
+  color: var(--nav-muted);
+}
+.nav-link:hover {
+  color: var(--nav-ink);
+}
+.nav-link.is-active {
+  color: var(--nav-accent-ink);
+}
+.nav-highlight {
+  background: var(--nav-accent-bg);
+}
+.nav-cta {
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-ink);
+  box-shadow: 0 8px 22px -12px rgba(20, 10, 2, 0.6);
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+}
+.nav-cta.is-current {
+  outline: 2px solid var(--nav-cta-bg);
+  outline-offset: 2px;
+}
+.nav-link:focus-visible,
+.nav-cta:focus-visible,
+.nav-glass:focus-visible {
+  outline: 2px solid var(--nav-ink);
+  outline-offset: 2px;
+}
+
+/* Side tracker */
+.side-track {
+  background: var(--nav-border);
+}
+.side-fill {
+  background: var(--nav-ink);
+  opacity: 0.6;
+}
+.side-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--nav-muted);
+  opacity: 0.55;
+}
+button:hover > .side-dot {
+  opacity: 1;
+  transform: scale(1.3);
+}
+.side-dot.is-active {
+  width: 11px;
+  height: 11px;
+  opacity: 1;
+  background: var(--nav-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nav-ink) 18%, transparent);
+}
+/* Current-section label: announces itself on arrival, then gets out of the way
+   of the content; hovering the tracker brings it back */
+.side-label {
+  animation: side-label-flash 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.side-tracker:hover .side-label,
+.side-tracker:focus-within .side-label {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+@keyframes side-label-flash {
+  0%   { opacity: 0; transform: translateX(8px); }
+  12%  { opacity: 1; transform: translateX(0); }
+  75%  { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(4px); }
+}
+
+/* ---- Intro overlay: hidden before first paint when already seen (see LogoRevealLoader) ---- */
+html[data-intro="skip"] .intro-overlay {
+  display: none;
+}
+
 /* ---- Nurvana hover utility classes ---- */
 .nurvana-bento-card {
   background-color: var(--color-surface-container);
@@ -176,6 +283,304 @@ body {
 .nurvana-btn-outline:hover {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
+}
+
+.nurvana-btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-label);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(51, 33, 13, 0.6);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.nurvana-btn-solid:hover {
+  background-color: var(--color-primary-container);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px -12px rgba(51, 33, 13, 0.7);
+}
+.nurvana-btn-solid:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---- Hero headline: layered shadows lift it off the busy video ---- */
+.hero-title {
+  text-shadow:
+    0 1px 2px rgba(20, 10, 2, 0.55),
+    0 4px 14px rgba(20, 10, 2, 0.45),
+    0 10px 40px rgba(20, 10, 2, 0.4);
+}
+
+/* ---- Hero announcement chip: a soft shine sweeps the badge now and then ---- */
+.announce-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.75) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: announce-shine 4.5s ease-in-out 1.5s infinite;
+}
+@keyframes announce-shine {
+  0%, 70% { transform: translateX(-120%); }
+  100%    { transform: translateX(120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announce-badge::after { display: none; }
+}
+
+/* ---- Hero calls to action (sit on the dark video) ---- */
+.hero-cta-primary,
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 210px;
+  padding: 14px 26px;
+  border-radius: 9999px;
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.hero-cta-primary {
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-primary);
+  box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.6);
+}
+.hero-cta-primary:hover {
+  background-color: #fdf9f4;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.65);
+}
+.hero-cta-secondary {
+  color: #fdf9f4;
+  border: 1.5px solid rgba(253, 249, 244, 0.55);
+  background-color: rgba(41, 24, 6, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero-cta-secondary:hover {
+  border-color: #fdf9f4;
+  background-color: rgba(253, 249, 244, 0.12);
+  transform: translateY(-2px);
+}
+.hero-cta-primary:focus-visible,
+.hero-cta-secondary:focus-visible {
+  outline: 2px solid var(--color-secondary-fixed);
+  outline-offset: 3px;
+}
+
+/* ---- Our Story: rotating stamp ---- */
+.story-stamp-spin {
+  animation: story-stamp-spin 22s linear infinite;
+}
+@keyframes story-stamp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Bean to Cup ---- */
+.process-tick {
+  color: rgba(253, 249, 244, 0.45);
+  transition: color 0.3s ease;
+}
+.process-tick.is-active {
+  color: var(--color-secondary-fixed);
+}
+
+/* ---- Team latte portraits: the cup turns a little on hover ---- */
+.latte-cup {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .latte-cup {
+  transform: rotate(-14deg) scale(1.03);
+}
+
+/* ---- Reviews: endlessly drifting rows (list is doubled, so -50% loops seamlessly) ---- */
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .marquee { overflow-x: auto; }
+}
+
+/* ---- Visit Us ---- */
+.visit-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-primary);
+}
+.visit-icon .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* Map: pulsing rings under the café pin, and a walking route that "moves" */
+.map-pin-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-pulse 2.4s ease-out infinite;
+}
+.map-pin-pulse-delay {
+  animation-delay: 1.2s;
+}
+@keyframes map-pulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.map-walk {
+  animation: map-walk 1.2s linear infinite;
+}
+@keyframes map-walk {
+  to { stroke-dashoffset: -24; }
+}
+
+/* ---- Toasts stack above the order status pill when it's showing ---- */
+.toast-dock {
+  transition: bottom 0.3s ease;
+}
+body:has([data-order-pill]) .toast-dock {
+  bottom: 84px;
+}
+
+/* ---- Ask Nurvana (FAQ helper) ---- */
+.faq-chip {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.faq-chip:hover {
+  background: var(--color-secondary-fixed);
+  border-color: var(--color-secondary-fixed-dim);
+  transform: translateY(-1px);
+}
+.faq-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--color-secondary);
+  animation: faq-bounce 1s ease-in-out infinite;
+}
+@keyframes faq-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+.faq-extras {
+  animation: faq-fade-up 0.35s ease-out both;
+}
+@keyframes faq-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Ordering UI ---- */
+.sheet-label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.option-chip {
+  border-radius: 16px;
+  border: 1.5px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.option-chip:hover {
+  border-color: var(--color-secondary);
+}
+.option-chip[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: 0 8px 18px -10px rgba(51, 33, 13, 0.7);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.filter-chip[aria-pressed="true"] {
+  background-color: var(--color-secondary-fixed);
+  border-color: var(--color-secondary-fixed-dim);
+  color: var(--color-on-secondary-fixed);
+}
+
+/* Torn receipt bottom edge */
+.receipt-edge {
+  -webkit-mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x;
+  mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x;
+  padding-bottom: 28px !important;
+}
+
+/* Gently drifting steam on illustrated menu tiles */
+.menu-art-steam path {
+  animation: steam-drift 3.2s ease-in-out infinite;
+}
+.menu-art-steam path:nth-child(2) { animation-delay: 0.6s; }
+.menu-art-steam path:nth-child(3) { animation-delay: 1.2s; }
+@keyframes steam-drift {
+  0%, 100% { opacity: 0.2; transform: translateY(4px); }
+  50%      { opacity: 1;   transform: translateY(-3px); }
+}
+
+/* Menu card tilt (driven by --rx / --ry from pointer position) */
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out, box-shadow 0.3s ease;
 }
 
 .nurvana-story-link {

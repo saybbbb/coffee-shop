@@ -1,7 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import TransitionLink from "@/components/transition/TransitionLink";
+import { usePageTransition } from "@/components/transition/PageTransition";
+import OpenBadge from "@/components/visit/OpenBadge";
+import LegalModal, { type LegalKind } from "@/components/LegalModal";
+import { useToast } from "@/components/toast/Toaster";
+import { CAFE, formatTime } from "@/data/cafe";
+import { useCallback, useState } from "react";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -25,22 +30,33 @@ export default function Footer() {
     }
   };
 
-  const scrollToSection = (id: string) => {
-    if (typeof window !== "undefined") {
-      const el = document.getElementById(id);
-      if (el) {
-        if (window.__lenis) {
-          window.__lenis.scrollTo(el, { offset: -20, duration: 1.2 });
-        } else {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    }
-  };
+  // Works from any page: glides on home, curtains over from elsewhere
+  const { go } = usePageTransition();
+  const scrollToSection = (id: string) => go(`/#${id}`);
+
+  const notify = useToast();
+  const [legal, setLegal] = useState<LegalKind | null>(null);
+  const closeLegal = useCallback(() => setLegal(null), []);
+
+  // Social channels aren't live yet, so say so instead of linking somewhere fake
+  const socials = [
+    {
+      name: "Instagram",
+      icon: "photo_camera",
+      onClick: () => notify({ message: "@nurvanacafe is brewing", detail: "Our Instagram launches with the café", icon: "photo_camera" }),
+    },
+    {
+      name: "Café playlist",
+      icon: "graphic_eq",
+      onClick: () => notify({ message: "The café playlist is coming soon", detail: "Lo-fi, jazz and slow mornings", icon: "graphic_eq" }),
+    },
+    { name: "Find us", icon: "map", onClick: () => scrollToSection("visit") },
+  ];
 
   return (
     <footer
       id="footer"
+      data-nav-theme="dark"
       className="w-full relative z-20 overflow-hidden text-stone-200"
       style={{
         backgroundColor: "var(--color-primary, #291806)",
@@ -162,19 +178,17 @@ export default function Footer() {
 
             {/* Social / Media Links */}
             <div className="pt-3 flex items-center gap-3">
-              {[
-                { name: "Instagram", icon: "photo_camera", href: "#" },
-                { name: "Spotify Playlist", icon: "graphic_eq", href: "#" },
-                { name: "Location", icon: "map", href: "#" },
-              ].map((s) => (
-                <a
+              {socials.map((s) => (
+                <button
                   key={s.name}
-                  href={s.href}
+                  type="button"
+                  onClick={s.onClick}
                   aria-label={s.name}
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-950/60 border border-amber-800/40 text-stone-300 hover:text-amber-200 hover:border-amber-500/50 transition-all duration-300 hover:scale-110"
+                  title={s.name}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-950/60 border border-amber-800/40 text-stone-300 hover:text-amber-200 hover:border-amber-500/50 transition-all duration-300 hover:scale-110 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-lg">{s.icon}</span>
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -189,25 +203,18 @@ export default function Footer() {
             </h3>
 
             <div className="space-y-2.5 text-sm text-stone-300 font-mono">
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Mon — Fri</span>
-                <span className="font-semibold text-white">7:00 AM – 8:00 PM</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Saturday</span>
-                <span className="font-semibold text-white">8:00 AM – 9:00 PM</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Sunday</span>
-                <span className="font-semibold text-white">8:00 AM – 7:00 PM</span>
-              </div>
+              {CAFE.hours.map((row) => (
+                <div key={row.label} className="flex justify-between items-center py-1 border-b border-amber-950/80">
+                  <span className="text-stone-400">{row.label}</span>
+                  <span className="font-semibold text-white">
+                    {formatTime(row.open)} – {formatTime(row.close)}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="pt-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-[11px] font-mono text-emerald-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Espresso Bar Open Daily</span>
-              </div>
+              <OpenBadge dark />
             </div>
           </div>
 
@@ -226,9 +233,9 @@ export default function Footer() {
                   location_on
                 </span>
                 <p className="text-stone-300 font-light leading-snug">
-                  142 Artisan Alley, Roast District
+                  {CAFE.address.street}, {CAFE.address.district}
                   <br />
-                  <span className="text-xs text-stone-400 font-mono">Corner of Bean &amp; Steam</span>
+                  <span className="text-xs text-stone-400 font-mono">{CAFE.address.note}</span>
                 </p>
               </div>
 
@@ -237,10 +244,10 @@ export default function Footer() {
                   mail
                 </span>
                 <a
-                  href="mailto:hello@nurvanacafe.com"
+                  href={`mailto:${CAFE.email}`}
                   className="text-stone-300 hover:text-amber-200 font-mono text-xs transition-colors underline-offset-4 hover:underline"
                 >
-                  hello@nurvanacafe.com
+                  {CAFE.email}
                 </a>
               </div>
 
@@ -249,7 +256,7 @@ export default function Footer() {
                   call
                 </span>
                 <span className="text-stone-300 font-mono text-xs">
-                  +1 (555) 234-5678
+                  {CAFE.phone}
                 </span>
               </div>
             </div>
@@ -283,10 +290,18 @@ export default function Footer() {
               </li>
               <li>
                 <button
+                  onClick={() => scrollToSection("process")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  03. Bean to Cup
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => scrollToSection("menu")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  03. The Menu
+                  04. The Menu
                 </button>
               </li>
               <li>
@@ -294,17 +309,33 @@ export default function Footer() {
                   onClick={() => scrollToSection("team")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  04. Our Team
+                  05. Our Team
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("reviews")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  06. Kind Words
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("visit")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  07. Visit Us
                 </button>
               </li>
               <li className="pt-1">
-                <Link
+                <TransitionLink
                   href="/menu"
                   className="text-amber-300 hover:text-white transition-colors inline-flex items-center gap-1 font-bold"
                 >
                   <span>Interactive Menu</span>
                   <span className="material-symbols-outlined text-xs">arrow_outward</span>
-                </Link>
+                </TransitionLink>
               </li>
             </ul>
           </div>
@@ -319,12 +350,20 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-6 text-xs font-mono text-stone-400">
-            <a href="#" className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline">
-              Terms of Service
-            </a>
+            <button
+              type="button"
+              onClick={() => setLegal("privacy")}
+              className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline cursor-pointer"
+            >
+              Privacy
+            </button>
+            <button
+              type="button"
+              onClick={() => setLegal("terms")}
+              className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline cursor-pointer"
+            >
+              Terms
+            </button>
 
             {/* Back to top button */}
             <button
@@ -340,6 +379,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      {legal && <LegalModal kind={legal} onClose={closeLegal} />}
     </footer>
   );
 }
