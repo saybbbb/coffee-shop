@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { gsap } from "gsap";
 import { MILKS, SIZES, type MenuItem } from "@/data/menu";
+import { useToast } from "@/components/toast/Toaster";
 
 /**
  * Prototype cart — everything lives in the browser. No payments, no backend.
@@ -151,6 +152,9 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     else window.__lenis?.start();
   }, [isOpen]);
 
+  const notify = useToast();
+  const open = useCallback(() => setIsOpen(true), []);
+
   const add = useCallback((item: MenuItem, opts: AddOptions = {}) => {
     const size = item.sizes ? opts.size ?? "regular" : undefined;
     const milk = item.milk ? opts.milk ?? "whole" : undefined;
@@ -181,6 +185,12 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         ];
       });
       setBump((b) => b + 1);
+      notify({
+        message: qty > 1 ? `${qty}× ${item.name} added` : `${item.name} added`,
+        detail: describeOptions({ size, milk }) || undefined,
+        icon: "local_cafe",
+        action: { label: "View order", onClick: () => setIsOpen(true) },
+      });
     };
 
     if (opts.from) {
@@ -188,7 +198,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       // so the cart can't depend on animation frames (e.g. a backgrounded tab)
       Promise.race([flyToCart(opts.from), new Promise((r) => setTimeout(r, 1200))]).then(commit);
     } else commit();
-  }, []);
+  }, [notify]);
 
   const setQty = useCallback((key: string, qty: number) => {
     setLines((prev) =>
@@ -222,7 +232,6 @@ export default function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const startNewOrder = useCallback(() => setLastOrder(null), []);
-  const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
   const value: CartContextValue = {

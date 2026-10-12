@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { MILKS, SIZES, formatPrice, type MenuItem } from "@/data/menu";
+import { MILKS, SIZES, allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { useCart, unitPriceFor } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
+import QuickAdd from "./QuickAdd";
 
 /** Detail + customise sheet. Bottom sheet on mobile, centred card on desktop. */
 export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: () => void }) {
@@ -16,6 +17,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
   const panelRef = useRef<HTMLDivElement>(null);
   const artRef = useRef<HTMLDivElement>(null);
 
+  const pair = item.pairsWith ? allItems.find((i) => i.id === item.pairsWith) : undefined;
   const unit = unitPriceFor(item, item.sizes ? size : undefined, item.milk ? milk : undefined);
 
   const close = () => {
@@ -100,7 +102,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
         </div>
 
         {/* Details */}
-        <div className="p-6 md:p-10 flex flex-col gap-6">
+        <div className="p-6 md:p-8 flex flex-col gap-5">
           <div className="space-y-3">
             {item.tags && (
               <div className="flex flex-wrap gap-1.5">
@@ -171,6 +173,8 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
             </fieldset>
           )}
 
+          {pair && <PairsWith item={pair} />}
+
           <div className="mt-auto pt-4 flex items-center gap-3 border-t" style={{ borderColor: "var(--color-outline-variant)" }}>
             <div className="flex items-center rounded-full border" style={{ borderColor: "var(--color-outline-variant)" }}>
               <button
@@ -197,6 +201,33 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/** Suggested companion item with a one-tap add (flies into the cart like quick add). */
+function PairsWith({ item }: { item: MenuItem }) {
+  const thumbRef = useRef<HTMLDivElement>(null);
+  return (
+    <div className="space-y-2">
+      <p className="sheet-label">Pairs well with</p>
+      <div
+        className="flex items-center gap-3 p-2.5 pr-3 rounded-2xl border"
+        style={{ borderColor: "var(--color-outline-variant)", backgroundColor: "var(--color-surface-container-low)" }}
+      >
+        <div ref={thumbRef} className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
+          <MenuArt item={item} sizes="48px" iconSize="1.5rem" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold truncate" style={{ color: "var(--color-primary)" }}>
+            {item.name}
+          </p>
+          <p className="text-xs font-mono" style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}>
+            +{formatPrice(item.price)}
+          </p>
+        </div>
+        <QuickAdd item={item} artRef={thumbRef} small />
       </div>
     </div>
   );

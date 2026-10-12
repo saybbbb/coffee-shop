@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
 import { describeOptions, useCart, type PlacedOrder } from "./CartProvider";
+import { STAGES, useOrderStage } from "./orderStages";
 
 const PICKUP = ["ASAP", "In 15 min", "In 30 min"];
 
@@ -275,22 +276,9 @@ function Brewing() {
   );
 }
 
-const STAGES = [
-  { label: "Received", icon: "receipt_long", at: 0 },
-  { label: "Brewing", icon: "coffee_maker", at: 3500 },
-  { label: "Ready", icon: "done_all", at: 9000 },
-];
 
 function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => void }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [now, setNow] = useState(() => Date.now());
-
-  // Demo pacing: stages advance over a few seconds so it can be shown live
-  useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 250);
-    return () => clearInterval(t);
-  }, []);
-
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(".confirm-stamp", { scale: 0, rotate: -30 }, { scale: 1, rotate: -8, duration: 0.7, ease: "back.out(2)" });
@@ -299,8 +287,7 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
     return () => ctx.revert();
   }, []);
 
-  const elapsed = now - order.placedAt;
-  const current = STAGES.reduce((acc, s, i) => (elapsed >= s.at ? i : acc), 0);
+  const { current } = useOrderStage(order);
   const ready = new Date(order.placedAt + order.readyInMin * 60_000).toLocaleTimeString([], {
     hour: "numeric",
     minute: "2-digit",

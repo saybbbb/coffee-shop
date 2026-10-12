@@ -307,6 +307,14 @@ html[data-intro="skip"] .intro-overlay {
   to { stroke-dashoffset: -24; }
 }
 
+/* ---- Toasts stack above the order status pill when it's showing ---- */
+.toast-dock {
+  transition: bottom 0.3s ease;
+}
+body:has([data-order-pill]) .toast-dock {
+  bottom: 84px;
+}
+
 /* ---- Ordering UI ---- */
 .sheet-label {
   display: block;

@@ -29,6 +29,7 @@ export interface MenuItem {
   notes?: string[];       // tasting notes shown in the detail sheet
   tags?: MenuTag[];
   staffPick?: boolean;
+  pairsWith?: string;     // id of an item suggested in the detail sheet
   sizes?: boolean;        // offer Small / Regular / Large
   milk?: boolean;         // offer milk choices
 }
@@ -80,6 +81,7 @@ export const menu: MenuCategory[] = [
         description:
           "Expertly brewed for a rich and comforting taste. Espresso pulled over silky steamed milk with our signature house-made vanilla bean syrup.",
         price: 5.5,
+        pairsWith: "butter-croissant",
         image: "/menu/latte.jpg",
         notes: ["Vanilla bean", "Caramelized sugar", "Velvet body"],
         tags: ["Hot or Iced"],
@@ -92,6 +94,7 @@ export const menu: MenuCategory[] = [
         description:
           "A double shot of our meticulously sourced single-origin Ethiopian beans. Bright, complex, with notes of dark chocolate and berry.",
         price: 3.5,
+        pairsWith: "sea-salt-cookie",
         image: "/menu/espresso.jpg",
         notes: ["Dark chocolate", "Wild berry", "Bright finish"],
         tags: ["Hot Only"],
@@ -102,6 +105,7 @@ export const menu: MenuCategory[] = [
         description:
           "Equal parts espresso and warm milk, sweetened with muscovado and a pinch of sea salt. Small cup, big character.",
         price: 4.75,
+        pairsWith: "banana-loaf",
         image: "/menu/cortado.jpg",
         icon: "coffee",
         tint: "caramel",
@@ -115,6 +119,7 @@ export const menu: MenuCategory[] = [
         description:
           "Our espresso softened with condensed milk for a creamy, gently sweet cup — a regulars' favourite.",
         price: 5.25,
+        pairsWith: "ube-ensaymada",
         image: "/menu/spanish-latte.jpg",
         icon: "local_cafe",
         tint: "cream",
@@ -137,6 +142,7 @@ export const menu: MenuCategory[] = [
         description:
           "A smooth, chilled blend you'll keep coming back for. Ceremonial grade matcha whisked to perfection over creamy oat milk.",
         price: 6.0,
+        pairsWith: "butter-croissant",
         image: "/menu/matcha.jpg",
         icon: "emoji_food_beverage",
         tint: "matcha",
@@ -151,6 +157,7 @@ export const menu: MenuCategory[] = [
         name: "Cold Brew Reserve",
         description: "Steeped for 24 hours for ultimate smoothness.",
         price: 5.0,
+        pairsWith: "sea-salt-cookie",
         image: "/menu/cold-brew.jpg",
         notes: ["Molasses", "Stone fruit", "Low acidity"],
         tags: ["Iced Only", "Vegan"],
@@ -161,6 +168,7 @@ export const menu: MenuCategory[] = [
         name: "Iced Caramel Cloud",
         description: "Espresso over milk with house caramel drizzle.",
         price: 5.75,
+        pairsWith: "banana-loaf",
         image: "/menu/iced-macchiato.jpg",
         notes: ["Burnt caramel", "Cream", "Espresso layers"],
         tags: ["Iced Only"],
@@ -181,6 +189,7 @@ export const menu: MenuCategory[] = [
         description:
           "Masala chai steeped in-house, folded with roasted pumpkin, cinnamon and a whisper of clove.",
         price: 5.95,
+        pairsWith: "banana-loaf",
         image: "/menu/pumpkin-chai.jpg",
         icon: "spa",
         tint: "peach",
@@ -195,6 +204,7 @@ export const menu: MenuCategory[] = [
         description:
           "Wildflower honey and dried lavender syrup over a double shot. Floral, calm, and just sweet enough.",
         price: 6.25,
+        pairsWith: "butter-croissant",
         image: "/menu/lavender-latte.jpg",
         icon: "local_florist",
         tint: "lavender",
@@ -209,6 +219,7 @@ export const menu: MenuCategory[] = [
         description:
           "Sparkling tonic over ice, a splash of blood orange, and a floating shot of espresso.",
         price: 5.5,
+        pairsWith: "sea-salt-cookie",
         image: "/menu/espresso-tonic.jpg",
         focus: "25% 50%",
         icon: "sunny",
@@ -229,6 +240,7 @@ export const menu: MenuCategory[] = [
         name: "Butter Croissant",
         description: "Seventy-two hour laminated dough, shattering crust, honeycomb crumb.",
         price: 3.75,
+        pairsWith: "nurvana-classic-latte",
         image: "/menu/croissant.jpg",
         icon: "bakery_dining",
         tint: "cream",
@@ -240,6 +252,7 @@ export const menu: MenuCategory[] = [
         name: "Ube Ensaymada",
         description: "Pillowy brioche swirled with ube halaya, topped with butter, sugar and aged cheese.",
         price: 4.25,
+        pairsWith: "spanish-latte",
         image: "/menu/ensaymada.jpg",
         icon: "cake",
         tint: "lavender",
@@ -251,6 +264,7 @@ export const menu: MenuCategory[] = [
         name: "Sea Salt Choco Cookie",
         description: "Brown butter dough, dark chocolate puddles, flaky salt. Best with an espresso.",
         price: 3.25,
+        pairsWith: "artisanal-espresso",
         image: "/menu/cookie.jpg",
         icon: "cookie",
         tint: "mocha",
@@ -261,6 +275,7 @@ export const menu: MenuCategory[] = [
         name: "Banana Walnut Loaf",
         description: "Moist, dark and crackly-topped. Made with overripe bananas and toasted walnuts.",
         price: 3.95,
+        pairsWith: "cold-brew-reserve",
         image: "/menu/banana-loaf.jpg",
         icon: "breakfast_dining",
         tint: "caramel",

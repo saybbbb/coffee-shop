@@ -5,7 +5,9 @@ import LogoRevealLoader, { INTRO_GATE_SCRIPT } from "@/components/LogoRevealLoad
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
+import OrderStatusPill from "@/components/cart/OrderStatusPill";
 import PageTransitionProvider from "@/components/transition/PageTransition";
+import ToastProvider from "@/components/toast/Toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -53,18 +55,22 @@ export default function RootLayout({
 
         {/* Smooth Scroll Engine + GSAP ScrollTrigger Integration */}
         <SmoothScrollProvider>
-          {/* Prototype pickup-order cart (browser-only, no payments) */}
           {/* Branded curtain between pages */}
           <PageTransitionProvider>
-            <CartProvider>
-              {/* Floating Minimal HUD Navbar */}
-              <Navbar />
+            {/* Bottom-centre notifications ("Added to order", etc.) */}
+            <ToastProvider>
+              {/* Prototype pickup-order cart (browser-only, no payments) */}
+              <CartProvider>
+                {/* Floating Minimal HUD Navbar */}
+                <Navbar />
 
-              {/* Page content */}
-              <main className="flex-grow">{children}</main>
+                {/* Page content */}
+                <main className="flex-grow">{children}</main>
 
-              <CartDrawer />
-            </CartProvider>
+                <CartDrawer />
+                <OrderStatusPill />
+              </CartProvider>
+            </ToastProvider>
           </PageTransitionProvider>
         </SmoothScrollProvider>
       </body>

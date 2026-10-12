@@ -3,8 +3,10 @@
 import TransitionLink from "@/components/transition/TransitionLink";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import OpenBadge from "@/components/visit/OpenBadge";
+import LegalModal, { type LegalKind } from "@/components/LegalModal";
+import { useToast } from "@/components/toast/Toaster";
 import { CAFE, formatTime } from "@/data/cafe";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -31,6 +33,25 @@ export default function Footer() {
   // Works from any page: glides on home, curtains over from elsewhere
   const { go } = usePageTransition();
   const scrollToSection = (id: string) => go(`/#${id}`);
+
+  const notify = useToast();
+  const [legal, setLegal] = useState<LegalKind | null>(null);
+  const closeLegal = useCallback(() => setLegal(null), []);
+
+  // Social channels aren't live yet, so say so instead of linking somewhere fake
+  const socials = [
+    {
+      name: "Instagram",
+      icon: "photo_camera",
+      onClick: () => notify({ message: "@nurvanacafe is brewing", detail: "Our Instagram launches with the café", icon: "photo_camera" }),
+    },
+    {
+      name: "Café playlist",
+      icon: "graphic_eq",
+      onClick: () => notify({ message: "The café playlist is coming soon", detail: "Lo-fi, jazz and slow mornings", icon: "graphic_eq" }),
+    },
+    { name: "Find us", icon: "map", onClick: () => scrollToSection("visit") },
+  ];
 
   return (
     <footer
@@ -156,19 +177,17 @@ export default function Footer() {
 
             {/* Social / Media Links */}
             <div className="pt-3 flex items-center gap-3">
-              {[
-                { name: "Instagram", icon: "photo_camera", href: "#" },
-                { name: "Spotify Playlist", icon: "graphic_eq", href: "#" },
-                { name: "Location", icon: "map", href: "#" },
-              ].map((s) => (
-                <a
+              {socials.map((s) => (
+                <button
                   key={s.name}
-                  href={s.href}
+                  type="button"
+                  onClick={s.onClick}
                   aria-label={s.name}
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-950/60 border border-amber-800/40 text-stone-300 hover:text-amber-200 hover:border-amber-500/50 transition-all duration-300 hover:scale-110"
+                  title={s.name}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-950/60 border border-amber-800/40 text-stone-300 hover:text-amber-200 hover:border-amber-500/50 transition-all duration-300 hover:scale-110 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-lg">{s.icon}</span>
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -322,12 +341,20 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-6 text-xs font-mono text-stone-400">
-            <a href="#" className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline">
-              Terms of Service
-            </a>
+            <button
+              type="button"
+              onClick={() => setLegal("privacy")}
+              className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline cursor-pointer"
+            >
+              Privacy
+            </button>
+            <button
+              type="button"
+              onClick={() => setLegal("terms")}
+              className="hover:text-amber-200 transition-colors underline-offset-4 hover:underline cursor-pointer"
+            >
+              Terms
+            </button>
 
             {/* Back to top button */}
             <button
@@ -343,6 +370,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      {legal && <LegalModal kind={legal} onClose={closeLegal} />}
     </footer>
   );
 }
