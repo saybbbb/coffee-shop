@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import TransitionLink from "@/components/transition/TransitionLink";
+import { usePageTransition } from "@/components/transition/PageTransition";
 import { useState } from "react";
 
 export default function Footer() {
@@ -25,18 +26,9 @@ export default function Footer() {
     }
   };
 
-  const scrollToSection = (id: string) => {
-    if (typeof window !== "undefined") {
-      const el = document.getElementById(id);
-      if (el) {
-        if (window.__lenis) {
-          window.__lenis.scrollTo(el, { offset: -20, duration: 1.2 });
-        } else {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    }
-  };
+  // Works from any page: glides on home, curtains over from elsewhere
+  const { go } = usePageTransition();
+  const scrollToSection = (id: string) => go(`/#${id}`);
 
   return (
     <footer
@@ -298,13 +290,13 @@ export default function Footer() {
                 </button>
               </li>
               <li className="pt-1">
-                <Link
+                <TransitionLink
                   href="/menu"
                   className="text-amber-300 hover:text-white transition-colors inline-flex items-center gap-1 font-bold"
                 >
                   <span>Interactive Menu</span>
                   <span className="material-symbols-outlined text-xs">arrow_outward</span>
-                </Link>
+                </TransitionLink>
               </li>
             </ul>
           </div>

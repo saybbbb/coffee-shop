@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import TransitionLink from "@/components/transition/TransitionLink";
+import { isPageTransitioning } from "@/components/transition/PageTransition";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { menu, formatPrice, type MenuCategory, type MenuItem, type MenuTag } from "@/data/menu";
@@ -340,6 +341,8 @@ export default function MenuExperience() {
   const [filter, setFilter] = useState("all");
   const [active, setActive] = useState(menu[0].id);
   const [openItem, setOpenItem] = useState<MenuItem | null>(null);
+  const [stuck, setStuck] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -354,13 +357,15 @@ export default function MenuExperience() {
   // Intro: headline words rise in
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Arriving via the curtain? Start the intro as it lifts.
+    const wait = isPageTransitioning() ? 0.75 : 0;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".hero-word",
         { yPercent: 110, rotate: 4 },
-        { yPercent: 0, rotate: 0, duration: 1, stagger: 0.08, ease: "power4.out", delay: 0.1 }
+        { yPercent: 0, rotate: 0, duration: 1, stagger: 0.08, ease: "power4.out", delay: 0.1 + wait }
       );
-      gsap.fromTo(".hero-fade", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, delay: 0.5 });
+      gsap.fromTo(".hero-fade", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, delay: 0.5 + wait });
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -397,6 +402,15 @@ export default function MenuExperience() {
     return () => io.disconnect();
   }, [visible]);
 
+  // Is the category bar pinned? (sentinel just above it scrolls out under the nav)
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setStuck(!e.isIntersecting), { rootMargin: "-77px 0px 0px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // Keep the active tab visible in the scrollable tab strip
   useEffect(() => {
     const tab = tabsRef.current?.querySelector<HTMLElement>(`[data-tab="${active}"]`);
@@ -421,14 +435,14 @@ export default function MenuExperience() {
       {/* ── Header ── */}
       <header className="max-w-[1200px] mx-auto px-4 md:px-12 pt-28 md:pt-36 pb-10 md:pb-14 text-center space-y-6">
         <div className="hero-fade flex justify-center">
-          <Link
+          <TransitionLink
             href="/"
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-sm text-xs font-mono uppercase tracking-wider text-stone-700 hover:text-amber-900 transition-colors"
             style={{ fontFamily: "var(--font-label)" }}
           >
             <span className="material-symbols-outlined text-sm">arrow_back</span>
             <span>Home</span>
-          </Link>
+          </TransitionLink>
         </div>
         <h1
           className="text-6xl sm:text-7xl md:text-9xl font-extrabold tracking-tight leading-[0.9]"
@@ -453,10 +467,13 @@ export default function MenuExperience() {
       </header>
 
       {/* ── Sticky category + filter bar ── */}
+      <div ref={sentinelRef} aria-hidden="true" />
       <div className="sticky top-[76px] z-30 px-3 md:px-12">
-        {/* Fades out content scrolling under the floating nav */}
+        {/* Fades out content scrolling under the floating nav (only once pinned) */}
         <div
-          className="absolute inset-x-0 -top-[76px] h-[120px] -z-10 pointer-events-none"
+          className={`absolute inset-x-0 -top-[76px] h-[120px] -z-10 pointer-events-none transition-opacity duration-300 ${
+            stuck ? "opacity-100" : "opacity-0"
+          }`}
           style={{ background: "linear-gradient(to bottom, var(--color-surface) 65%, transparent)" }}
           aria-hidden="true"
         />

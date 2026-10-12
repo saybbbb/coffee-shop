@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { allItems, formatPrice } from "@/data/menu";
@@ -471,7 +471,7 @@ export default function Home() {
               <span className="text-[11px] font-mono text-stone-500 md:hidden">
                 Swipe to view 5 items →
               </span>
-              <Link
+              <TransitionLink
                 href="/menu"
                 className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-900 hover:text-amber-700 transition-colors group"
                 style={{ fontFamily: "var(--font-label)" }}
@@ -480,7 +480,7 @@ export default function Home() {
                 <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">
                   arrow_forward
                 </span>
-              </Link>
+              </TransitionLink>
             </div>
           </div>
 

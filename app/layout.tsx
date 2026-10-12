@@ -5,6 +5,7 @@ import LogoRevealLoader from "@/components/LogoRevealLoader";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
+import PageTransitionProvider from "@/components/transition/PageTransition";
 
 export const metadata: Metadata = {
   title: {
@@ -47,15 +48,18 @@ export default function RootLayout({
         {/* Smooth Scroll Engine + GSAP ScrollTrigger Integration */}
         <SmoothScrollProvider>
           {/* Prototype pickup-order cart (browser-only, no payments) */}
-          <CartProvider>
-            {/* Floating Minimal HUD Navbar */}
-            <Navbar />
+          {/* Branded curtain between pages */}
+          <PageTransitionProvider>
+            <CartProvider>
+              {/* Floating Minimal HUD Navbar */}
+              <Navbar />
 
-            {/* Page content */}
-            <main className="flex-grow">{children}</main>
+              {/* Page content */}
+              <main className="flex-grow">{children}</main>
 
-            <CartDrawer />
-          </CartProvider>
+              <CartDrawer />
+            </CartProvider>
+          </PageTransitionProvider>
         </SmoothScrollProvider>
       </body>
     </html>

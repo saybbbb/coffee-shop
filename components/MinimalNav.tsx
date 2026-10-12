@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CartButton from "./cart/CartButton";
+import TransitionLink from "./transition/TransitionLink";
+import { usePageTransition } from "./transition/PageTransition";
 
 interface SectionItem {
   id: string;
@@ -65,42 +66,9 @@ export default function MinimalNav() {
     };
   }, [isHome]);
 
-  const scrollToSection = (id: string) => {
-    if (!isHome) {
-      window.location.href = `/#${id}`;
-      return;
-    }
-
-    // Scroll to the exact progress point of the ScrollTrigger where elements are 100% visible
-    const trigger = ScrollTrigger.getById(`${id}-trigger`);
-    let targetScrollY = 0;
-
-    if (trigger) {
-      if (id === "hero") {
-        targetScrollY = trigger.start;
-      } else if (id === "story") {
-        // Target 45% into the pinned timeline where story is in full focus and 100% opacity
-        targetScrollY = trigger.start + (trigger.end - trigger.start) * 0.45;
-      } else if (id === "menu") {
-        // Target 45% into the pinned timeline where menu cards are in full focus and 100% opacity
-        targetScrollY = trigger.start + (trigger.end - trigger.start) * 0.45;
-      } else if (id === "team") {
-        // Target 50% into the pinned timeline where team is in full focus and 100% opacity
-        targetScrollY = trigger.start + (trigger.end - trigger.start) * 0.5;
-      }
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        targetScrollY = el.getBoundingClientRect().top + window.scrollY;
-      }
-    }
-
-    if (window.__lenis) {
-      window.__lenis.scrollTo(targetScrollY, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-    }
-  };
+  const { go } = usePageTransition();
+  // On home: glide to the section. Elsewhere: curtain back to home, then land on it.
+  const scrollToSection = (id: string) => go(`/#${id}`);
 
   return (
     <>
@@ -112,14 +80,8 @@ export default function MinimalNav() {
       >
         <div className="max-w-[1400px] mx-auto px-6 py-5 flex justify-between items-center">
           {/* Minimal Logo Mark */}
-          <Link
+          <TransitionLink
             href="/#hero"
-            onClick={(e) => {
-              if (isHome) {
-                e.preventDefault();
-                scrollToSection("hero");
-              }
-            }}
             className="pointer-events-auto flex items-center gap-2 group px-4 py-2 rounded-full glass-panel shadow-md transition-all duration-300 hover:scale-105"
           >
             <span
@@ -137,7 +99,7 @@ export default function MinimalNav() {
             >
               Café
             </span>
-          </Link>
+          </TransitionLink>
 
           <div className="flex items-center gap-2">
           <CartButton />
@@ -299,14 +261,14 @@ export default function MinimalNav() {
               </button>
 
               <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                <Link
+                <TransitionLink
                   href="/menu"
                   onClick={() => setMenuOpen(false)}
                   className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-amber-200 hover:text-white transition-colors"
                 >
                   <span>Full Interactive Menu</span>
                   <span className="material-symbols-outlined text-sm">arrow_outward</span>
-                </Link>
+                </TransitionLink>
               </div>
             </nav>
 

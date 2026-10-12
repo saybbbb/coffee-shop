@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
@@ -130,9 +130,9 @@ export default function CartDrawer() {
                 <p className="text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
                   Pick something warm, cold, or freshly baked.
                 </p>
-                <Link href="/menu" onClick={close} className="nurvana-btn-outline mt-2">
+                <TransitionLink href="/menu" onClick={close} className="nurvana-btn-outline mt-2">
                   Browse the Menu
-                </Link>
+                </TransitionLink>
               </div>
             ) : (
               <form onSubmit={submit} className="flex-1 flex flex-col min-h-0">
