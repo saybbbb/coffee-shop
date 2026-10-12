@@ -25,8 +25,8 @@ export default function CartButton() {
       ref={btnRef}
       data-cart-target
       onClick={open}
-      className="pointer-events-auto relative flex items-center gap-2 px-4 py-2 rounded-full glass-panel shadow-md transition-transform duration-300 hover:scale-105 text-xs uppercase font-mono tracking-wider cursor-pointer"
-      style={{ color: "var(--color-primary)", fontFamily: "var(--font-label)" }}
+      className="nav-glass pointer-events-auto relative flex items-center gap-2 h-10 px-3.5 rounded-full hover:scale-105 text-xs uppercase font-mono tracking-wider cursor-pointer"
+      style={{ fontFamily: "var(--font-label)" }}
       aria-label={`Open your order, ${count} item${count === 1 ? "" : "s"}`}
     >
       <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
@@ -38,7 +38,7 @@ export default function CartButton() {
         className={`min-w-5 h-5 px-1 rounded-full items-center justify-center text-[11px] font-bold ${
           count ? "flex" : "hidden"
         }`}
-        style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
+        style={{ backgroundColor: "var(--nav-accent-bg)", color: "var(--nav-accent-ink)" }}
         aria-hidden="true"
       >
         {count}

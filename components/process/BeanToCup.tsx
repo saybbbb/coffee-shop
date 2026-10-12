@@ -16,6 +16,7 @@ export default function BeanToCup() {
   return (
     <section
       id="process"
+      data-nav-theme="dark"
       className="process-section relative w-full md:h-screen overflow-hidden text-[#fdf9f4]"
       style={{
         backgroundColor: "var(--color-primary)",

@@ -89,6 +89,7 @@ export default function Reviews({ onOpen }: { onOpen: (item: MenuItem) => void }
   return (
     <section
       id="reviews"
+      data-nav-theme="dark"
       className="relative w-full md:h-screen flex flex-col justify-center overflow-hidden py-20 md:pt-20 md:pb-6 text-[#fdf9f4]"
       style={{
         backgroundColor: "var(--color-primary)",

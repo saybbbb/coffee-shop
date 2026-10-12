@@ -152,6 +152,108 @@ body {
   background-size: 100% 100%;
 }
 
+/* ---- Navigation (top bar + side tracker); colours follow the section behind ---- */
+.nav-root {
+  --nav-bg: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  --nav-border: color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  --nav-ink: var(--color-primary);
+  --nav-muted: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  --nav-accent-bg: var(--color-primary);
+  --nav-accent-ink: var(--color-on-primary);
+  --nav-cta-bg: var(--color-primary);
+  --nav-cta-ink: var(--color-on-primary);
+}
+.nav-root[data-theme="dark"] {
+  --nav-bg: rgba(28, 16, 6, 0.42);
+  --nav-border: rgba(253, 249, 244, 0.16);
+  --nav-ink: #fdf9f4;
+  --nav-muted: rgba(253, 249, 244, 0.7);
+  --nav-accent-bg: var(--color-secondary-fixed);
+  --nav-accent-ink: var(--color-primary);
+  --nav-cta-bg: var(--color-secondary-fixed);
+  --nav-cta-ink: var(--color-primary);
+}
+.nav-glass {
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  color: var(--nav-ink);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 8px 24px -14px rgba(20, 10, 2, 0.45);
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+}
+.nav-link {
+  color: var(--nav-muted);
+}
+.nav-link:hover {
+  color: var(--nav-ink);
+}
+.nav-link.is-active {
+  color: var(--nav-accent-ink);
+}
+.nav-highlight {
+  background: var(--nav-accent-bg);
+}
+.nav-cta {
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-ink);
+  box-shadow: 0 8px 22px -12px rgba(20, 10, 2, 0.6);
+  transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+}
+.nav-cta.is-current {
+  outline: 2px solid var(--nav-cta-bg);
+  outline-offset: 2px;
+}
+.nav-link:focus-visible,
+.nav-cta:focus-visible,
+.nav-glass:focus-visible {
+  outline: 2px solid var(--nav-ink);
+  outline-offset: 2px;
+}
+
+/* Side tracker */
+.side-track {
+  background: var(--nav-border);
+}
+.side-fill {
+  background: var(--nav-ink);
+  opacity: 0.6;
+}
+.side-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--nav-muted);
+  opacity: 0.55;
+}
+button:hover > .side-dot {
+  opacity: 1;
+  transform: scale(1.3);
+}
+.side-dot.is-active {
+  width: 11px;
+  height: 11px;
+  opacity: 1;
+  background: var(--nav-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--nav-ink) 18%, transparent);
+}
+/* Current-section label: announces itself on arrival, then gets out of the way
+   of the content; hovering the tracker brings it back */
+.side-label {
+  animation: side-label-flash 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.side-tracker:hover .side-label,
+.side-tracker:focus-within .side-label {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+@keyframes side-label-flash {
+  0%   { opacity: 0; transform: translateX(8px); }
+  12%  { opacity: 1; transform: translateX(0); }
+  75%  { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(4px); }
+}
+
 /* ---- Intro overlay: hidden before first paint when already seen (see LogoRevealLoader) ---- */
 html[data-intro="skip"] .intro-overlay {
   display: none;
@@ -277,6 +379,14 @@ html[data-intro="skip"] .intro-overlay {
 .hero-cta-secondary:focus-visible {
   outline: 2px solid var(--color-secondary-fixed);
   outline-offset: 3px;
+}
+
+/* ---- Our Story: rotating stamp ---- */
+.story-stamp-spin {
+  animation: story-stamp-spin 22s linear infinite;
+}
+@keyframes story-stamp-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ---- Bean to Cup ---- */

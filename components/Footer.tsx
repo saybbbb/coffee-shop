@@ -56,6 +56,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
+      data-nav-theme="dark"
       className="w-full relative z-20 overflow-hidden text-stone-200"
       style={{
         backgroundColor: "var(--color-primary, #291806)",

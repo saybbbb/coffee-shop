@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import TransitionLink from "@/components/transition/TransitionLink";
 import AnnouncementChip from "@/components/AnnouncementChip";
 import { gsap } from "gsap";
@@ -12,6 +11,7 @@ import ItemSheet from "@/components/menu/ItemSheet";
 import VisitSection, { setupVisitScroll } from "@/components/visit/VisitSection";
 import Reviews, { setupReviewsScroll } from "@/components/reviews/Reviews";
 import BeanToCup, { setupBeanToCupScroll } from "@/components/process/BeanToCup";
+import OurStory, { setupStoryScroll } from "@/components/story/OurStory";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
 import TeamCard from "@/components/team/TeamCard";
@@ -23,9 +23,6 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLDivElement>(null);
-  const storyRef = useRef<HTMLElement>(null);
-  const storyVisualRef = useRef<HTMLDivElement>(null);
-  const storyTextRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLElement>(null);
   const menuCardsRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLElement>(null);
@@ -80,48 +77,8 @@ export default function Home() {
           );
       }
 
-      // 2. OUR STORY PIN & 3D PARALLAX
-      if (storyRef.current && storyVisualRef.current && storyTextRef.current) {
-        const storyTl = gsap.timeline({
-          scrollTrigger: {
-            id: "story-trigger",
-            trigger: storyRef.current,
-            start: isMobile ? "top 80%" : "top top",
-            end: isMobile ? "bottom 20%" : "+=130%",
-            pin: !isMobile,
-            scrub: 0.6,
-            anticipatePin: 1,
-          },
-        });
-
-        if (!isMobile) {
-          storyTl
-            .fromTo(
-              storyVisualRef.current,
-              { opacity: 0, scale: 0.88, rotateY: 8, z: -80, x: -30 },
-              { opacity: 1, scale: 1, rotateY: 0, z: 0, x: 0, ease: "power2.out", duration: 0.35 },
-              0
-            )
-            .fromTo(
-              storyTextRef.current,
-              { opacity: 0, y: 50, z: -50 },
-              { opacity: 1, y: 0, z: 0, ease: "power2.out", duration: 0.35 },
-              0.05
-            )
-            .to({}, { duration: 0.4 })
-            .to(
-              [storyVisualRef.current, storyTextRef.current],
-              { opacity: 0, y: -40, scale: 0.94, z: -80, ease: "power1.in", duration: 0.25 }
-            );
-        } else {
-          storyTl
-            .fromTo(
-              [storyVisualRef.current, storyTextRef.current],
-              { opacity: 0.3, y: 30 },
-              { opacity: 1, y: 0, stagger: 0.1, duration: 1, ease: "power2.out" }
-            );
-        }
-      }
+      // 2. OUR STORY — editorial statement + collage (pinned on desktop)
+      setupStoryScroll(isMobile);
 
       // 2b. BEAN TO CUP — pinned sideways scroll (registered here to keep pins in page order)
       setupBeanToCupScroll(isMobile);
@@ -243,6 +200,7 @@ export default function Home() {
         ref={heroRef}
         className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden perspective-container"
         aria-label="Nurvana Café Hero"
+        data-nav-theme="dark"
       >
         {/* Full-bleed muted looping video background */}
         <div ref={heroVideoRef} className="absolute inset-0 z-0 will-change-transform-opacity">
@@ -346,137 +304,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SECTION 2: OUR STORY (3D Parallax & Depth) ───────────────────── */}
-      <section
-        id="story"
-        ref={storyRef}
-        className="relative w-full min-h-[100dvh] py-16 md:py-0 md:h-screen flex items-center justify-center overflow-hidden perspective-container"
-        style={{ backgroundColor: "var(--color-surface-container-low)" }}
-        aria-label="Our Story"
-      >
-        {/* Ambient subtle light glow */}
-        <div
-          className="absolute top-1/4 right-10 w-96 h-96 rounded-full blur-3xl opacity-40 pointer-events-none -z-10"
-          style={{ backgroundColor: "var(--color-secondary-fixed)" }}
-        />
-
-        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 w-full relative z-10 preserve-3d">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
-            {/* Visuals Column with Layered Parallax */}
-            <div ref={storyVisualRef} className="lg:col-span-6 relative preserve-3d">
-              <div className="relative aspect-[16/10] sm:aspect-[4/3] md:aspect-[4/5] max-w-[440px] mx-auto rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-stone-200">
-                <Image
-                  src="/story/barista2.jpg"
-                  alt="Barista crafting milk latte art"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 440px"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-
-              {/* Floating 3D Accent Image */}
-              <div
-                className="absolute -bottom-6 -right-2 sm:-right-6 w-32 h-32 sm:w-44 sm:h-44 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-4 border-[#fdf9f4] hidden sm:block will-change-transform-opacity"
-                style={{ transform: "translateZ(50px)" }}
-              >
-                <Image
-                  src="/story/coffee-beans.jpg"
-                  alt="Freshly roasted whole coffee beans"
-                  fill
-                  className="object-cover"
-                  sizes="180px"
-                />
-              </div>
-
-              {/* Minimal floating badge */}
-              <div
-                className="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full glass-panel shadow-md text-[10px] sm:text-xs font-mono tracking-wider uppercase text-[#33210d]"
-                style={{ transform: "translateZ(70px)" }}
-              >
-                Direct Origin
-              </div>
-            </div>
-
-            {/* Content Column with Sculptural Typography */}
-            <div ref={storyTextRef} className="lg:col-span-6 space-y-4 md:space-y-6 preserve-3d">
-              <div className="space-y-2">
-                <span
-                  className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
-                  style={{
-                    color: "var(--color-secondary)",
-                    fontFamily: "var(--font-label)",
-                  }}
-                >
-                  02 / Our Story
-                </span>
-                <h2
-                  className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-tight"
-                  style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-                >
-                  Brewed with intention.
-                  <br />
-                  <span
-                    className="italic font-normal"
-                    style={{
-                      fontFamily: "var(--font-handwritten)",
-                      color: "var(--color-primary-container)",
-                    }}
-                  >
-                    Crafted for community.
-                  </span>
-                </h2>
-              </div>
-
-              {/* Punchy stripped copy */}
-              <p
-                className="text-sm sm:text-base md:text-lg leading-relaxed max-w-lg font-light text-stone-700"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                In a world of instant everything, we slow down for the deliberate art of small-lot
-                roasting and the quiet warmth of real community.
-              </p>
-
-              {/* Large Minimal Stat Callouts */}
-              <div
-                className="grid grid-cols-2 gap-4 sm:gap-8 pt-4 sm:pt-6 border-t border-stone-300/80"
-                style={{ borderColor: "var(--color-outline-variant)" }}
-              >
-                <div>
-                  <span
-                    className="block text-3xl sm:text-4xl md:text-6xl font-black tracking-tight"
-                    style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-                  >
-                    100%
-                  </span>
-                  <span
-                    className="text-[11px] sm:text-xs md:text-sm font-mono uppercase tracking-wider block mt-0.5 text-stone-600"
-                    style={{ fontFamily: "var(--font-label)" }}
-                  >
-                    Fair Trade Sourced
-                  </span>
-                </div>
-
-                <div>
-                  <span
-                    className="block text-3xl sm:text-4xl md:text-6xl font-black tracking-tight"
-                    style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-                  >
-                    Small
-                  </span>
-                  <span
-                    className="text-[11px] sm:text-xs md:text-sm font-mono uppercase tracking-wider block mt-0.5 text-stone-600"
-                    style={{ fontFamily: "var(--font-label)" }}
-                  >
-                    Batch Roasted
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ─── SECTION 2: OUR STORY (editorial statement, pinned on desktop) ── */}
+      <OurStory />
 
       {/* ─── SECTION 3: BEAN TO CUP (pinned sideways scroll on desktop) ───── */}
       <BeanToCup />
