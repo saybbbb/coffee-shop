@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { menu } from "@/data/menu";
+import { allItems, formatPrice } from "@/data/menu";
+import MenuArt from "@/components/menu/MenuArt";
 import Footer from "@/components/Footer";
 
 const teamMembers = [
@@ -221,8 +222,8 @@ export default function Home() {
     };
   }, []);
 
-  // All menu items across categories for home showcase
-  const featuredMenuItems = menu.flatMap((c) => c.items);
+  // Home showcase: photographed items first, then illustrated ones
+  const featuredMenuItems = [...allItems].sort((a, b) => Number(!!b.image) - Number(!!a.image));
 
   return (
     <div ref={containerRef} className="w-full relative overflow-x-hidden bg-[#fdf9f4]">
@@ -498,11 +499,9 @@ export default function Home() {
               >
                 {/* Top Image Preview */}
                 <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-3 md:mb-4 shadow-sm bg-stone-200">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  <MenuArt
+                    item={item}
+                    className="group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 260px, 220px"
                   />
                   {item.staffPick && (
@@ -534,7 +533,7 @@ export default function Home() {
                       className="font-mono font-bold text-sm text-amber-900 shrink-0"
                       style={{ fontFamily: "var(--font-label)" }}
                     >
-                      ${item.price.toFixed(2)}
+                      {formatPrice(item.price)}
                     </span>
                   </div>
 

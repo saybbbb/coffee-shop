@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LogoRevealLoader from "@/components/LogoRevealLoader";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import CartProvider from "@/components/cart/CartProvider";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 export const metadata: Metadata = {
   title: {
@@ -44,11 +46,16 @@ export default function RootLayout({
 
         {/* Smooth Scroll Engine + GSAP ScrollTrigger Integration */}
         <SmoothScrollProvider>
-          {/* Floating Minimal HUD Navbar */}
-          <Navbar />
+          {/* Prototype pickup-order cart (browser-only, no payments) */}
+          <CartProvider>
+            {/* Floating Minimal HUD Navbar */}
+            <Navbar />
 
-          {/* Page content */}
-          <main className="flex-grow">{children}</main>
+            {/* Page content */}
+            <main className="flex-grow">{children}</main>
+
+            <CartDrawer />
+          </CartProvider>
         </SmoothScrollProvider>
       </body>
     </html>

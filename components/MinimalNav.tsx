@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CartButton from "./cart/CartButton";
 
 interface SectionItem {
   id: string;
@@ -138,6 +139,9 @@ export default function MinimalNav() {
             </span>
           </Link>
 
+          <div className="flex items-center gap-2">
+          <CartButton />
+
           {/* Quick Menu Button */}
           <button
             onClick={() => setMenuOpen(true)}
@@ -151,6 +155,7 @@ export default function MinimalNav() {
             <span className="w-2 h-2 rounded-full bg-amber-700 animate-pulse" />
             <span>Menu</span>
           </button>
+          </div>
         </div>
       </header>
 

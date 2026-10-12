@@ -178,6 +178,108 @@ body {
   color: var(--color-on-primary);
 }
 
+.nurvana-btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-label);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(51, 33, 13, 0.6);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.nurvana-btn-solid:hover {
+  background-color: var(--color-primary-container);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px -12px rgba(51, 33, 13, 0.7);
+}
+.nurvana-btn-solid:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---- Ordering UI ---- */
+.sheet-label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.option-chip {
+  border-radius: 16px;
+  border: 1.5px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.option-chip:hover {
+  border-color: var(--color-secondary);
+}
+.option-chip[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: 0 8px 18px -10px rgba(51, 33, 13, 0.7);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.filter-chip[aria-pressed="true"] {
+  background-color: var(--color-secondary-fixed);
+  border-color: var(--color-secondary-fixed-dim);
+  color: var(--color-on-secondary-fixed);
+}
+
+/* Torn receipt bottom edge */
+.receipt-edge {
+  -webkit-mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x;
+  mask: radial-gradient(circle 6px at 50% 100%, transparent 98%, #000) 0 0 / 16px 100% repeat-x;
+  padding-bottom: 28px !important;
+}
+
+/* Gently drifting steam on illustrated menu tiles */
+.menu-art-steam path {
+  animation: steam-drift 3.2s ease-in-out infinite;
+}
+.menu-art-steam path:nth-child(2) { animation-delay: 0.6s; }
+.menu-art-steam path:nth-child(3) { animation-delay: 1.2s; }
+@keyframes steam-drift {
+  0%, 100% { opacity: 0.2; transform: translateY(4px); }
+  50%      { opacity: 1;   transform: translateY(-3px); }
+}
+
+/* Menu card tilt (driven by --rx / --ry from pointer position) */
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out, box-shadow 0.3s ease;
+}
+
 .nurvana-story-link {
   color: var(--color-primary);
 }
