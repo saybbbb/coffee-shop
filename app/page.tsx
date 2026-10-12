@@ -269,6 +269,14 @@ export default function Home() {
                 "linear-gradient(to bottom, rgba(51,33,13,0.3) 0%, transparent 40%, rgba(51,33,13,0.65) 100%)",
             }}
           />
+          {/* Soft dark glow behind the headline so it reads over any frame of the video */}
+          <div
+            className="absolute inset-0 z-10 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 58% 46% at 50% 50%, rgba(28,16,6,0.62) 0%, rgba(28,16,6,0.38) 55%, transparent 100%)",
+            }}
+          />
         </div>
 
         {/* Clean top spacer without overlapping badge */}
@@ -281,13 +289,13 @@ export default function Home() {
         >
           <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
             <h1
-              className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-[#fdf9f4] drop-shadow-lg leading-[0.95]"
+              className="hero-title text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-[#fdf9f4] leading-[0.95]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Sip the Brew.
               <br />
               <span
-                className="italic font-light text-amber-200"
+                className="italic font-normal text-amber-200"
                 style={{ fontFamily: "var(--font-handwritten)" }}
               >
                 Feel Brand New.
@@ -295,7 +303,7 @@ export default function Home() {
             </h1>
 
             <p
-              className="text-xs sm:text-sm md:text-base font-mono tracking-widest uppercase text-amber-100/90 max-w-xl mx-auto drop-shadow"
+              className="inline-block text-[11px] sm:text-sm font-mono tracking-[0.18em] uppercase text-amber-50 px-4 py-2 rounded-2xl sm:rounded-full bg-black/35 backdrop-blur-md border border-white/10"
               style={{ fontFamily: "var(--font-label)" }}
             >
               Artisanal single-origin • Small batch roasted • Daily crafted

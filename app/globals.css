@@ -208,6 +208,14 @@ html[data-intro="skip"] .intro-overlay {
   transform: translateY(0) scale(0.98);
 }
 
+/* ---- Hero headline: layered shadows lift it off the busy video ---- */
+.hero-title {
+  text-shadow:
+    0 1px 2px rgba(20, 10, 2, 0.55),
+    0 4px 14px rgba(20, 10, 2, 0.45),
+    0 10px 40px rgba(20, 10, 2, 0.4);
+}
+
 /* ---- Hero calls to action (sit on the dark video) ---- */
 .hero-cta-primary,
 .hero-cta-secondary {
