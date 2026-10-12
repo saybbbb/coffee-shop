@@ -12,6 +12,7 @@ export interface TeamMember {
   line: string;
   goTo: string;
   tint: Tint;
+  icon: string; // Material Symbol shown as a small role badge on the portrait
 }
 
 export const TEAM: TeamMember[] = [
@@ -21,6 +22,7 @@ export const TEAM: TeamMember[] = [
     line: "Sources and roasts every bean we pour.",
     goTo: "artisanal-espresso",
     tint: "caramel",
+    icon: "local_fire_department",
   },
   {
     name: "Honeylyn Faith R. Delsocora",
@@ -28,6 +30,7 @@ export const TEAM: TeamMember[] = [
     line: "Pours the rosettas you'll want to photograph.",
     goTo: "nurvana-classic-latte",
     tint: "peach",
+    icon: "coffee_maker",
   },
   {
     name: "Charles B. Henares",
@@ -35,6 +38,7 @@ export const TEAM: TeamMember[] = [
     line: "In the kitchen before sunrise, every day.",
     goTo: "butter-croissant",
     tint: "cream",
+    icon: "bakery_dining",
   },
   {
     name: "Lourence D. Labe",
@@ -42,6 +46,7 @@ export const TEAM: TeamMember[] = [
     line: "Pairs every origin with the right brew.",
     goTo: "cold-brew-reserve",
     tint: "mocha",
+    icon: "wine_bar",
   },
   {
     name: "Desiree Ann Saducas",
@@ -49,6 +54,7 @@ export const TEAM: TeamMember[] = [
     line: "Keeps the café running and the regulars smiling.",
     goTo: "iced-kyoto-matcha",
     tint: "matcha",
+    icon: "storefront",
   },
 ];
 

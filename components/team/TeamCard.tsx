@@ -1,14 +1,35 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 import { allItems, type MenuItem } from "@/data/menu";
 import { initials, type TeamMember } from "@/data/team";
 import { PALETTES } from "@/components/menu/MenuArt";
 
-/** Top-down latte with the person's initials poured into the crema. */
+/** Widest the initials may be (in SVG units) to sit comfortably inside the foam. */
+const MAX_INITIALS_WIDTH = 38;
+const BASE_FONT_SIZE = 30;
+
+/** Top-down latte with the person's initials in the foam and a small role badge. */
 function LattePortrait({ member }: { member: TeamMember }) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const p = PALETTES[member.tint];
+  const textRef = useRef<SVGTextElement>(null);
+  const [fontSize, setFontSize] = useState(BASE_FONT_SIZE);
+
+  // Shrink wide initials (e.g. "MW") so they always stay inside the foam.
+  // Re-measure once web fonts load, since the fallback font has different widths.
+  useLayoutEffect(() => {
+    const fit = () => {
+      const el = textRef.current;
+      if (!el) return;
+      el.setAttribute("font-size", String(BASE_FONT_SIZE));
+      const width = el.getComputedTextLength();
+      setFontSize(width > MAX_INITIALS_WIDTH ? (BASE_FONT_SIZE * MAX_INITIALS_WIDTH) / width : BASE_FONT_SIZE);
+    };
+    fit();
+    document.fonts?.ready.then(fit).catch(() => {});
+  }, [member.name]);
+
   return (
     <div
       className="relative aspect-square w-full rounded-2xl overflow-hidden"
@@ -18,7 +39,7 @@ function LattePortrait({ member }: { member: TeamMember }) {
     >
       {/* Steam */}
       <svg
-        className="absolute top-[6%] left-1/2 -translate-x-1/2 w-[22%] opacity-50 menu-art-steam"
+        className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[20%] opacity-50 menu-art-steam"
         viewBox="0 0 60 40"
         fill="none"
         stroke={p.ink}
@@ -38,10 +59,9 @@ function LattePortrait({ member }: { member: TeamMember }) {
             <stop offset="55%" stopColor="#8a5226" />
             <stop offset="100%" stopColor="#5a3214" />
           </radialGradient>
-          <radialGradient id={`${id}-foam`} cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stopColor="#fdf6ea" />
-            <stop offset="70%" stopColor="#f3e2c9" />
-            <stop offset="100%" stopColor="#f3e2c9" stopOpacity="0" />
+          <radialGradient id={`${id}-foam`} cx="45%" cy="40%" r="70%">
+            <stop offset="0%" stopColor="#fffaf2" />
+            <stop offset="100%" stopColor="#f1dfc4" />
           </radialGradient>
           <filter id={`${id}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#291806" floodOpacity="0.28" />
@@ -56,30 +76,42 @@ function LattePortrait({ member }: { member: TeamMember }) {
           <rect x="146" y="102" width="30" height="20" rx="10" fill="#ffffff" stroke="#eadfce" />
           {/* Cup */}
           <circle cx="100" cy="112" r="52" fill="#ffffff" stroke="#eadfce" />
-          {/* Coffee + crema */}
+          {/* Coffee */}
           <circle cx="100" cy="112" r="44" fill={`url(#${id}-coffee)`} />
-          <circle cx="100" cy="112" r="44" fill="none" stroke="#c48a55" strokeOpacity="0.5" strokeWidth="2" />
-          {/* Foam bloom */}
-          <ellipse cx="100" cy="113" rx="26" ry="23" fill={`url(#${id}-foam)`} opacity="0.9" />
-          {/* Initials "poured" into the foam */}
+          {/* Ring pour: a thin band of foam around the centre */}
+          <circle cx="100" cy="112" r="36" fill="none" stroke="#f3e2c9" strokeOpacity="0.55" strokeWidth="2.5" />
+          {/* Foam disc with a crisp crema edge */}
+          <circle cx="100" cy="112" r="28" fill={`url(#${id}-foam)`} stroke="#c48a55" strokeOpacity="0.55" strokeWidth="1.5" />
+          {/* Initials, auto-fitted to the foam */}
           <text
+            ref={textRef}
             x="100"
-            y="110"
+            y="113"
             textAnchor="middle"
             dominantBaseline="central"
-            fontFamily="Epilogue, serif"
-            fontStyle="italic"
-            fontSize="32"
-            fontWeight="400"
+            fontFamily="Bricolage Grotesque, system-ui, sans-serif"
+            fontWeight="800"
+            fontSize={fontSize}
             fill="#4a2810"
-            letterSpacing="1"
+            letterSpacing="-0.5"
           >
             {initials(member.name)}
           </text>
-          {/* Little heart tail */}
-          <path d="M100 136 c -3 -4 -9 -3 -9 2 c 0 4 5 6 9 9 c 4 -3 9 -5 9 -9 c 0 -5 -6 -6 -9 -2 z" fill="#fdf6ea" opacity="0.85" />
+          {/* Little heart on the ring, like a latte-art tail */}
+          <path d="M100 143 c -2.6 -3.4 -7.8 -2.6 -7.8 1.6 c 0 3.4 4.3 5.2 7.8 7.8 c 3.5 -2.6 7.8 -4.4 7.8 -7.8 c 0 -4.2 -5.2 -5 -7.8 -1.6 z" fill="#fdf6ea" />
         </g>
       </svg>
+
+      {/* Role badge */}
+      <span
+        className="absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+        style={{ backgroundColor: "var(--color-primary)", color: "var(--color-secondary-fixed)" }}
+        aria-hidden="true"
+      >
+        <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+          {member.icon}
+        </span>
+      </span>
     </div>
   );
 }
