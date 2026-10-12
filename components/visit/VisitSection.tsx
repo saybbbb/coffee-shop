@@ -64,7 +64,7 @@ export default function VisitSection() {
               className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
               style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
             >
-              05 / Visit Us
+              06 / Visit Us
             </span>
             <h2
               id="visit-heading"

@@ -17,6 +17,7 @@ interface SectionItem {
 const SECTIONS: SectionItem[] = [
   { id: "hero", label: "Intro" },
   { id: "story", label: "Our Story" },
+  { id: "process", label: "Bean to Cup" },
   { id: "menu", label: "The Menu" },
   { id: "team", label: "Our Team" },
   { id: "visit", label: "Visit Us" },
@@ -46,6 +47,8 @@ export default function MinimalNav() {
       // Determine active section using ScrollTrigger positions or element bounds
       const heroTrigger = ScrollTrigger.getById("hero-trigger");
       const storyTrigger = ScrollTrigger.getById("story-trigger");
+      const processTrigger = ScrollTrigger.getById("process-trigger");
+      const processEl = document.getElementById("process");
       const menuTrigger = ScrollTrigger.getById("menu-trigger");
       const teamTrigger = ScrollTrigger.getById("team-trigger");
 
@@ -56,6 +59,12 @@ export default function MinimalNav() {
         setActiveSection("team");
       } else if (menuTrigger && scrollY >= menuTrigger.start - 50) {
         setActiveSection("menu");
+      } else if (
+        processTrigger
+          ? scrollY >= processTrigger.start - 50
+          : processEl && processEl.getBoundingClientRect().top <= windowHeight * 0.4
+      ) {
+        setActiveSection("process");
       } else if (storyTrigger && scrollY >= storyTrigger.start - 50) {
         setActiveSection("story");
       } else {
@@ -240,12 +249,26 @@ export default function MinimalNav() {
               <button
                 onClick={() => {
                   setMenuOpen(false);
+                  scrollToSection("process");
+                }}
+                className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                <span>03. Bean to Cup</span>
+                <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                  View
+                </span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
                   scrollToSection("menu");
                 }}
                 className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span>03. The Menu</span>
+                <span>04. The Menu</span>
                 <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
                   View
                 </span>
@@ -259,7 +282,7 @@ export default function MinimalNav() {
                 className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span>04. Our Team</span>
+                <span>05. Our Team</span>
                 <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
                   View
                 </span>
@@ -273,7 +296,7 @@ export default function MinimalNav() {
                 className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span>05. Visit Us</span>
+                <span>06. Visit Us</span>
                 <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
                   View
                 </span>

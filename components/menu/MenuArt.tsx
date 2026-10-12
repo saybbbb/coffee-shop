@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { MenuItem, Tint } from "@/data/menu";
 
 /** Palettes for illustrated tiles. */
-const PALETTES: Record<Tint, { from: string; to: string; ink: string }> = {
+export const PALETTES: Record<Tint, { from: string; to: string; ink: string }> = {
   cream: { from: "#faecd6", to: "#dcc0a0", ink: "#4b3621" },
   caramel: { from: "#f3d9b5", to: "#c48a55", ink: "#3d230d" },
   matcha: { from: "#e4efcf", to: "#9fb97f", ink: "#26381a" },

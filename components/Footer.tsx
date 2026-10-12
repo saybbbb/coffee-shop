@@ -270,10 +270,18 @@ export default function Footer() {
               </li>
               <li>
                 <button
+                  onClick={() => scrollToSection("process")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  03. Bean to Cup
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => scrollToSection("menu")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  03. The Menu
+                  04. The Menu
                 </button>
               </li>
               <li>
@@ -281,7 +289,7 @@ export default function Footer() {
                   onClick={() => scrollToSection("team")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  04. Our Team
+                  05. Our Team
                 </button>
               </li>
               <li>
@@ -289,7 +297,7 @@ export default function Footer() {
                   onClick={() => scrollToSection("visit")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  05. Visit Us
+                  06. Visit Us
                 </button>
               </li>
               <li className="pt-1">

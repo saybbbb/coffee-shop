@@ -9,16 +9,12 @@ import { allItems, type MenuItem } from "@/data/menu";
 import ShowcaseCard from "@/components/menu/ShowcaseCard";
 import ItemSheet from "@/components/menu/ItemSheet";
 import VisitSection from "@/components/visit/VisitSection";
+import BeanToCup, { setupBeanToCupScroll } from "@/components/process/BeanToCup";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
+import TeamCard from "@/components/team/TeamCard";
+import { TEAM } from "@/data/team";
 
-const teamMembers = [
-  { name: "Sent Japhet M. Cagas", role: "Head Roaster & Founder", icon: "badge" },
-  { name: "Honeylyn Faith R. Delsocora", role: "Master Barista", icon: "local_cafe" },
-  { name: "Charles B. Henares", role: "Pastry Chef", icon: "bakery_dining" },
-  { name: "Lourence D. Labe", role: "Coffee Sommelier", icon: "workspace_premium" },
-  { name: "Desire Ann Saducas", role: "General Manager", icon: "storefront" },
-];
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -124,6 +120,9 @@ export default function Home() {
             );
         }
       }
+
+      // 2b. BEAN TO CUP — pinned sideways scroll (registered here to keep pins in page order)
+      setupBeanToCupScroll(isMobile);
 
       // 3. THE MENU SHOWCASE PIN & 3D BENTO
       if (menuRef.current && menuCardsRef.current) {
@@ -459,7 +458,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SECTION 3: THE MENU SHOWCASE (Responsive 3D Bento & Mobile Carousel) ─ */}
+      {/* ─── SECTION 3: BEAN TO CUP (pinned sideways scroll on desktop) ───── */}
+      <BeanToCup />
+
+      {/* ─── SECTION 4: THE MENU SHOWCASE (Responsive 3D Bento & Mobile Carousel) ─ */}
       <section
         id="menu"
         ref={menuRef}
@@ -478,7 +480,7 @@ export default function Home() {
                   fontFamily: "var(--font-label)",
                 }}
               >
-                03 / The Menu
+                04 / The Menu
               </span>
               <h2
                 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight"
@@ -534,7 +536,7 @@ export default function Home() {
                 fontFamily: "var(--font-label)",
               }}
             >
-              04 / Our Team
+              05 / Our Team
             </span>
             <h2
               className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight"
@@ -542,6 +544,12 @@ export default function Home() {
             >
               The Craftsmen &amp; Visionaries
             </h2>
+            <p
+              className="hidden md:block italic text-lg"
+              style={{ fontFamily: "var(--font-handwritten)", color: "var(--color-on-surface-variant)" }}
+            >
+              Tap a go-to order to try what the team drinks.
+            </p>
             <p className="text-[11px] font-mono text-stone-500 md:hidden pt-1">
               Swipe to view all 5 team members →
             </p>
@@ -552,44 +560,8 @@ export default function Home() {
             ref={teamGridRef}
             className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory py-2 px-1 no-scrollbar touch-pan-x preserve-3d"
           >
-            {teamMembers.map((member) => (
-              <div
-                key={member.name}
-                className="team-scrolly-card snap-center shrink-0 w-[68vw] max-w-[220px] md:w-auto md:max-w-none group rounded-2xl p-5 sm:p-6 glass-panel hover:shadow-xl transition-all duration-300 text-center flex flex-col items-center justify-center space-y-3 sm:space-y-4 preserve-3d will-change-transform-opacity min-h-[190px] sm:min-h-[210px]"
-                style={{
-                  backgroundColor: "var(--color-surface-container)",
-                }}
-              >
-                {/* Icon Badge */}
-                <div
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300"
-                  style={{
-                    backgroundColor: "var(--color-secondary-fixed)",
-                    color: "var(--color-primary)",
-                  }}
-                >
-                  <span className="material-symbols-outlined text-2xl">{member.icon}</span>
-                </div>
-
-                {/* Member Info */}
-                <div className="space-y-1">
-                  <h3
-                    className="font-bold text-sm sm:text-base leading-snug"
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      color: "var(--color-primary)",
-                    }}
-                  >
-                    {member.name}
-                  </h3>
-                  <p
-                    className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-amber-900/80"
-                    style={{ fontFamily: "var(--font-label)" }}
-                  >
-                    {member.role}
-                  </p>
-                </div>
-              </div>
+            {TEAM.map((member) => (
+              <TeamCard key={member.name} member={member} onOpen={setOpenItem} />
             ))}
           </div>
         </div>
