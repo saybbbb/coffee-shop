@@ -6,6 +6,7 @@ import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
 import OrderStatusPill from "@/components/cart/OrderStatusPill";
+import FaqBot from "@/components/faq/FaqBot";
 import PageTransitionProvider from "@/components/transition/PageTransition";
 import ToastProvider from "@/components/toast/Toaster";
 
@@ -69,6 +70,8 @@ export default function RootLayout({
 
                 <CartDrawer />
                 <OrderStatusPill />
+                {/* "Ask Nurvana" offline FAQ helper */}
+                <FaqBot />
               </CartProvider>
             </ToastProvider>
           </PageTransitionProvider>

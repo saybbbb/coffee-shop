@@ -20,14 +20,23 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
   const pair = item.pairsWith ? allItems.find((i) => i.id === item.pairsWith) : undefined;
   const unit = unitPriceFor(item, item.sizes ? size : undefined, item.milk ? milk : undefined);
 
+  const closed = useRef(false);
   const close = () => {
+    // Finish closing when the animation ends, or after 450ms regardless,
+    // so a paused animation (e.g. a backgrounded tab) can't leave it stuck open
+    const finish = () => {
+      if (closed.current) return;
+      closed.current = true;
+      onClose();
+    };
+    setTimeout(finish, 450);
     const isMobile = window.innerWidth < 768;
     gsap.to(backdropRef.current, { opacity: 0, duration: 0.25 });
     gsap.to(panelRef.current, {
       ...(isMobile ? { y: "100%" } : { y: 30, opacity: 0, scale: 0.97 }),
       duration: 0.3,
       ease: "power2.in",
-      onComplete: onClose,
+      onComplete: finish,
     });
   };
 

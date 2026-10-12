@@ -470,6 +470,42 @@ body:has([data-order-pill]) .toast-dock {
   bottom: 84px;
 }
 
+/* ---- Ask Nurvana (FAQ helper) ---- */
+.faq-chip {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.faq-chip:hover {
+  background: var(--color-secondary-fixed);
+  border-color: var(--color-secondary-fixed-dim);
+  transform: translateY(-1px);
+}
+.faq-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--color-secondary);
+  animation: faq-bounce 1s ease-in-out infinite;
+}
+@keyframes faq-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+.faq-extras {
+  animation: faq-fade-up 0.35s ease-out both;
+}
+@keyframes faq-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ---- Ordering UI ---- */
 .sheet-label {
   display: block;
