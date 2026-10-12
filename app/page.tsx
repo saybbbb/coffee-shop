@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { allItems, type MenuItem } from "@/data/menu";
 import ShowcaseCard from "@/components/menu/ShowcaseCard";
 import ItemSheet from "@/components/menu/ItemSheet";
+import VisitSection from "@/components/visit/VisitSection";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
 
@@ -594,7 +595,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SECTION 5: FOOTER (Enhanced Roastery Experience) ─────────── */}
+      {/* ─── SECTION 5: VISIT US (map, live hours, contact) ───────────── */}
+      <VisitSection />
+
+      {/* ─── SECTION 6: FOOTER (Enhanced Roastery Experience) ─────────── */}
       <Footer />
 
       {openItem && <ItemSheet item={openItem} onClose={() => setOpenItem(null)} />}

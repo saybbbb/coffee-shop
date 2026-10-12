@@ -2,6 +2,8 @@
 
 import TransitionLink from "@/components/transition/TransitionLink";
 import { usePageTransition } from "@/components/transition/PageTransition";
+import OpenBadge from "@/components/visit/OpenBadge";
+import { CAFE, formatTime } from "@/data/cafe";
 import { useState } from "react";
 
 export default function Footer() {
@@ -181,25 +183,18 @@ export default function Footer() {
             </h3>
 
             <div className="space-y-2.5 text-sm text-stone-300 font-mono">
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Mon — Fri</span>
-                <span className="font-semibold text-white">7:00 AM – 8:00 PM</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Saturday</span>
-                <span className="font-semibold text-white">8:00 AM – 9:00 PM</span>
-              </div>
-              <div className="flex justify-between items-center py-1 border-b border-amber-950/80">
-                <span className="text-stone-400">Sunday</span>
-                <span className="font-semibold text-white">8:00 AM – 7:00 PM</span>
-              </div>
+              {CAFE.hours.map((row) => (
+                <div key={row.label} className="flex justify-between items-center py-1 border-b border-amber-950/80">
+                  <span className="text-stone-400">{row.label}</span>
+                  <span className="font-semibold text-white">
+                    {formatTime(row.open)} – {formatTime(row.close)}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="pt-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-[11px] font-mono text-emerald-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Espresso Bar Open Daily</span>
-              </div>
+              <OpenBadge dark />
             </div>
           </div>
 
@@ -218,9 +213,9 @@ export default function Footer() {
                   location_on
                 </span>
                 <p className="text-stone-300 font-light leading-snug">
-                  142 Artisan Alley, Roast District
+                  {CAFE.address.street}, {CAFE.address.district}
                   <br />
-                  <span className="text-xs text-stone-400 font-mono">Corner of Bean &amp; Steam</span>
+                  <span className="text-xs text-stone-400 font-mono">{CAFE.address.note}</span>
                 </p>
               </div>
 
@@ -229,10 +224,10 @@ export default function Footer() {
                   mail
                 </span>
                 <a
-                  href="mailto:hello@nurvanacafe.com"
+                  href={`mailto:${CAFE.email}`}
                   className="text-stone-300 hover:text-amber-200 font-mono text-xs transition-colors underline-offset-4 hover:underline"
                 >
-                  hello@nurvanacafe.com
+                  {CAFE.email}
                 </a>
               </div>
 
@@ -241,7 +236,7 @@ export default function Footer() {
                   call
                 </span>
                 <span className="text-stone-300 font-mono text-xs">
-                  +1 (555) 234-5678
+                  {CAFE.phone}
                 </span>
               </div>
             </div>
@@ -287,6 +282,14 @@ export default function Footer() {
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
                   04. Our Team
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("visit")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  05. Visit Us
                 </button>
               </li>
               <li className="pt-1">

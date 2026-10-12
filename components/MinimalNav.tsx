@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CartButton from "./cart/CartButton";
+import OpenBadge from "./visit/OpenBadge";
 import TransitionLink from "./transition/TransitionLink";
 import { usePageTransition } from "./transition/PageTransition";
 
@@ -18,6 +19,7 @@ const SECTIONS: SectionItem[] = [
   { id: "story", label: "Our Story" },
   { id: "menu", label: "The Menu" },
   { id: "team", label: "Our Team" },
+  { id: "visit", label: "Visit Us" },
 ];
 
 export default function MinimalNav() {
@@ -47,7 +49,10 @@ export default function MinimalNav() {
       const menuTrigger = ScrollTrigger.getById("menu-trigger");
       const teamTrigger = ScrollTrigger.getById("team-trigger");
 
-      if (teamTrigger && scrollY >= teamTrigger.start - 50) {
+      const visitEl = document.getElementById("visit");
+      if (visitEl && visitEl.getBoundingClientRect().top <= windowHeight * 0.4) {
+        setActiveSection("visit");
+      } else if (teamTrigger && scrollY >= teamTrigger.start - 50) {
         setActiveSection("team");
       } else if (menuTrigger && scrollY >= menuTrigger.start - 50) {
         setActiveSection("menu");
@@ -260,6 +265,20 @@ export default function MinimalNav() {
                 </span>
               </button>
 
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  scrollToSection("visit");
+                }}
+                className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                <span>05. Visit Us</span>
+                <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                  View
+                </span>
+              </button>
+
               <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                 <TransitionLink
                   href="/menu"
@@ -275,7 +294,7 @@ export default function MinimalNav() {
             {/* Footer details */}
             <div className="pt-4 border-t border-white/10 text-xs text-stone-400 font-mono flex justify-between items-center">
               <span>Fair Trade &amp; Small Batch</span>
-              <span>Daily 7AM - 8PM</span>
+              <OpenBadge dark />
             </div>
           </div>
         </div>
