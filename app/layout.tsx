@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import LogoRevealLoader from "@/components/LogoRevealLoader";
+import LogoRevealLoader, { INTRO_GATE_SCRIPT } from "@/components/LogoRevealLoader";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -22,8 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // The head script may set data-intro before React hydrates
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Decide before first paint whether the intro overlay shows (no hero flash) */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
+        <noscript>
+          <style>{`.intro-overlay{display:none}`}</style>
+        </noscript>
         {/* Google Fonts preconnect */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
