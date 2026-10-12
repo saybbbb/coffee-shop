@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CAFE, formatTime, fullAddress } from "@/data/cafe";
 import TransitionLink from "@/components/transition/TransitionLink";
 import IllustratedMap from "./IllustratedMap";
@@ -11,27 +10,8 @@ import OpenBadge from "./OpenBadge";
 import { useOpenStatus } from "./useOpenStatus";
 
 export default function VisitSection() {
-  const rootRef = useRef<HTMLElement>(null);
   const status = useOpenStatus();
   const [copied, setCopied] = useState(false);
-
-  // Scroll-in reveal. refreshPriority -1: measure after the pinned sections above
-  // have added their pin spacing, otherwise the start position would be too early.
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: rootRef.current, start: "top 75%", once: true, refreshPriority: -1 },
-      });
-      tl.fromTo(".visit-head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" })
-        .fromTo(".visit-map", { opacity: 0, y: 60, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, 0.1)
-        .fromTo(".map-pin", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.7, ease: "bounce.out" }, 0.6)
-        .fromTo(".visit-photo", { opacity: 0, y: 40, rotate: 4 }, { opacity: 1, y: 0, rotate: -5, duration: 0.8, ease: "back.out(1.6)" }, 0.7)
-        .fromTo(".visit-item", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: "power2.out" }, 0.3);
-    }, rootRef);
-    return () => ctx.revert();
-  }, []);
 
   const copyAddress = async () => {
     try {
@@ -44,8 +24,7 @@ export default function VisitSection() {
   return (
     <section
       id="visit"
-      ref={rootRef}
-      className="relative w-full py-20 md:py-28 overflow-hidden"
+      className="relative w-full py-20 md:py-0 md:pt-16 md:h-screen md:flex md:flex-col md:justify-center overflow-hidden"
       style={{ backgroundColor: "var(--color-surface)" }}
       aria-labelledby="visit-heading"
     >
@@ -64,7 +43,7 @@ export default function VisitSection() {
               className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
               style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
             >
-              06 / Visit Us
+              07 / Visit Us
             </span>
             <h2
               id="visit-heading"
@@ -215,4 +194,32 @@ export default function VisitSection() {
       </div>
     </section>
   );
+}
+
+/**
+ * Scroll effects for the section. Call inside the home page's gsap.context in
+ * page order (last), so its pin is measured after every pin above it.
+ * Desktop: pins like the other sections while the map and details reveal.
+ */
+export function setupVisitScroll(isMobile: boolean) {
+  const section = document.querySelector<HTMLElement>("#visit");
+  if (!section) return;
+  const q = (sel: string) => section.querySelectorAll(sel);
+
+  const tl = gsap.timeline({
+    scrollTrigger: isMobile
+      ? { trigger: section, start: "top 75%", once: true }
+      : { id: "visit-trigger", trigger: section, start: "top top", end: "+=90%", pin: true, scrub: 0.6, anticipatePin: 1 },
+  });
+
+  tl.fromTo(q(".visit-head"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0)
+    .fromTo(q(".visit-map"), { opacity: 0, y: 60, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 0.05)
+    .fromTo(q(".map-pin"), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.25, ease: "bounce.out" }, 0.25)
+    .fromTo(q(".visit-photo"), { opacity: 0, y: 40, rotate: 4 }, { opacity: 1, y: 0, rotate: -5, duration: 0.3, ease: "back.out(1.6)" }, 0.3)
+    .fromTo(q(".visit-item"), { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.04, ease: "power2.out" }, 0.12);
+
+  // Desktop: hold the finished layout for the rest of the pin
+  if (!isMobile) tl.to({}, { duration: 0.45 });
+  // Phones: the same reveal plays once in real time
+  else tl.timeScale(0.4);
 }

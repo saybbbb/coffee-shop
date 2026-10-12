@@ -313,10 +313,18 @@ export default function Footer() {
               </li>
               <li>
                 <button
+                  onClick={() => scrollToSection("reviews")}
+                  className="hover:text-amber-200 transition-colors cursor-pointer text-left"
+                >
+                  06. Kind Words
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => scrollToSection("visit")}
                   className="hover:text-amber-200 transition-colors cursor-pointer text-left"
                 >
-                  06. Visit Us
+                  07. Visit Us
                 </button>
               </li>
               <li className="pt-1">

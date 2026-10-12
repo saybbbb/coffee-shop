@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Height of the floating nav plus a little breathing room
 const NAV_CLEARANCE = 96;
 
-const PIN_PROGRESS: Record<string, number> = { hero: 0, story: 0.45, process: 0, menu: 0.45, team: 0.5 };
+const PIN_PROGRESS: Record<string, number> = { hero: 0, story: 0.45, process: 0, menu: 0.45, team: 0.5, reviews: 0.5, visit: 0.6 };
 
 export function scrollToSection(id: string, opts: { immediate?: boolean } = {}) {
   // Lenis caches the page height and clamps to it; after a route change it can

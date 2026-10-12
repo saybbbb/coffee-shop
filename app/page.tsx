@@ -8,7 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { allItems, type MenuItem } from "@/data/menu";
 import ShowcaseCard from "@/components/menu/ShowcaseCard";
 import ItemSheet from "@/components/menu/ItemSheet";
-import VisitSection from "@/components/visit/VisitSection";
+import VisitSection, { setupVisitScroll } from "@/components/visit/VisitSection";
+import Reviews, { setupReviewsScroll } from "@/components/reviews/Reviews";
 import BeanToCup, { setupBeanToCupScroll } from "@/components/process/BeanToCup";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
@@ -216,6 +217,10 @@ export default function Home() {
           );
         }
       }
+
+      // 5. KIND WORDS + 6. VISIT US — registered last, in page order
+      setupReviewsScroll(isMobile);
+      setupVisitScroll(isMobile);
     }, containerRef);
 
     // Refresh ScrollTrigger to calculate accurate start/end positions
@@ -566,6 +571,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ─── KIND WORDS (customer quotes) ───────────────────────────────── */}
+      <Reviews onOpen={setOpenItem} />
 
       {/* ─── SECTION 5: VISIT US (map, live hours, contact) ───────────── */}
       <VisitSection />

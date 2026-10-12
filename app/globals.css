@@ -271,6 +271,26 @@ html[data-intro="skip"] .intro-overlay {
   transform: rotate(-14deg) scale(1.03);
 }
 
+/* ---- Reviews: endlessly drifting rows (list is doubled, so -50% loops seamlessly) ---- */
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .marquee { overflow-x: auto; }
+}
+
 /* ---- Visit Us ---- */
 .visit-icon {
   width: 40px;

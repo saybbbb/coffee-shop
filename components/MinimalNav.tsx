@@ -20,6 +20,7 @@ const SECTIONS: SectionItem[] = [
   { id: "process", label: "Bean to Cup" },
   { id: "menu", label: "The Menu" },
   { id: "team", label: "Our Team" },
+  { id: "reviews", label: "Kind Words" },
   { id: "visit", label: "Visit Us" },
 ];
 
@@ -53,8 +54,11 @@ export default function MinimalNav() {
       const teamTrigger = ScrollTrigger.getById("team-trigger");
 
       const visitEl = document.getElementById("visit");
+      const reviewsEl = document.getElementById("reviews");
       if (visitEl && visitEl.getBoundingClientRect().top <= windowHeight * 0.4) {
         setActiveSection("visit");
+      } else if (reviewsEl && reviewsEl.getBoundingClientRect().top <= windowHeight * 0.4) {
+        setActiveSection("reviews");
       } else if (teamTrigger && scrollY >= teamTrigger.start - 50) {
         setActiveSection("team");
       } else if (menuTrigger && scrollY >= menuTrigger.start - 50) {
@@ -291,12 +295,26 @@ export default function MinimalNav() {
               <button
                 onClick={() => {
                   setMenuOpen(false);
+                  scrollToSection("reviews");
+                }}
+                className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                <span>06. Kind Words</span>
+                <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                  View
+                </span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
                   scrollToSection("visit");
                 }}
                 className="w-full text-left text-2xl font-semibold hover:text-amber-300 transition-colors flex items-center justify-between group cursor-pointer"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span>06. Visit Us</span>
+                <span>07. Visit Us</span>
                 <span className="text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
                   View
                 </span>
