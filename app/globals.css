@@ -381,6 +381,69 @@ html[data-intro="skip"] .intro-overlay {
   outline-offset: 3px;
 }
 
+/* ---- Signature Lineup: printed menu card ---- */
+.board-card {
+  background:
+    radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--color-secondary-container) 45%, transparent) 0%, transparent 55%),
+    #fffaf3;
+  border: 1px solid var(--color-outline-variant);
+  box-shadow:
+    0 30px 60px -35px rgba(51, 33, 13, 0.45),
+    inset 0 0 0 6px #fffaf3,
+    inset 0 0 0 7px color-mix(in srgb, var(--color-secondary) 45%, transparent);
+}
+/* Dotted leader between a drink and its price */
+.board-leader {
+  min-width: 1.5rem;
+  border-bottom: 2px dotted color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+/* On mouse devices the + appears on hover; on touch it's always shown */
+@media (hover: hover) and (pointer: fine) {
+  .board-add {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.25s ease;
+  }
+  .board-line:hover .board-add,
+  .board-line:focus-within .board-add {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.board-expand {
+  animation: faq-fade-up 0.3s ease-out both;
+}
+
+.quiz-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--color-primary);
+  background: var(--color-secondary-fixed);
+  border: 1px solid var(--color-secondary-fixed-dim);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.quiz-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(51, 33, 13, 0.55);
+}
+.quiz-option {
+  border-color: var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+  transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+}
+.quiz-option:hover,
+.quiz-option:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-secondary-fixed);
+  transform: translateY(-2px);
+}
+
 /* ---- Our Story: rotating stamp ---- */
 .story-stamp-spin {
   animation: story-stamp-spin 22s linear infinite;

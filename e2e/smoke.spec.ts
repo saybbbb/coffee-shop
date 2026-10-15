@@ -64,6 +64,35 @@ test.describe("menu & ordering", () => {
   });
 });
 
+test.describe("signature lineup", () => {
+  test("menu board shows the drink photo (hover on laptop, tap on phone)", async ({ page }, info) => {
+    await openSite(page);
+    await jumpToSection(page, "menu", 0.6);
+    const line = page.locator(".board-line", { hasText: "Spanish Latte" });
+    if (info.project.name === "laptop") {
+      await line.hover();
+      const photo = page.locator("[data-board-photo]");
+      await expect(photo).toHaveCSS("opacity", "1", { timeout: 3_000 });
+    } else {
+      await line.getByRole("button", { name: /^Spanish Latte/ }).click();
+      await expect(line.getByRole("img", { name: "Spanish Latte" })).toBeVisible();
+      await expect(line.getByRole("button", { name: "Customize" })).toBeVisible();
+    }
+  });
+
+  test("Find your brew quiz recommends a matching drink", async ({ page }) => {
+    await openSite(page);
+    await jumpToSection(page, "menu", 0.6);
+    await page.getByRole("button", { name: /Find your brew/ }).click();
+    const quiz = page.getByRole("dialog", { name: "Find your brew" });
+    await quiz.getByRole("button", { name: /^Iced/ }).click();
+    await quiz.getByRole("button", { name: /^Bold & strong/ }).click();
+    await quiz.getByRole("button", { name: /^No milk/ }).click();
+    await expect(quiz).toContainText("Cold Brew Reserve");
+    await expect(quiz).toContainText("Iced · bold & strong · no milk");
+  });
+});
+
 test.describe("navigation", () => {
   test("Full Menu goes to the menu page and Visit Us comes back home", async ({ page }) => {
     await openSite(page);

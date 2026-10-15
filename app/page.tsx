@@ -5,8 +5,8 @@ import TransitionLink from "@/components/transition/TransitionLink";
 import AnnouncementChip from "@/components/AnnouncementChip";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { allItems, type MenuItem } from "@/data/menu";
-import ShowcaseCard from "@/components/menu/ShowcaseCard";
+import { type MenuItem } from "@/data/menu";
+import MenuBoard, { setupMenuBoardScroll } from "@/components/menuBoard/MenuBoard";
 import ItemSheet from "@/components/menu/ItemSheet";
 import VisitSection, { setupVisitScroll } from "@/components/visit/VisitSection";
 import Reviews, { setupReviewsScroll } from "@/components/reviews/Reviews";
@@ -23,8 +23,6 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLElement>(null);
-  const menuCardsRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLElement>(null);
   const teamGridRef = useRef<HTMLDivElement>(null);
   const [openItem, setOpenItem] = useState<MenuItem | null>(null);
@@ -83,56 +81,8 @@ export default function Home() {
       // 2b. BEAN TO CUP — pinned sideways scroll (registered here to keep pins in page order)
       setupBeanToCupScroll(isMobile);
 
-      // 3. THE MENU SHOWCASE PIN & 3D BENTO
-      if (menuRef.current && menuCardsRef.current) {
-        const menuTl = gsap.timeline({
-          scrollTrigger: {
-            id: "menu-trigger",
-            trigger: menuRef.current,
-            start: isMobile ? "top 80%" : "top top",
-            end: isMobile ? "bottom 20%" : "+=140%",
-            pin: !isMobile,
-            scrub: 0.6,
-            anticipatePin: 1,
-          },
-        });
-
-        const cards = menuCardsRef.current.querySelectorAll(".menu-scrolly-card");
-
-        if (!isMobile) {
-          menuTl
-            .fromTo(
-              cards,
-              { opacity: 0, y: 70, scale: 0.9, rotateX: 12, z: -60 },
-              {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
-                z: 0,
-                stagger: 0.04,
-                ease: "power2.out",
-                duration: 0.35,
-              },
-              0
-            )
-            .to({}, { duration: 0.4 })
-            .to(cards, {
-              scale: 0.94,
-              opacity: 0,
-              z: -100,
-              stagger: 0.03,
-              ease: "power1.in",
-              duration: 0.25,
-            });
-        } else {
-          menuTl.fromTo(
-            cards,
-            { opacity: 0.4, y: 20 },
-            { opacity: 1, y: 0, stagger: 0.08, duration: 0.8, ease: "power2.out" }
-          );
-        }
-      }
+      // 3. SIGNATURE LINEUP — printed menu board (pinned on desktop)
+      setupMenuBoardScroll(isMobile);
 
       // 4. OUR TEAM PIN & 3D CARDS REVEAL
       if (teamRef.current && teamGridRef.current) {
@@ -189,8 +139,6 @@ export default function Home() {
     };
   }, []);
 
-  // Home showcase: photographed items first, then illustrated ones
-  const featuredMenuItems = [...allItems].sort((a, b) => Number(!!b.image) - Number(!!a.image));
 
   return (
     <div ref={containerRef} className="w-full relative overflow-x-hidden bg-[#fdf9f4]">
@@ -310,63 +258,8 @@ export default function Home() {
       {/* ─── SECTION 3: BEAN TO CUP (pinned sideways scroll on desktop) ───── */}
       <BeanToCup />
 
-      {/* ─── SECTION 4: THE MENU SHOWCASE (Responsive 3D Bento & Mobile Carousel) ─ */}
-      <section
-        id="menu"
-        ref={menuRef}
-        className="relative w-full min-h-[100dvh] py-16 md:py-0 md:h-screen flex flex-col justify-center overflow-hidden perspective-container"
-        style={{ backgroundColor: "var(--color-surface)" }}
-        aria-label="The Menu Showcase"
-      >
-        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 w-full preserve-3d">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 md:mb-8 gap-2">
-            <div>
-              <span
-                className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10 mb-1 md:mb-2"
-                style={{
-                  color: "var(--color-secondary)",
-                  fontFamily: "var(--font-label)",
-                }}
-              >
-                04 / The Menu
-              </span>
-              <h2
-                className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight"
-                style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-              >
-                Signature Lineup
-              </h2>
-            </div>
-
-            <div className="flex items-center justify-between sm:justify-end gap-4">
-              <span className="text-[11px] font-mono text-stone-500 md:hidden">
-                Swipe to view 5 items →
-              </span>
-              <TransitionLink
-                href="/menu"
-                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-900 hover:text-amber-700 transition-colors group"
-                style={{ fontFamily: "var(--font-label)" }}
-              >
-                <span>Full Menu</span>
-                <span aria-hidden="true" className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">
-                  arrow_forward
-                </span>
-              </TransitionLink>
-            </div>
-          </div>
-
-          {/* Cards Container: Horizontal Scroll on Mobile, 5-col Grid on Desktop */}
-          <div
-            ref={menuCardsRef}
-            className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory py-2 px-1 no-scrollbar touch-pan-x preserve-3d"
-          >
-            {featuredMenuItems.slice(0, 5).map((item) => (
-              <ShowcaseCard key={item.id} item={item} onOpen={setOpenItem} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ─── SECTION 4: SIGNATURE LINEUP (menu board + Find your brew quiz) ── */}
+      <MenuBoard onOpen={setOpenItem} />
 
       {/* ─── SECTION 4: OUR TEAM (Responsive Showcase & Mobile Carousel) ──── */}
       <section
