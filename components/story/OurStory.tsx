@@ -85,7 +85,7 @@ function Stamp() {
         </text>
       </svg>
       <span className="absolute inset-0 flex items-center justify-center">
-        <span className="material-symbols-outlined text-3xl text-amber-200" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <span aria-hidden="true" className="material-symbols-outlined text-3xl text-amber-200" style={{ fontVariationSettings: "'FILL' 1" }}>
           coffee
         </span>
       </span>
@@ -243,6 +243,7 @@ export function setupStoryScroll(isMobile: boolean) {
     .fromTo(q(".story-stat"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, stagger: 0.04, duration: 0.12 }, 0.5);
   counts.forEach((el, i) => tl.add(countUp(el).duration(0.25), 0.52 + i * 0.04));
 
+  tl.addLabel("revealed"); // nav jumps land here (see lib/scrollToSection.ts)
   // Desktop: hold the finished section for a moment before moving on
   if (!isMobile) tl.to({}, { duration: 0.2 });
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LogoRevealLoader, { INTRO_GATE_SCRIPT } from "@/components/LogoRevealLoader";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import SmoothScrollProvider, { SCROLL_RESTORE_SCRIPT } from "@/components/SmoothScrollProvider";
 import CartProvider from "@/components/cart/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
 import OrderStatusPill from "@/components/cart/OrderStatusPill";
@@ -30,6 +30,8 @@ export default function RootLayout({
       <head>
         {/* Decide before first paint whether the intro overlay shows (no hero flash) */}
         <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
+        {/* Scroll position is restored by SmoothScrollProvider once the pinned sections exist */}
+        <script dangerouslySetInnerHTML={{ __html: SCROLL_RESTORE_SCRIPT }} />
         <noscript>
           <style>{`.intro-overlay{display:none}`}</style>
         </noscript>

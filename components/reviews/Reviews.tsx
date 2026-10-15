@@ -9,7 +9,7 @@ function Stars({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex gap-0.5 text-amber-500 ${className}`} aria-hidden="true">
       {Array.from({ length: 5 }).map((_, i) => (
-        <span key={i} className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <span aria-hidden="true" key={i} className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'FILL' 1" }}>
           star
         </span>
       ))}
@@ -59,7 +59,7 @@ function ReviewCard({ review, onOpen }: { review: Review; onOpen: (item: MenuIte
             aria-label={`${review.name} ordered ${drink.name}. View it`}
             title={drink.name}
           >
-            <span className="material-symbols-outlined text-sm">local_cafe</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">local_cafe</span>
             <span className="max-w-[92px] truncate">{drink.name}</span>
           </button>
         )}
@@ -174,5 +174,6 @@ export function setupReviewsScroll(isMobile: boolean) {
     .fromTo(head, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0)
     .fromTo(rows[0], { opacity: 0, xPercent: 12 }, { opacity: 1, xPercent: 0, duration: 0.35, ease: "power2.out" }, 0.05)
     .fromTo(rows[1], { opacity: 0, xPercent: -12 }, { opacity: 1, xPercent: 0, duration: 0.35, ease: "power2.out" }, 0.1)
+    .addLabel("revealed") // nav jumps land here (see lib/scrollToSection.ts)
     .to({}, { duration: 0.5 });
 }

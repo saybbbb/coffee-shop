@@ -27,6 +27,9 @@ function matches(item: MenuItem, filterId: string) {
   return item.tags?.some((t) => f.match.includes(t)) ?? false;
 }
 
+/** Where the category bar sticks (just under the floating nav); matches `top-[76px]` below. */
+const STICKY_TOP = 76;
+
 /** Room to leave above a category when scrolling to it: nav + the sticky category bar. */
 const MENU_SCROLL_OFFSET = 200;
 
@@ -113,7 +116,7 @@ function FeaturedCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
             className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider"
             style={{ backgroundColor: "var(--color-secondary-fixed)", color: "var(--color-primary)" }}
           >
-            <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
+            <span aria-hidden="true" className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
               star
             </span>
             Staff Pick
@@ -367,6 +370,25 @@ export default function MenuExperience() {
     return () => ctx.revert();
   }, [filter]);
 
+  // Filtering shortens the page. If the visitor had scrolled into the menu, glide
+  // back to the start of the results; otherwise the old scroll position can sit
+  // past the new end of the list and snap them down onto the footer.
+  const firstFilterRun = useRef(true);
+  useEffect(() => {
+    if (firstFilterRun.current) {
+      firstFilterRun.current = false;
+      return;
+    }
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    window.__lenis?.resize(); // the page height just changed
+    const resultsTop = sentinel.getBoundingClientRect().top + window.scrollY - STICKY_TOP;
+    if (window.scrollY > resultsTop) {
+      if (window.__lenis) window.__lenis.scrollTo(resultsTop, { duration: 0.8, force: true });
+      else window.scrollTo({ top: resultsTop, behavior: "smooth" });
+    }
+  }, [filter]);
+
   // Scroll-spy for the category tabs
   useEffect(() => {
     const sections = document.querySelectorAll<HTMLElement>("[data-category]");
@@ -418,7 +440,7 @@ export default function MenuExperience() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-sm text-xs font-mono uppercase tracking-wider text-stone-700 hover:text-amber-900 transition-colors"
             style={{ fontFamily: "var(--font-label)" }}
           >
-            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_back</span>
             <span>Home</span>
           </TransitionLink>
         </div>
@@ -426,9 +448,13 @@ export default function MenuExperience() {
           className="text-6xl sm:text-7xl md:text-9xl font-extrabold tracking-tight leading-[0.9]"
           style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
         >
-          {["Our", "Menu"].map((w) => (
-            <span key={w} className="inline-block overflow-hidden align-bottom pb-2 mx-2">
-              <span className="hero-word inline-block">{w}</span>
+          {/* Each word animates in its own box; the space keeps it reading "Our Menu" */}
+          {["Our", "Menu"].map((w, i) => (
+            <span key={w}>
+              {i > 0 && " "}
+              <span className="inline-block overflow-hidden align-bottom pb-2 mx-2">
+                <span className="hero-word inline-block">{w}</span>
+              </span>
             </span>
           ))}
         </h1>
@@ -439,7 +465,7 @@ export default function MenuExperience() {
           &ldquo;Sip the Brew, Feel Brand New, Made for You.&rdquo;
         </p>
         <p className="hero-fade text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--color-on-surface)" }}>
-          Tap anything to customise it, or hit <span className="material-symbols-outlined text-base align-middle">add</span> to drop
+          Tap anything to customise it, or hit <span aria-hidden="true" className="material-symbols-outlined text-base align-middle">add</span> to drop
           it straight into your pickup order.
         </p>
       </header>
@@ -485,7 +511,7 @@ export default function MenuExperience() {
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5" role="group" aria-label="Filter menu">
             {FILTERS.map((f) => (
               <button key={f.id} onClick={() => setFilter(f.id)} aria-pressed={filter === f.id} className="filter-chip">
-                <span className="material-symbols-outlined text-sm">{f.icon}</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-sm">{f.icon}</span>
                 {f.label}
               </button>
             ))}

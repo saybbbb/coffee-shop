@@ -1,6 +1,6 @@
 /**
  * Nurvana Café — team shown on the home page.
- * Each card shows a "latte portrait" (initials poured into the foam) instead of a photo.
+ * Each card shows the person's photo, or a "latte portrait" (initials in the foam) if there isn't one.
  * `goTo` must be a menu item id from data/menu.ts.
  */
 
@@ -13,6 +13,7 @@ export interface TeamMember {
   goTo: string;
   tint: Tint;
   icon: string; // Material Symbol shown as a small role badge on the portrait
+  photo?: string; // portrait in /public/team; without one the card shows a latte-art portrait
 }
 
 export const TEAM: TeamMember[] = [
@@ -23,6 +24,7 @@ export const TEAM: TeamMember[] = [
     goTo: "artisanal-espresso",
     tint: "caramel",
     icon: "local_fire_department",
+    photo: "/team/sent-v2.png", // bump the filename when replacing a photo, or caches keep the old one
   },
   {
     name: "Honeylyn Faith R. Delsocora",
@@ -31,6 +33,7 @@ export const TEAM: TeamMember[] = [
     goTo: "nurvana-classic-latte",
     tint: "peach",
     icon: "coffee_maker",
+    photo: "/team/honeylyn.png",
   },
   {
     name: "Charles B. Henares",
@@ -39,6 +42,7 @@ export const TEAM: TeamMember[] = [
     goTo: "butter-croissant",
     tint: "cream",
     icon: "bakery_dining",
+    photo: "/team/charles.png",
   },
   {
     name: "Lourence D. Labe",
@@ -47,6 +51,7 @@ export const TEAM: TeamMember[] = [
     goTo: "cold-brew-reserve",
     tint: "mocha",
     icon: "wine_bar",
+    photo: "/team/lourence.png",
   },
   {
     name: "Desiree Ann Saducas",
@@ -55,6 +60,7 @@ export const TEAM: TeamMember[] = [
     goTo: "iced-kyoto-matcha",
     tint: "matcha",
     icon: "storefront",
+    photo: "/team/desiree.png",
   },
 ];
 

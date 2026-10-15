@@ -1,3 +1,4 @@
+import type { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /**
@@ -19,7 +20,16 @@ export function scrollToSection(id: string, opts: { immediate?: boolean } = {}) 
   let target: number | null = null;
 
   if (trigger) {
-    target = trigger.start + (trigger.end - trigger.start) * (PIN_PROGRESS[id] ?? 0);
+    // Pinned sections mark where their reveal finishes with a "revealed" label;
+    // land just past it so nothing is still fading in. Older sections fall back
+    // to a fixed point in the pin.
+    const tl = trigger.animation as gsap.core.Timeline | undefined;
+    const revealedAt = tl?.labels?.revealed;
+    const progress =
+      revealedAt !== undefined && tl!.duration() > 0
+        ? Math.min(1, revealedAt / tl!.duration() + 0.04)
+        : PIN_PROGRESS[id] ?? 0;
+    target = trigger.start + (trigger.end - trigger.start) * progress;
   } else {
     // Plain (unpinned) sections: put the section's heading (its [data-scroll-anchor],
     // else the section itself) just below the floating nav, skipping the top padding

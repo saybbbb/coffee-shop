@@ -7,7 +7,7 @@
  * on the page.
  */
 
-import { CAFE, formatTime, fullAddress, getOpenStatus } from "@/data/cafe";
+import { CAFE, DIRECTIONS_URL, SOCIALS, formatTime, getOpenStatus, streetAddress } from "@/data/cafe";
 import { MILKS, SIZES, allItems, formatPrice, menu, type MenuItem } from "@/data/menu";
 import { PROCESS } from "@/data/process";
 import { TEAM } from "@/data/team";
@@ -138,8 +138,11 @@ const INTENTS: Intent[] = [
     id: "location",
     keys: ["where", "address", "location", "located", "directions", "find", "map", "station", "parking", "near", "train", "get there"],
     answer: () => ({
-      text: `We're at ${fullAddress} (${CAFE.address.note[0].toLowerCase() + CAFE.address.note.slice(1)}). It's a ${CAFE.transit}.`,
-      actions: [{ kind: "go", label: "See the map", href: "/#visit", icon: "map" }],
+      text: `You'll find us at ${CAFE.address.place}, ${streetAddress}.`,
+      actions: [
+        { kind: "go", label: "See the map", href: "/#visit", icon: "map" },
+        { kind: "go", label: "Get directions", href: DIRECTIONS_URL, icon: "directions" },
+      ],
       followUps: ["Are you open now?", "Is it pet-friendly?"],
     }),
   },
@@ -300,6 +303,19 @@ const INTENTS: Intent[] = [
       text: "We don't list decaf on the menu right now. For something caffeine-light, try a pastry with one of our seasonal drinks — or ask the barista at the counter.",
       followUps: ["What's seasonal?", "What pastries do you have?"],
     }),
+  },
+  {
+    id: "socials",
+    keys: ["instagram", "facebook", "insta", "ig", "fb", "social", "socials", "follow", "page", "tiktok"],
+    answer: () => {
+      const live = Object.values(SOCIALS).filter((s) => s.url);
+      return live.length
+        ? {
+            text: "Come say hi online — we post new drinks, latte art and café moments:",
+            actions: live.map((s) => ({ kind: "go" as const, label: s.handle || s.label, href: s.url, icon: "open_in_new" })),
+          }
+        : { text: "Our Instagram and Facebook pages are launching soon — check back after opening!" };
+    },
   },
   {
     id: "contact",

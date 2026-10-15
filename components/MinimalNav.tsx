@@ -21,7 +21,7 @@ const SECTIONS: SectionItem[] = [
   { id: "process", label: "Bean to Cup", inBar: "Bean to Cup" },
   { id: "menu", label: "The Menu", inBar: "Lineup" },
   { id: "team", label: "Our Team", inBar: "Team" },
-  { id: "reviews", label: "Kind Words" },
+  { id: "reviews", label: "Kind Words", inBar: "Kind Words" },
   { id: "visit", label: "Visit Us", inBar: "Visit" },
 ];
 const BAR_LINKS = SECTIONS.filter((s) => s.inBar);
@@ -176,7 +176,7 @@ export default function MinimalNav() {
               }`}
               style={{ fontFamily: "var(--font-label)" }}
             >
-              <span className="material-symbols-outlined text-base">menu_book</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-base">menu_book</span>
               Full Menu
             </TransitionLink>
             <CartButton />
@@ -187,7 +187,7 @@ export default function MinimalNav() {
               aria-label="Open navigation"
               aria-expanded={drawerOpen}
             >
-              <span className="material-symbols-outlined text-xl">menu</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-xl">menu</span>
             </button>
           </div>
         </div>
@@ -267,7 +267,7 @@ export default function MinimalNav() {
                 className="w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
                 aria-label="Close navigation"
               >
-                <span className="material-symbols-outlined text-base">close</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-base">close</span>
               </button>
             </div>
 
@@ -299,7 +299,7 @@ export default function MinimalNav() {
               onClick={() => setDrawerOpen(false)}
               className="hero-cta-primary w-full"
             >
-              <span className="material-symbols-outlined text-lg">menu_book</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-lg">menu_book</span>
               Full Menu &amp; Ordering
             </TransitionLink>
 

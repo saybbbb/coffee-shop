@@ -124,7 +124,7 @@ function BotBubble({
                     className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold cursor-pointer transition-transform hover:scale-[1.03]"
                     style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
                   >
-                    {a.icon && <span className="material-symbols-outlined text-sm">{a.icon}</span>}
+                    {a.icon && <span aria-hidden="true" className="material-symbols-outlined text-sm">{a.icon}</span>}
                     {a.label}
                   </button>
                 ))}
@@ -158,6 +158,13 @@ export default function FaqBot() {
   const nextId = useRef(1);
   const { go } = usePageTransition();
 
+  // Other parts of the site (e.g. the footer's "Ask Nurvana" link) can open the helper
+  useEffect(() => {
+    const openHelper = () => setOpen(true);
+    window.addEventListener("nurvana:open-faq", openHelper);
+    return () => window.removeEventListener("nurvana:open-faq", openHelper);
+  }, []);
+
   // Open / close animation, Escape to close, focus the input
   useEffect(() => {
     if (!open) return;
@@ -189,7 +196,10 @@ export default function FaqBot() {
   };
 
   const onAction = (a: BotAction) => {
-    if (a.kind === "go") {
+    if (a.kind === "go" && /^https?:/.test(a.href)) {
+      // External (e.g. Google Maps directions): new tab, keep the chat open
+      window.open(a.href, "_blank", "noopener,noreferrer");
+    } else if (a.kind === "go") {
       setOpen(false);
       go(a.href);
     } else {
@@ -223,7 +233,7 @@ export default function FaqBot() {
           aria-label="Ask Nurvana: questions about the menu, hours and pickup"
         >
           <span className="relative">
-            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+            <span aria-hidden="true" className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
               forum
             </span>
             <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-amber-300 ring-2 ring-[var(--color-primary)]" />
@@ -266,7 +276,7 @@ export default function FaqBot() {
               className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 cursor-pointer"
               aria-label="Close"
             >
-              <span className="material-symbols-outlined">close</span>
+              <span aria-hidden="true" className="material-symbols-outlined">close</span>
             </button>
           </div>
 
@@ -331,7 +341,7 @@ export default function FaqBot() {
               style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
               aria-label="Send"
             >
-              <span className="material-symbols-outlined text-lg">arrow_upward</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_upward</span>
             </button>
           </form>
           <p className="text-[10px] text-center pb-2 pt-1" style={{ color: "var(--color-outline)" }}>

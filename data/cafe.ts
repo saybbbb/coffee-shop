@@ -12,13 +12,12 @@ export interface HoursRow {
 
 export const CAFE = {
   address: {
-    street: "142 Artisan Alley",
-    district: "Roast District",
-    note: "Corner of Bean & Steam",
+    place: "PHINMA – Cagayan de Oro College (COC)",
+    street: "Max Y. Suniel St",
+    city: "Cagayan de Oro City, 9000 Misamis Oriental",
   },
-  phone: "+1 (555) 234-5678",
-  email: "hello@nurvanacafe.com",
-  transit: "3 min walk from Roast District Station",
+  phone: "+63 992 299 5926",
+  email: "nurvanacafe@gmail.com",
   hours: [
     { label: "Mon – Fri", days: [1, 2, 3, 4, 5], open: "07:00", close: "20:00" },
     { label: "Saturday", days: [6], open: "08:00", close: "21:00" },
@@ -32,7 +31,16 @@ export const CAFE = {
   ],
 };
 
-export const fullAddress = `${CAFE.address.street}, ${CAFE.address.district}`;
+/** One-line address, e.g. for copying: "PHINMA – … (COC), Max Y. Suniel St, Cagayan de Oro City, 9000 Misamis Oriental" */
+export const fullAddress = `${CAFE.address.place}, ${CAFE.address.street}, ${CAFE.address.city}`;
+
+/** Street + city, without the place name */
+export const streetAddress = `${CAFE.address.street}, ${CAFE.address.city}`;
+
+// Google Maps: the embed shows a real map of the place; directions open the Maps app/site
+const MAP_QUERY = encodeURIComponent(`PHINMA Cagayan de Oro College, ${streetAddress}`);
+export const MAP_EMBED_URL = `https://maps.google.com/maps?q=${MAP_QUERY}&z=17&output=embed`;
+export const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${MAP_QUERY}`;
 
 /** "07:00" → "7:00 AM" */
 export function formatTime(hhmm: string) {
@@ -85,4 +93,15 @@ export const ANNOUNCEMENT: { label: string; text: string; short: string; href: s
   text: "Pumpkin Spice Chai & Honey Lavender Latte are back",
   short: "Pumpkin Spice Chai is back",
   href: "/menu#seasonal",
+};
+
+/**
+ * Social pages. Paste the full links here, e.g.
+ *   url: "https://www.instagram.com/yourhandle", handle: "@yourhandle"
+ * Until a url is filled in, its button shows a "link coming soon" message
+ * instead of sending people to the wrong page.
+ */
+export const SOCIALS = {
+  instagram: { label: "Instagram", handle: "@nurvanacafe", url: "https://www.instagram.com/nurvanacafe" },
+  facebook: { label: "Facebook", handle: "Nurvaná Café", url: "https://www.facebook.com/p/Nurvan%C3%A1-Caf%C3%A9-61595033108776/" },
 };
