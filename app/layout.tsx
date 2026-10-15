@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Be_Vietnam_Pro, Bricolage_Grotesque, Epilogue, Space_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LogoRevealLoader, { INTRO_GATE_SCRIPT } from "@/components/LogoRevealLoader";
@@ -9,6 +10,21 @@ import OrderStatusPill from "@/components/cart/OrderStatusPill";
 import FaqBot from "@/components/faq/FaqBot";
 import PageTransitionProvider from "@/components/transition/PageTransition";
 import ToastProvider from "@/components/toast/Toaster";
+
+// Fonts are downloaded at build time and served with the site (no request to
+// Google, no swap from a fallback font). Each sets a CSS variable used in globals.css.
+// latin-ext covers the peso sign (₱).
+const display = Bricolage_Grotesque({ subsets: ["latin", "latin-ext"], axes: ["opsz"], variable: "--font-bricolage" });
+const body = Be_Vietnam_Pro({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600", "700"], variable: "--font-vietnam" });
+const label = Space_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "700"], style: ["normal", "italic"], variable: "--font-mono" });
+const handwritten = Epilogue({ subsets: ["latin", "latin-ext"], style: ["normal", "italic"], variable: "--font-epilogue" });
+
+/**
+ * Icons are a font that turns words like "shopping_bag" into pictures. Until it
+ * arrives those words would show as text, so icons stay hidden (CSS) until this
+ * marks the font as loaded. Gives up waiting after 8s rather than hide icons forever.
+ */
+const ICONS_READY_SCRIPT = `(function(){var d=document.documentElement,t=Date.now();function done(){d.dataset.icons="ready"}function check(){if(!document.fonts||Date.now()-t>8000)return done();document.fonts.load('24px "Material Symbols Outlined"').then(function(f){f.length?done():setTimeout(check,100)},done)}check()})()`;
 
 export const metadata: Metadata = {
   title: {
@@ -40,27 +56,26 @@ export default function RootLayout({
 }) {
   return (
     // The head script may set data-intro before React hydrates
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${display.variable} ${body.variable} ${label.variable} ${handwritten.variable}`}
+    >
       <head>
         {/* Decide before first paint whether the intro overlay shows (no hero flash) */}
         <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
         {/* Scroll position is restored by SmoothScrollProvider once the pinned sections exist */}
         <script dangerouslySetInnerHTML={{ __html: SCROLL_RESTORE_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: ICONS_READY_SCRIPT }} />
         <noscript>
-          <style>{`.intro-overlay{display:none}`}</style>
+          <style>{`.intro-overlay{display:none}.material-symbols-outlined{visibility:visible!important}`}</style>
         </noscript>
-        {/* Google Fonts preconnect */}
+        {/* Material Symbols icon font (too large to self-host; hidden until loaded, see above) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        {/* Nurvana Café fonts */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Epilogue:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-        />
-        {/* Material Symbols icon font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
         />
       </head>
       <body className="min-h-screen flex flex-col antialiased selection:bg-amber-900 selection:text-amber-100">

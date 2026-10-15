@@ -11,10 +11,10 @@ export default function AnnouncementChip() {
   return (
     <TransitionLink
       href={href}
-      className="announce-chip group inline-flex items-center gap-2.5 max-w-full pl-1.5 pr-3.5 py-1.5 rounded-full bg-black/35 backdrop-blur-md border border-white/15 text-[#fdf9f4] text-xs sm:text-sm shadow-lg transition-colors hover:bg-black/50 hover:border-amber-200/40"
+      className="announce-chip group inline-flex items-center gap-2.5 max-w-full pl-1.5 pr-3.5 py-1.5 rounded-full bg-black/35 backdrop-blur-md border border-hairline text-[#fdf9f4] text-xs sm:text-sm shadow-lg transition-colors hover:bg-black/50 hover:border-hairline-strong"
     >
       <span
-        className="announce-badge relative overflow-hidden shrink-0 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider"
+        className="announce-badge relative overflow-hidden shrink-0 px-2.5 py-1 rounded-full text-xs md:text-[11px] font-mono font-bold uppercase tracking-wider"
         style={{ backgroundColor: "var(--color-secondary-fixed)", color: "var(--color-primary)", fontFamily: "var(--font-label)" }}
       >
         {label}

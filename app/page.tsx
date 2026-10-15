@@ -174,7 +174,7 @@ export default function Home() {
             </h1>
 
             <p
-              className="inline-block text-[11px] sm:text-sm font-mono tracking-[0.18em] uppercase text-amber-50 px-4 py-2 rounded-2xl sm:rounded-full bg-black/35 backdrop-blur-md border border-white/10"
+              className="inline-block text-[11px] sm:text-sm font-mono tracking-[0.18em] uppercase text-amber-50 px-4 py-2 rounded-2xl sm:rounded-full bg-black/35 backdrop-blur-md border border-hairline"
               style={{ fontFamily: "var(--font-label)" }}
             >
               Artisanal single-origin • Small batch roasted • Daily crafted
@@ -201,7 +201,7 @@ export default function Home() {
         {/* Minimal Scroll Hint Indicator */}
         <div className="pb-8 md:pb-10 z-20 flex flex-col items-center justify-center gap-2 pointer-events-none">
           <span
-            className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.25em] text-amber-100/90 drop-shadow"
+            className="text-xs md:text-[11px] font-mono uppercase tracking-[0.2em] text-amber-100/90 drop-shadow"
             style={{ fontFamily: "var(--font-label)" }}
           >
             Scroll to Explore

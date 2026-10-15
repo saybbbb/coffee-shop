@@ -12,7 +12,7 @@ export default function OpenBadge({ dark, className = "" }: { dark?: boolean; cl
       ? "bg-emerald-950/60 border-emerald-800/50 text-emerald-300"
       : "bg-emerald-50 border-emerald-200 text-emerald-800"
     : dark
-      ? "bg-amber-950/60 border-amber-800/50 text-amber-300"
+      ? "bg-amber-950/60 border-hairline-strong text-amber-300"
       : "bg-amber-50 border-amber-200 text-amber-900";
 
   return (

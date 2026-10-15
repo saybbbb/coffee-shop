@@ -77,7 +77,7 @@ function Stamp() {
           <path id="story-stamp-circle" d="M70 70 m -54 0 a 54 54 0 1 1 108 0 a 54 54 0 1 1 -108 0" />
         </defs>
         <circle cx="70" cy="70" r="68" fill="var(--color-primary)" />
-        <text fill="#f6e0b9" fontFamily="Space Mono, monospace" fontSize="10.5">
+        <text fill="#f6e0b9" style={{ fontFamily: "var(--font-label)" }} fontSize="10.5">
           {/* textLength stretches the text to exactly one lap of the circle */}
           <textPath href="#story-stamp-circle" textLength="336" lengthAdjust="spacing">
             {STAMP_TEXT}
@@ -152,12 +152,12 @@ export default function OurStory() {
           <div className="lg:col-span-7 space-y-6 md:space-y-7">
             <div className="story-kicker flex items-center gap-3 flex-wrap">
               <span
-                className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
+                className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-amber-900/10"
                 style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
               >
                 02 / Our Story
               </span>
-              <h2 id="story-heading" className="text-xs font-mono uppercase tracking-[0.2em]" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
+              <h2 id="story-heading" className="text-xs font-mono uppercase tracking-[0.16em]" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
                 Brewed with intention
               </h2>
             </div>

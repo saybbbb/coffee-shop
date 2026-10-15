@@ -39,7 +39,7 @@ export default function VisitSection() {
         <div data-scroll-anchor className="visit-head flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-10">
           <div className="space-y-2">
             <span
-              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
+              className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-amber-900/10"
               style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
             >
               07 / Visit Us
@@ -121,7 +121,7 @@ export default function VisitSection() {
                       <span className="flex items-center gap-2 text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
                         {row.label}
                         {isToday && (
-                          <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full" style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}>
+                          <span className="text-xs md:text-[11px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-full" style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}>
                             Today
                           </span>
                         )}

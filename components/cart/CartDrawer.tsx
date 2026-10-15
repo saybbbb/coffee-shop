@@ -371,14 +371,14 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
       >
         <div
-          className="confirm-stamp absolute -top-3 -right-3 w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed text-[10px] font-mono uppercase tracking-widest leading-tight"
+          className="confirm-stamp absolute -top-3 -right-3 w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed text-xs md:text-[11px] font-mono uppercase tracking-widest leading-tight"
           style={{ borderColor: "var(--color-secondary-fixed-dim)", color: "var(--color-secondary-fixed-dim)" }}
         >
           Nurvana
           <br />
           Approved
         </div>
-        <p className="confirm-reveal text-[11px] font-mono uppercase tracking-[0.2em] text-amber-200/80">Order number</p>
+        <p className="confirm-reveal text-xs md:text-[11px] font-mono uppercase tracking-[0.16em] text-amber-200/80">Order number</p>
         <p className="confirm-reveal text-7xl font-black tracking-tight my-1" style={{ fontFamily: "var(--font-display)" }}>
           #{order.number}
         </p>

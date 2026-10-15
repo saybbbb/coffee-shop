@@ -79,7 +79,7 @@ function Tags({ item }: { item: MenuItem }) {
       {item.tags.map((tag) => (
         <span
           key={tag}
-          className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
+          className="text-xs md:text-[11px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
           style={{
             fontFamily: "var(--font-label)",
             backgroundColor: tag === "Seasonal" || tag === "New" ? "var(--color-secondary-fixed)" : "var(--color-tertiary-fixed)",
@@ -221,7 +221,7 @@ function GridCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
       className="menu-reveal tilt-card rounded-3xl p-3 flex flex-col cursor-pointer group hover:shadow-xl glass-panel"
       style={{ backgroundColor: "var(--color-surface-container)" }}
     >
-      <div ref={artRef} className="menu-reveal-art relative aspect-[4/5] rounded-2xl overflow-hidden">
+      <div ref={artRef} className="menu-reveal-art relative aspect-[4/5] rounded-xl overflow-hidden">
         <MenuArt item={item} sizes="(max-width: 768px) 50vw, 280px" iconSize="4.5rem" className="transition-transform duration-700 group-hover:scale-110" />
       </div>
       <div className="px-2 pt-4 pb-2 flex flex-col gap-2 flex-1">

@@ -51,7 +51,7 @@ export default function NotFound() {
         <div className="max-w-2xl mx-auto w-full text-center space-y-6">
           <EmptyCup />
           <p
-            className="text-[11px] font-mono uppercase tracking-[0.25em]"
+            className="text-xs md:text-[11px] font-mono uppercase tracking-[0.2em]"
             style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
           >
             Error 404 · page not found

@@ -132,14 +132,14 @@ export default function FindYourBrew({ onClose, onOpen }: { onClose: () => void;
                       onClose();
                       onOpen(result.runnerUp!);
                     }}
-                    className="w-full flex items-center gap-3 p-3 rounded-2xl border text-left cursor-pointer transition-colors hover:bg-black/[0.03]"
+                    className="w-full flex items-center gap-3 p-3 rounded-3xl border text-left cursor-pointer transition-colors hover:bg-black/[0.03]"
                     style={{ borderColor: "var(--color-outline-variant)" }}
                   >
                     <span className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
                       <MenuArt item={result.runnerUp} sizes="48px" iconSize="1.4rem" />
                     </span>
                     <span className="flex-1 min-w-0">
-                      <span className="block text-[11px] font-mono uppercase tracking-wider" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
+                      <span className="block text-xs md:text-[11px] font-mono uppercase tracking-wider" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
                         Also try
                       </span>
                       <span className="block font-semibold truncate" style={{ color: "var(--color-primary)" }}>

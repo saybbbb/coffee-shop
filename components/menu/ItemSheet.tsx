@@ -111,7 +111,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
               {item.notes.map((n) => (
                 <span
                   key={n}
-                  className="px-2.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider glass-panel"
+                  className="px-2.5 py-1 rounded-full text-xs md:text-[11px] font-mono uppercase tracking-wider glass-panel"
                   style={{ color: "var(--color-primary)", fontFamily: "var(--font-label)" }}
                 >
                   {n}
@@ -129,7 +129,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
                 {item.tags.map((t) => (
                   <span
                     key={t}
-                    className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    className="text-xs md:text-[11px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
                     style={{
                       backgroundColor: "var(--color-secondary-fixed)",
                       color: "var(--color-on-secondary-fixed)",
@@ -233,7 +233,7 @@ function PairsWith({ item }: { item: MenuItem }) {
     <div className="space-y-2">
       <p className="sheet-label">Pairs well with</p>
       <div
-        className="flex items-center gap-3 p-2.5 pr-3 rounded-2xl border"
+        className="flex items-center gap-3 p-2 pr-3 rounded-[20px] border"
         style={{ borderColor: "var(--color-outline-variant)", backgroundColor: "var(--color-surface-container-low)" }}
       >
         <div ref={thumbRef} className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">

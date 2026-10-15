@@ -54,7 +54,7 @@ function Strip({
 
   return (
     <article
-      className={`team-strip relative overflow-hidden rounded-[26px] shadow-lg ${active ? "is-active" : ""}`}
+      className={`team-strip relative overflow-hidden rounded-[28px] shadow-lg ${active ? "is-active" : ""}`}
       onPointerEnter={(e) => e.pointerType === "mouse" && onActivate()}
     >
       <Portrait member={member} active={active} />
@@ -75,7 +75,7 @@ function Strip({
         onFocus={onActivate}
         aria-expanded={active}
         aria-label={`${member.name}, ${member.role}`}
-        className="absolute inset-0 z-10 cursor-pointer rounded-[26px] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-amber-200"
+        className="absolute inset-0 z-10 cursor-pointer rounded-[28px] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-amber-200"
       />
 
       {/* Role badge (always visible) */}
@@ -110,7 +110,7 @@ function Strip({
         <span className="block font-bold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
           {member.name}
         </span>
-        <span className="block text-[11px] font-mono uppercase tracking-wider text-amber-200/90" style={{ fontFamily: "var(--font-label)" }}>
+        <span className="block text-xs md:text-[11px] font-mono uppercase tracking-wider text-amber-200/90" style={{ fontFamily: "var(--font-label)" }}>
           {member.role}
         </span>
       </span>
@@ -138,7 +138,7 @@ function Strip({
             <span className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: "var(--color-primary)", color: "var(--color-secondary-fixed)" }} aria-hidden="true">
               <span className="material-symbols-outlined text-base">local_cafe</span>
             </span>
-            <span className="text-[10px] font-mono uppercase tracking-wider opacity-70" style={{ fontFamily: "var(--font-label)" }}>
+            <span className="text-xs md:text-[11px] font-mono uppercase tracking-wider opacity-70" style={{ fontFamily: "var(--font-label)" }}>
               Go-to
             </span>
             {drink.name}
@@ -163,7 +163,7 @@ export default function TeamStrips({ onOpen }: { onOpen: (item: MenuItem) => voi
         <div className="team-head flex flex-col md:flex-row md:items-end justify-between gap-3 mb-6 md:mb-8">
           <div className="space-y-2">
             <span
-              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
+              className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-amber-900/10"
               style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
             >
               05 / Our Team

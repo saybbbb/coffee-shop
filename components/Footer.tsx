@@ -65,13 +65,13 @@ export default function Footer() {
       <div className="max-w-[1300px] mx-auto px-6 md:px-12 lg:px-16 pt-20">
         {/* ─── Tasting Club ─── */}
         <div
-          className="rounded-3xl p-8 md:p-10 mb-14 border border-amber-900/40 relative overflow-hidden"
+          className="rounded-3xl p-8 md:p-10 mb-14 border border-hairline relative overflow-hidden"
           style={{ backgroundColor: "color-mix(in srgb, var(--color-primary-container) 35%, black)" }}
         >
           <div className="absolute top-0 right-0 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-2">
-              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-amber-300 font-semibold inline-block" style={{ fontFamily: "var(--font-label)" }}>
+              <span className="text-xs md:text-[11px] font-mono uppercase tracking-[0.16em] text-amber-300 font-semibold inline-block" style={{ fontFamily: "var(--font-label)" }}>
                 Seasonal Bean Drops
               </span>
               <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
@@ -83,7 +83,7 @@ export default function Footer() {
             </div>
             <div className="lg:col-span-6">
               {subscribed ? (
-                <div className="p-4 rounded-2xl bg-amber-900/40 border border-amber-700/50 flex items-center gap-3 text-amber-200">
+                <div className="p-4 rounded-2xl bg-amber-900/40 border border-hairline-strong flex items-center gap-3 text-amber-200">
                   <span aria-hidden="true" className="material-symbols-outlined text-xl text-amber-300">
                     check_circle
                   </span>
@@ -98,7 +98,7 @@ export default function Footer() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
                     aria-label="Email address"
-                    className="flex-grow px-5 py-3.5 rounded-full bg-black/40 border border-amber-900/60 text-white placeholder-stone-400 text-sm focus:outline-none focus:border-amber-400/80 transition-colors"
+                    className="flex-grow px-5 py-3.5 rounded-full bg-black/40 border border-hairline-strong text-white placeholder-stone-400 text-sm focus:outline-none focus:border-amber-400/80 transition-colors"
                   />
                   <button
                     type="submit"
@@ -124,16 +124,16 @@ export default function Footer() {
               &ldquo;We&apos;re not just serving coffee — we&apos;re serving moments, hot or cold. Made for you.&rdquo;
             </p>
             <div className="flex flex-wrap gap-2 text-xs font-mono text-stone-400">
-              <span className="px-3 py-1 rounded-full bg-amber-900/30 border border-amber-800/30 flex items-center gap-1.5">
+              <span className="px-3 py-1 rounded-full bg-amber-900/30 border border-hairline flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 100% Fair Trade
               </span>
-              <span className="px-3 py-1 rounded-full bg-amber-900/30 border border-amber-800/30">Small Batch Roasted</span>
+              <span className="px-3 py-1 rounded-full bg-amber-900/30 border border-hairline">Small Batch Roasted</span>
             </div>
 
             {/* Socials */}
             <div className="pt-2 space-y-2.5">
-              <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-amber-300" style={{ fontFamily: "var(--font-label)" }}>
+              <p className="text-xs md:text-[11px] font-mono uppercase tracking-[0.16em] text-amber-300" style={{ fontFamily: "var(--font-label)" }}>
                 Follow us{SOCIALS.instagram.handle && <span className="normal-case tracking-normal text-stone-300"> · {SOCIALS.instagram.handle}</span>}
               </p>
               <div className="flex flex-wrap gap-2.5">
@@ -157,7 +157,7 @@ export default function Footer() {
 
           {/* Visit */}
           <div className="lg:col-span-4 space-y-4">
-            <h3 className="text-xs font-mono uppercase tracking-[0.2em] text-amber-300 font-semibold" style={{ fontFamily: "var(--font-label)" }}>
+            <h3 className="text-xs font-mono uppercase tracking-[0.16em] text-amber-300 font-semibold" style={{ fontFamily: "var(--font-label)" }}>
               Visit
             </h3>
             <div className="space-y-3 text-sm text-stone-300">
@@ -201,7 +201,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <div className="lg:col-span-3 space-y-4">
-            <h3 className="text-xs font-mono uppercase tracking-[0.2em] text-amber-300 font-semibold" style={{ fontFamily: "var(--font-label)" }}>
+            <h3 className="text-xs font-mono uppercase tracking-[0.16em] text-amber-300 font-semibold" style={{ fontFamily: "var(--font-label)" }}>
               Quick links
             </h3>
             <ul className="space-y-2.5 text-sm">
@@ -231,7 +231,7 @@ export default function Footer() {
       </div>
 
       {/* ─── Sign-off ─── */}
-      <div className="relative border-t border-amber-900/30">
+      <div className="relative border-t border-hairline">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 lg:px-16 pt-10 text-center">
           <p className="italic text-xl md:text-2xl text-amber-200/90" style={{ fontFamily: "var(--font-handwritten)" }}>
             Sip the Brew. Feel Brand New.
@@ -264,7 +264,7 @@ export default function Footer() {
             </button>
             <button
               onClick={scrollToTop}
-              className="px-3.5 py-1.5 rounded-full bg-amber-950/80 border border-amber-800/40 text-stone-300 hover:text-white hover:border-amber-400 transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer group"
+              className="px-3.5 py-1.5 rounded-full bg-amber-950/80 border border-hairline text-stone-300 hover:text-white hover:border-amber-400 transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer group"
               aria-label="Back to top"
             >
               <span>Top</span>

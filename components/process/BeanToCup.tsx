@@ -30,7 +30,7 @@ export default function BeanToCup() {
       <div className="relative md:absolute md:top-0 md:inset-x-0 z-10 max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 pt-20 md:pt-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
           <span
-            className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
+            className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
             style={{ fontFamily: "var(--font-label)" }}
           >
             03 / Bean to Cup
@@ -54,7 +54,7 @@ export default function BeanToCup() {
             <li key={step.id} className="flex-1 flex flex-col gap-2">
               <span
                 data-process-tick={i}
-                className="process-tick text-[11px] font-mono uppercase tracking-wider"
+                className="process-tick text-xs md:text-[11px] font-mono uppercase tracking-wider"
                 style={{ fontFamily: "var(--font-label)" }}
               >
                 {String(i + 1).padStart(2, "0")} {step.title}
@@ -86,7 +86,7 @@ export default function BeanToCup() {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
                 <span
-                  className="absolute bottom-4 left-4 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-black/35 backdrop-blur-sm"
+                  className="absolute bottom-4 left-4 px-3 py-1 rounded-full text-xs md:text-[11px] font-mono uppercase tracking-wider bg-black/35 backdrop-blur-sm"
                   style={{ fontFamily: "var(--font-label)" }}
                 >
                   Step {i + 1} of {PROCESS.length}
@@ -113,7 +113,7 @@ export default function BeanToCup() {
                   {step.facts.map((f) => (
                     <li
                       key={f}
-                      className="px-3 py-1 rounded-full text-xs font-mono border border-amber-200/25 text-amber-100"
+                      className="px-3 py-1 rounded-full text-xs font-mono border border-hairline-strong text-amber-100"
                       style={{ fontFamily: "var(--font-label)" }}
                     >
                       {f}
