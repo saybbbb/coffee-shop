@@ -123,7 +123,7 @@ export default function BeanToCup() {
                   <div className="pt-3">
                     <TransitionLink href="/menu" className="hero-cta-primary group">
                       <span>Taste it yourself</span>
-                      <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">
+                      <span aria-hidden="true" className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">
                         arrow_forward
                       </span>
                     </TransitionLink>

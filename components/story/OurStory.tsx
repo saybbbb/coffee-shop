@@ -85,7 +85,7 @@ function Stamp() {
         </text>
       </svg>
       <span className="absolute inset-0 flex items-center justify-center">
-        <span className="material-symbols-outlined text-3xl text-amber-200" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <span aria-hidden="true" className="material-symbols-outlined text-3xl text-amber-200" style={{ fontVariationSettings: "'FILL' 1" }}>
           coffee
         </span>
       </span>

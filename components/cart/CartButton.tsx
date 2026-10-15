@@ -29,7 +29,7 @@ export default function CartButton() {
       style={{ fontFamily: "var(--font-label)" }}
       aria-label={`Open your order, ${count} item${count === 1 ? "" : "s"}`}
     >
-      <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+      <span aria-hidden="true" className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
         local_mall
       </span>
       <span className="hidden sm:inline">Order</span>

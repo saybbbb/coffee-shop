@@ -36,7 +36,7 @@ export default function QuickAdd({
       }}
       aria-label={`Quick add ${item.name} to order`}
     >
-      <span className={`material-symbols-outlined ${small ? "text-lg" : "text-xl"}`}>{done ? "check" : "add"}</span>
+      <span aria-hidden="true" className={`material-symbols-outlined ${small ? "text-lg" : "text-xl"}`}>{done ? "check" : "add"}</span>
     </button>
   );
 }

@@ -91,7 +91,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
             className="absolute top-4 right-4 md:left-4 md:right-auto w-10 h-10 rounded-full glass-panel flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition-transform"
             aria-label="Close"
           >
-            <span className="material-symbols-outlined text-xl" style={{ color: "var(--color-primary)" }}>
+            <span aria-hidden="true" className="material-symbols-outlined text-xl" style={{ color: "var(--color-primary)" }}>
               close
             </span>
           </button>
@@ -152,7 +152,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
                     aria-pressed={size === s.id}
                     className="option-chip flex flex-col items-center py-3"
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: s.id === "small" ? 18 : s.id === "regular" ? 22 : 26 }}>
+                    <span aria-hidden="true" className="material-symbols-outlined" style={{ fontSize: s.id === "small" ? 18 : s.id === "regular" ? 22 : 26 }}>
                       local_cafe
                     </span>
                     <span className="text-sm font-semibold mt-1">{s.label}</span>
@@ -191,7 +191,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
                 className="w-11 h-11 flex items-center justify-center cursor-pointer"
                 aria-label="Decrease quantity"
               >
-                <span className="material-symbols-outlined text-lg">remove</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-lg">remove</span>
               </button>
               <span className="w-6 text-center font-mono font-bold" aria-live="polite">
                 {qty}
@@ -201,7 +201,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
                 className="w-11 h-11 flex items-center justify-center cursor-pointer"
                 aria-label="Increase quantity"
               >
-                <span className="material-symbols-outlined text-lg">add</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-lg">add</span>
               </button>
             </div>
             <button onClick={handleAdd} className="nurvana-btn-solid flex-1 justify-between">

@@ -277,11 +277,11 @@ export default function Home() {
             {/* Calls to action */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 md:pt-4">
               <TransitionLink href="/menu" className="hero-cta-primary group w-full max-w-[290px] sm:w-auto">
-                <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                <span aria-hidden="true" className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
                   local_mall
                 </span>
                 <span>Order for Pickup</span>
-                <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">
+                <span aria-hidden="true" className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">
                   arrow_forward
                 </span>
               </TransitionLink>
@@ -349,7 +349,7 @@ export default function Home() {
                 style={{ fontFamily: "var(--font-label)" }}
               >
                 <span>Full Menu</span>
-                <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">
+                <span aria-hidden="true" className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">
                   arrow_forward
                 </span>
               </TransitionLink>

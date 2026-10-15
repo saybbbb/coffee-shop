@@ -62,7 +62,7 @@ export default function VisitSection() {
             </p>
             <TransitionLink href="/menu" className="nurvana-btn-solid group self-start md:self-end">
               <span>Order ahead for pickup</span>
-              <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
             </TransitionLink>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function VisitSection() {
             <ul className="space-y-3">
               <li className="visit-item flex items-start gap-3">
                 <span className="visit-icon" aria-hidden="true">
-                  <span className="material-symbols-outlined">location_on</span>
+                  <span aria-hidden="true" className="material-symbols-outlined">location_on</span>
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold" style={{ color: "var(--color-primary)" }}>
@@ -149,13 +149,13 @@ export default function VisitSection() {
                   style={{ borderColor: "var(--color-outline-variant)", color: "var(--color-primary)", fontFamily: "var(--font-label)" }}
                   aria-label="Copy address"
                 >
-                  <span className="material-symbols-outlined text-sm">{copied ? "check" : "content_copy"}</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm">{copied ? "check" : "content_copy"}</span>
                   <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
                 </button>
               </li>
               <li className="visit-item flex items-center gap-3">
                 <span className="visit-icon" aria-hidden="true">
-                  <span className="material-symbols-outlined">call</span>
+                  <span aria-hidden="true" className="material-symbols-outlined">call</span>
                 </span>
                 <span className="font-mono text-sm" style={{ color: "var(--color-primary)" }}>
                   {CAFE.phone}
@@ -163,7 +163,7 @@ export default function VisitSection() {
               </li>
               <li className="visit-item flex items-center gap-3">
                 <span className="visit-icon" aria-hidden="true">
-                  <span className="material-symbols-outlined">mail</span>
+                  <span aria-hidden="true" className="material-symbols-outlined">mail</span>
                 </span>
                 <a
                   href={`mailto:${CAFE.email}`}
@@ -183,7 +183,7 @@ export default function VisitSection() {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs"
                   style={{ backgroundColor: "var(--color-tertiary-fixed)", color: "var(--color-on-tertiary-fixed)" }}
                 >
-                  <span className="material-symbols-outlined text-sm">{a.icon}</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm">{a.icon}</span>
                   {a.label}
                 </span>
               ))}

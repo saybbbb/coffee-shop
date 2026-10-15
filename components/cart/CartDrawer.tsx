@@ -93,7 +93,7 @@ export default function CartDrawer() {
             className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-colors hover:bg-black/5"
             aria-label="Close order"
           >
-            <span className="material-symbols-outlined" style={{ color: "var(--color-primary)" }}>
+            <span aria-hidden="true" className="material-symbols-outlined" style={{ color: "var(--color-primary)" }}>
               close
             </span>
           </button>
@@ -118,7 +118,7 @@ export default function CartDrawer() {
                   className="w-28 h-28 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: "var(--color-secondary-fixed)" }}
                 >
-                  <span className="material-symbols-outlined text-5xl" style={{ color: "var(--color-primary)" }}>
+                  <span aria-hidden="true" className="material-symbols-outlined text-5xl" style={{ color: "var(--color-primary)" }}>
                     coffee
                   </span>
                 </div>
@@ -206,7 +206,7 @@ export default function CartDrawer() {
                   </div>
                   <button type="submit" className="nurvana-btn-solid w-full justify-center">
                     <span>Place Pickup Order</span>
-                    <span className="material-symbols-outlined text-lg">arrow_forward</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
                   </button>
                   <p className="text-[11px] text-center" style={{ color: "var(--color-outline)" }}>
                     Pay at the counter when you collect.
@@ -230,7 +230,7 @@ function QtyButton({ icon, label, onClick }: { icon: string; label: string; onCl
       className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer transition-colors hover:bg-black/5 border"
       style={{ borderColor: "var(--color-outline-variant)", color: "var(--color-primary)" }}
     >
-      <span className="material-symbols-outlined text-base">{icon}</span>
+      <span aria-hidden="true" className="material-symbols-outlined text-base">{icon}</span>
     </button>
   );
 }
@@ -345,7 +345,7 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
                   transform: i === current ? "scale(1.1)" : "scale(1)",
                 }}
               >
-                <span className="material-symbols-outlined text-lg">{s.icon}</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-lg">{s.icon}</span>
               </span>
               <span className="text-xs font-mono uppercase tracking-wider" style={{ color: done ? "var(--color-primary)" : "var(--color-outline)" }}>
                 {s.label}

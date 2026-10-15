@@ -103,7 +103,7 @@ export default function Footer() {
             <div className="lg:col-span-6">
               {subscribed ? (
                 <div className="p-4 rounded-2xl bg-amber-900/40 border border-amber-700/50 flex items-center gap-3 text-amber-200">
-                  <span className="material-symbols-outlined text-xl text-amber-300">check_circle</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-xl text-amber-300">check_circle</span>
                   <span className="text-sm font-mono tracking-wide">
                     Welcome to the club! Check your inbox for our seasonal origins guide.
                   </span>
@@ -129,7 +129,7 @@ export default function Footer() {
                     }}
                   >
                     <span>Subscribe</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
                 </form>
               )}
@@ -187,7 +187,7 @@ export default function Footer() {
                   title={s.name}
                   className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-950/60 border border-amber-800/40 text-stone-300 hover:text-amber-200 hover:border-amber-500/50 transition-all duration-300 hover:scale-110 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-lg">{s.icon}</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-lg">{s.icon}</span>
                 </button>
               ))}
             </div>
@@ -229,7 +229,7 @@ export default function Footer() {
 
             <div className="space-y-3 text-sm text-stone-300">
               <div className="flex items-start gap-2.5">
-                <span className="material-symbols-outlined text-amber-400 text-lg shrink-0 mt-0.5">
+                <span aria-hidden="true" className="material-symbols-outlined text-amber-400 text-lg shrink-0 mt-0.5">
                   location_on
                 </span>
                 <p className="text-stone-300 font-light leading-snug">
@@ -240,7 +240,7 @@ export default function Footer() {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-amber-400 text-lg shrink-0">
+                <span aria-hidden="true" className="material-symbols-outlined text-amber-400 text-lg shrink-0">
                   mail
                 </span>
                 <a
@@ -252,7 +252,7 @@ export default function Footer() {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-amber-400 text-lg shrink-0">
+                <span aria-hidden="true" className="material-symbols-outlined text-amber-400 text-lg shrink-0">
                   call
                 </span>
                 <span className="text-stone-300 font-mono text-xs">
@@ -334,7 +334,7 @@ export default function Footer() {
                   className="text-amber-300 hover:text-white transition-colors inline-flex items-center gap-1 font-bold"
                 >
                   <span>Interactive Menu</span>
-                  <span className="material-symbols-outlined text-xs">arrow_outward</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-xs">arrow_outward</span>
                 </TransitionLink>
               </li>
             </ul>
@@ -372,7 +372,7 @@ export default function Footer() {
               aria-label="Back to top"
             >
               <span>Top</span>
-              <span className="material-symbols-outlined text-xs transition-transform group-hover:-translate-y-0.5">
+              <span aria-hidden="true" className="material-symbols-outlined text-xs transition-transform group-hover:-translate-y-0.5">
                 arrow_upward
               </span>
             </button>

@@ -108,7 +108,7 @@ function LattePortrait({ member }: { member: TeamMember }) {
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-secondary-fixed)" }}
         aria-hidden="true"
       >
-        <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <span aria-hidden="true" className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
           {member.icon}
         </span>
       </span>
@@ -160,7 +160,7 @@ export default function TeamCard({ member, onOpen }: { member: TeamMember; onOpe
               className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors group-hover/btn:bg-[var(--color-primary)] group-hover/btn:text-[var(--color-on-primary)]"
               style={{ backgroundColor: "var(--color-secondary-fixed)", color: "var(--color-primary)" }}
             >
-              <span className="material-symbols-outlined text-sm">local_cafe</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-sm">local_cafe</span>
               {drink.name}
             </span>
           </button>

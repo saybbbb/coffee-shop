@@ -67,7 +67,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
               style={{ backgroundColor: "var(--color-secondary-fixed)", color: "var(--color-primary)" }}
               aria-hidden="true"
             >
-              <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+              <span aria-hidden="true" className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
                 {toast.icon ?? "check"}
               </span>
             </span>
@@ -94,7 +94,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
                 className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 cursor-pointer"
                 aria-label="Dismiss"
               >
-                <span className="material-symbols-outlined text-base">close</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-base">close</span>
               </button>
             )}
           </div>

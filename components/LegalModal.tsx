@@ -97,7 +97,7 @@ export default function LegalModal({ kind, onClose }: { kind: LegalKind; onClose
             className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center hover:bg-black/5 cursor-pointer"
             aria-label="Close"
           >
-            <span className="material-symbols-outlined" style={{ color: "var(--color-primary)" }}>
+            <span aria-hidden="true" className="material-symbols-outlined" style={{ color: "var(--color-primary)" }}>
               close
             </span>
           </button>

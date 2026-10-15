@@ -62,7 +62,7 @@ export default function OrderStatusPill() {
         style={{ backgroundColor: ready ? "#bbf7d0" : "var(--color-secondary-fixed)", color: ready ? "#14532d" : "var(--color-primary)" }}
         aria-hidden="true"
       >
-        <span className="material-symbols-outlined text-base">{stage.icon}</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-base">{stage.icon}</span>
       </span>
       <span className="flex flex-col items-start leading-tight">
         <span className="text-[10px] font-mono uppercase tracking-wider opacity-70" style={{ fontFamily: "var(--font-label)" }}>
