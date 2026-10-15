@@ -12,7 +12,7 @@ const CONTENT: Record<LegalKind, { title: string; points: { heading: string; bod
     points: [
       {
         heading: "This is a prototype",
-        body: "Nurvana Café's website was built as a student business project. Nothing you do here is sent to a server.",
+        body: "Nurvana Café's website was built as a student business project. Your orders and answers stay in your browser; the only outside service is the Google Map in Visit Us, which loads from Google.",
       },
       {
         heading: "What stays in your browser",

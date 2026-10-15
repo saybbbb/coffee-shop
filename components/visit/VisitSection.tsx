@@ -3,9 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { CAFE, formatTime, fullAddress } from "@/data/cafe";
+import { CAFE, DIRECTIONS_URL, MAP_EMBED_URL, formatTime, fullAddress, streetAddress } from "@/data/cafe";
 import TransitionLink from "@/components/transition/TransitionLink";
-import IllustratedMap from "./IllustratedMap";
 import OpenBadge from "./OpenBadge";
 import { useOpenStatus } from "./useOpenStatus";
 
@@ -69,18 +68,26 @@ export default function VisitSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Map + photo */}
-          <div className="lg:col-span-7 relative pb-10 sm:pb-14">
+          <div className="lg:col-span-7 relative pt-6 sm:pt-4">
             <div
               className="visit-map relative aspect-[4/3] sm:aspect-[16/11] rounded-[28px] overflow-hidden shadow-xl border"
               style={{ borderColor: "var(--color-outline-variant)" }}
             >
-              <IllustratedMap />
+              {/* Real Google Map of the café, warmed slightly to sit in the palette */}
+              <iframe
+                src={MAP_EMBED_URL}
+                title={`Map: ${CAFE.address.place}, ${streetAddress}`}
+                className="visit-map-frame absolute inset-0 w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
 
             {/* Polaroid of the interior */}
             <figure
-              className="visit-photo absolute -bottom-4 sm:-bottom-2 left-2 sm:left-6 w-28 sm:w-52 p-1.5 sm:p-2 pb-2 sm:pb-3 bg-white shadow-2xl rounded-md"
-              style={{ transform: "rotate(-5deg)" }}
+              className="visit-photo absolute -top-1 sm:-top-4 -right-1 sm:-right-5 w-28 sm:w-44 p-1.5 sm:p-2 pb-2 sm:pb-3 bg-white shadow-2xl rounded-md pointer-events-none"
+              style={{ transform: "rotate(5deg)" }}
             >
               <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-stone-200">
                 <Image src="/home/hero-bg.jpg" alt="Inside the Nurvana roastery" fill sizes="210px" className="object-cover" />
@@ -108,7 +115,7 @@ export default function VisitSection() {
                   return (
                     <li
                       key={row.label}
-                      className={`flex justify-between items-center py-2 px-3 -mx-3 rounded-xl transition-colors ${isToday ? "bg-amber-900/[0.07]" : ""}`}
+                      className={`flex justify-between items-center py-1.5 px-3 -mx-3 rounded-xl transition-colors ${isToday ? "bg-amber-900/[0.07]" : ""}`}
                       style={{ borderColor: "var(--color-outline-variant)" }}
                     >
                       <span className="flex items-center gap-2 text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
@@ -136,11 +143,23 @@ export default function VisitSection() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold" style={{ color: "var(--color-primary)" }}>
-                    {CAFE.address.street}, {CAFE.address.district}
+                    {CAFE.address.place}
                   </p>
                   <p className="text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
-                    {CAFE.address.note} · {CAFE.transit}
+                    {streetAddress}
                   </p>
+                  <a
+                    href={DIRECTIONS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline"
+                    style={{ color: "var(--color-secondary)" }}
+                  >
+                    <span aria-hidden="true" className="material-symbols-outlined text-base">
+                      directions
+                    </span>
+                    Get directions
+                  </a>
                 </div>
                 <button
                   type="button"
@@ -153,25 +172,28 @@ export default function VisitSection() {
                   <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
                 </button>
               </li>
-              <li className="visit-item flex items-center gap-3">
-                <span className="visit-icon" aria-hidden="true">
-                  <span aria-hidden="true" className="material-symbols-outlined">call</span>
+              {/* Phone and email share a row to keep the section on one screen */}
+              <li className="visit-item flex flex-wrap items-center gap-x-6 gap-y-3">
+                <span className="flex items-center gap-3">
+                  <span className="visit-icon" aria-hidden="true">
+                    <span className="material-symbols-outlined">call</span>
+                  </span>
+                  <span className="font-mono text-sm" style={{ color: "var(--color-primary)" }}>
+                    {CAFE.phone}
+                  </span>
                 </span>
-                <span className="font-mono text-sm" style={{ color: "var(--color-primary)" }}>
-                  {CAFE.phone}
+                <span className="flex items-center gap-3">
+                  <span className="visit-icon" aria-hidden="true">
+                    <span className="material-symbols-outlined">mail</span>
+                  </span>
+                  <a
+                    href={`mailto:${CAFE.email}`}
+                    className="font-mono text-sm underline-offset-4 hover:underline"
+                    style={{ color: "var(--color-primary)" }}
+                  >
+                    {CAFE.email}
+                  </a>
                 </span>
-              </li>
-              <li className="visit-item flex items-center gap-3">
-                <span className="visit-icon" aria-hidden="true">
-                  <span aria-hidden="true" className="material-symbols-outlined">mail</span>
-                </span>
-                <a
-                  href={`mailto:${CAFE.email}`}
-                  className="font-mono text-sm underline-offset-4 hover:underline"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  {CAFE.email}
-                </a>
               </li>
             </ul>
 
@@ -214,7 +236,6 @@ export function setupVisitScroll(isMobile: boolean) {
 
   tl.fromTo(q(".visit-head"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0)
     .fromTo(q(".visit-map"), { opacity: 0, y: 60, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 0.05)
-    .fromTo(q(".map-pin"), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.25, ease: "bounce.out" }, 0.25)
     .fromTo(q(".visit-photo"), { opacity: 0, y: 40, rotate: 4 }, { opacity: 1, y: 0, rotate: -5, duration: 0.3, ease: "back.out(1.6)" }, 0.3)
     .fromTo(q(".visit-item"), { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.04, ease: "power2.out" }, 0.12);
 

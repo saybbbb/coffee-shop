@@ -189,7 +189,10 @@ export default function FaqBot() {
   };
 
   const onAction = (a: BotAction) => {
-    if (a.kind === "go") {
+    if (a.kind === "go" && /^https?:/.test(a.href)) {
+      // External (e.g. Google Maps directions): new tab, keep the chat open
+      window.open(a.href, "_blank", "noopener,noreferrer");
+    } else if (a.kind === "go") {
       setOpen(false);
       go(a.href);
     } else {

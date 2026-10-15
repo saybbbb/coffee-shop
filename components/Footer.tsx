@@ -5,7 +5,7 @@ import { usePageTransition } from "@/components/transition/PageTransition";
 import OpenBadge from "@/components/visit/OpenBadge";
 import LegalModal, { type LegalKind } from "@/components/LegalModal";
 import { useToast } from "@/components/toast/Toaster";
-import { CAFE, formatTime } from "@/data/cafe";
+import { CAFE, formatTime, streetAddress } from "@/data/cafe";
 import { useCallback, useState } from "react";
 
 export default function Footer() {
@@ -233,9 +233,9 @@ export default function Footer() {
                   location_on
                 </span>
                 <p className="text-stone-300 font-light leading-snug">
-                  {CAFE.address.street}, {CAFE.address.district}
+                  {CAFE.address.place}
                   <br />
-                  <span className="text-xs text-stone-400 font-mono">{CAFE.address.note}</span>
+                  <span className="text-xs text-stone-400 font-mono">{streetAddress}</span>
                 </p>
               </div>
 

@@ -7,7 +7,7 @@
  * on the page.
  */
 
-import { CAFE, formatTime, fullAddress, getOpenStatus } from "@/data/cafe";
+import { CAFE, DIRECTIONS_URL, formatTime, getOpenStatus, streetAddress } from "@/data/cafe";
 import { MILKS, SIZES, allItems, formatPrice, menu, type MenuItem } from "@/data/menu";
 import { PROCESS } from "@/data/process";
 import { TEAM } from "@/data/team";
@@ -138,8 +138,11 @@ const INTENTS: Intent[] = [
     id: "location",
     keys: ["where", "address", "location", "located", "directions", "find", "map", "station", "parking", "near", "train", "get there"],
     answer: () => ({
-      text: `We're at ${fullAddress} (${CAFE.address.note[0].toLowerCase() + CAFE.address.note.slice(1)}). It's a ${CAFE.transit}.`,
-      actions: [{ kind: "go", label: "See the map", href: "/#visit", icon: "map" }],
+      text: `You'll find us at ${CAFE.address.place}, ${streetAddress}.`,
+      actions: [
+        { kind: "go", label: "See the map", href: "/#visit", icon: "map" },
+        { kind: "go", label: "Get directions", href: DIRECTIONS_URL, icon: "directions" },
+      ],
       followUps: ["Are you open now?", "Is it pet-friendly?"],
     }),
   },
