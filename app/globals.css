@@ -258,6 +258,14 @@ button:hover > .side-dot {
 html[data-intro="skip"] .intro-overlay {
   display: none;
 }
+/* While the intro plays, hide everything behind it and match its first frame,
+   so nothing can show through or flash before the video starts */
+html[data-intro="playing"] body {
+  background-color: #040304; /* the intro video's first frame */
+}
+html[data-intro="playing"] body > *:not(.intro-overlay) {
+  visibility: hidden;
+}
 
 /* ---- Nurvana hover utility classes ---- */
 .nurvana-bento-card {

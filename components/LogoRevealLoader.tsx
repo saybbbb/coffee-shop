@@ -4,12 +4,18 @@ import { useEffect, useRef, useState } from "react";
 
 export const INTRO_KEY = "nurvana_intro_played";
 
+/** Average colour of the intro video's first frame (it opens on near-black). */
+const INTRO_BG = "#040304";
+
 /**
- * Runs in <head> before the first paint (see app/layout.tsx). If the intro has
- * already played this session, or the visitor prefers reduced motion, it marks
- * <html data-intro="skip"> so CSS hides the overlay before anything is drawn.
+ * Runs in <head> before the first paint (see app/layout.tsx) and sets
+ * <html data-intro>:
+ *  - "skip"    → already played this session, or reduced motion: CSS hides the overlay
+ *  - "playing" → first visit: CSS hides the page *behind* the overlay and paints the
+ *                background espresso, so while the full-screen video layer is still
+ *                being drawn there's nothing (like the hero) to flicker through it
  */
-export const INTRO_GATE_SCRIPT = `try{if(sessionStorage.getItem("${INTRO_KEY}")||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.intro="skip"}catch(e){}`;
+export const INTRO_GATE_SCRIPT = `try{document.documentElement.dataset.intro=(sessionStorage.getItem("${INTRO_KEY}")||matchMedia("(prefers-reduced-motion: reduce)").matches)?"skip":"playing"}catch(e){}`;
 
 export default function LogoRevealLoader() {
   // Rendered in the server HTML so it covers the page from the very first frame;
@@ -38,6 +44,8 @@ export default function LogoRevealLoader() {
       } catch {}
       window.__lenis?.scrollTo(0, { immediate: true, force: true });
       window.__lenis?.start();
+      // Reveal the page underneath first, so the overlay fades into the hero
+      root.dataset.intro = "revealing";
       setIsFadingOut(true);
       setTimeout(() => {
         setIsRemoved(true);
@@ -65,13 +73,14 @@ export default function LogoRevealLoader() {
       className={`intro-overlay fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-700 ease-in-out ${
         isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
-      style={{ backgroundColor: "var(--color-primary, #33210d)" }}
+      // Matches the video's first frame (and the poster), so nothing jumps when playback starts
+      style={{ backgroundColor: INTRO_BG }}
       aria-hidden="true"
     >
       <video
         ref={videoRef}
         src="/video/logo-reveal.mp4"
-        poster="/video/logo-reveal-poster.jpg"
+        poster="/video/logo-reveal-start.jpg"
         autoPlay
         muted
         playsInline
