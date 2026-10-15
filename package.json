@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:e2e": "playwright test --grep-invert @screens",
-    "screens": "playwright test --grep @screens"
+    "test:e2e": "playwright test --grep-invert \"@screens|@og\"",
+    "screens": "playwright test --grep @screens",
+    "og:image": "playwright test --grep @og --project=laptop"
   },
   "dependencies": {
     "gsap": "^3.15.0",

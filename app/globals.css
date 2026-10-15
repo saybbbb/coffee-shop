@@ -561,6 +561,17 @@ html[data-intro="skip"] .intro-overlay {
 }
 
 
+/* ---- 404: the empty cup sways a little, as if just set down ---- */
+.empty-cup {
+  transform-box: view-box;
+  transform-origin: 105px 105px;
+  animation: empty-cup-sway 5s ease-in-out infinite;
+}
+@keyframes empty-cup-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+
 /* ---- Footer ---- */
 .social-pill {
   display: inline-flex;

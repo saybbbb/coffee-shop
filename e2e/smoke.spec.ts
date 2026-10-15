@@ -225,6 +225,30 @@ test.describe("footer", () => {
   });
 });
 
+test.describe("404 & link previews", () => {
+  test("unknown pages show the branded 404 with a way back", async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem("nurvana_intro_played", "true"));
+    const res = await page.goto("/this-page-does-not-exist");
+    expect(res?.status()).toBe(404);
+    await expect(page.getByRole("heading", { name: "This cup is empty." })).toBeVisible();
+    await page.getByRole("link", { name: /Back home/ }).click();
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Sip the Brew.");
+  });
+
+  test("pages carry a link-preview image and description", async ({ page, request }) => {
+    await page.goto("/");
+    const og = page.locator('meta[property="og:image"]');
+    await expect(og).toHaveCount(1);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", /Nurvaná Café/);
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+    const url = new URL((await og.getAttribute("content"))!);
+    const img = await request.get(url.pathname + url.search);
+    expect(img.status()).toBe(200);
+    expect(img.headers()["content-type"]).toContain("image/jpeg");
+  });
+});
+
 test.describe("Ask Nurvana", () => {
   test("answers a price question from the menu data", async ({ page }) => {
     await openSite(page);
