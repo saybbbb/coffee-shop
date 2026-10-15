@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
 import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
+import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
 import { describeOptions, useCart, type PlacedOrder } from "./CartProvider";
@@ -60,6 +61,9 @@ export default function CartDrawer() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, close]);
+
+  // On touch screens, swipe the drawer back off to the right to close it
+  useSwipeToDismiss(panelRef, { axis: "x", onDismiss: close, enabled: isOpen });
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
+import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { MILKS, SIZES, allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { useCart, unitPriceFor } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
@@ -63,6 +64,9 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // On phones it's a bottom sheet: swipe it down to close
+  useSwipeToDismiss(panelRef, { axis: "y", onDismiss: close, maxWidth: 768 });
+
   const handleAdd = () => {
     add(item, { size, milk, qty, from: artRef.current });
     close();
@@ -86,6 +90,8 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
       >
         {/* Art */}
         <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] overflow-hidden">
+          {/* Grab handle: hints that the sheet can be swiped down (phones only) */}
+          <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 w-10 h-1.5 rounded-full bg-white/80 shadow" aria-hidden="true" />
           <div ref={artRef} className="absolute inset-0">
             <MenuArt item={item} sizes="(max-width: 768px) 100vw, 450px" iconSize="7rem" />
           </div>
