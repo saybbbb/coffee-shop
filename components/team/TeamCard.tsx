@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { allItems, type MenuItem } from "@/data/menu";
 import { initials, type TeamMember } from "@/data/team";
 import { PALETTES } from "@/components/menu/MenuArt";
@@ -8,6 +9,45 @@ import { PALETTES } from "@/components/menu/MenuArt";
 /** Widest the initials may be (in SVG units) to sit comfortably inside the foam. */
 const MAX_INITIALS_WIDTH = 38;
 const BASE_FONT_SIZE = 30;
+
+/** Small dark circle in the corner of a portrait with an icon for the person's job. */
+function RoleBadge({ icon }: { icon: string }) {
+  return (
+    <span
+      className="absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md ring-2 ring-white/70"
+      style={{ backgroundColor: "var(--color-primary)", color: "var(--color-secondary-fixed)" }}
+      aria-hidden="true"
+    >
+      <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+        {icon}
+      </span>
+    </span>
+  );
+}
+
+/** The person's photo, softly vignetted so it sits in the warm card. */
+function PhotoPortrait({ member }: { member: TeamMember }) {
+  return (
+    <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-stone-300">
+      <Image
+        src={member.photo!}
+        alt={`${member.name}, ${member.role}`}
+        fill
+        sizes="(max-width: 768px) 240px, 260px"
+        className="object-cover object-[50%_30%] transition-transform duration-700 ease-out group-hover:scale-105"
+      />
+      {/* Warm vignette + a little depth at the bottom so the badge reads */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 35%, transparent 55%, rgba(51,33,13,0.28) 100%), linear-gradient(to top, rgba(41,24,6,0.35) 0%, transparent 35%)",
+        }}
+      />
+      <RoleBadge icon={member.icon} />
+    </div>
+  );
+}
 
 /** Top-down latte with the person's initials in the foam and a small role badge. */
 function LattePortrait({ member }: { member: TeamMember }) {
@@ -102,16 +142,7 @@ function LattePortrait({ member }: { member: TeamMember }) {
         </g>
       </svg>
 
-      {/* Role badge */}
-      <span
-        className="absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md"
-        style={{ backgroundColor: "var(--color-primary)", color: "var(--color-secondary-fixed)" }}
-        aria-hidden="true"
-      >
-        <span aria-hidden="true" className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
-          {member.icon}
-        </span>
-      </span>
+      <RoleBadge icon={member.icon} />
     </div>
   );
 }
@@ -124,7 +155,7 @@ export default function TeamCard({ member, onOpen }: { member: TeamMember; onOpe
       className="team-scrolly-card snap-center shrink-0 w-[70vw] max-w-[240px] md:w-auto md:max-w-none group rounded-3xl p-3 glass-panel hover:shadow-xl transition-[box-shadow] duration-300 flex flex-col preserve-3d will-change-transform-opacity"
       style={{ backgroundColor: "var(--color-surface-container)" }}
     >
-      <LattePortrait member={member} />
+      {member.photo ? <PhotoPortrait member={member} /> : <LattePortrait member={member} />}
 
       <div className="px-2 pt-4 pb-2 flex flex-col gap-1.5 flex-1 text-center">
         <h3
