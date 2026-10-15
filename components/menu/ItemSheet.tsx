@@ -7,6 +7,7 @@ import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { MILKS, SIZES, allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { useCart, unitPriceFor } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
+import RollingPrice from "@/components/RollingPrice";
 import QuickAdd from "./QuickAdd";
 
 /** Detail + customise sheet. Bottom sheet on mobile, centred card on desktop. */
@@ -216,7 +217,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
             </div>
             <button onClick={handleAdd} className="nurvana-btn-solid flex-1 justify-between">
               <span>Add to Order</span>
-              <span className="font-mono">{formatPrice(unit * qty)}</span>
+              <RollingPrice value={unit * qty} className="font-mono" />
             </button>
           </div>
         </div>

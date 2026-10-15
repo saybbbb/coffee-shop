@@ -32,7 +32,12 @@ export default function FindYourBrew({ onClose, onOpen }: { onClose: () => void;
 
   // Each step slides in
   useEffect(() => {
-    gsap.fromTo(bodyRef.current, { opacity: 0, x: prefersReducedMotion() ? 0 : 24 }, { opacity: 1, x: 0, duration: 0.35, ease: EASE_OUT });
+    // Each step slides in from a soft blur, so the swap reads as one motion
+    gsap.fromTo(
+      bodyRef.current,
+      { opacity: 0, x: prefersReducedMotion() ? 0 : 24, filter: "blur(4px)" },
+      { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.35, ease: EASE_OUT, clearProps: "filter" }
+    );
   }, [step]);
 
   const choose = (key: string, value: string) => {

@@ -5,6 +5,7 @@ import TransitionLink from "@/components/transition/TransitionLink";
 import { isPageTransitioning } from "@/components/transition/PageTransition";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { menu, formatPrice, type MenuCategory, type MenuItem, type MenuTag } from "@/data/menu";
 import MenuArt from "./MenuArt";
 import ItemSheet from "./ItemSheet";
@@ -151,7 +152,7 @@ function SmallCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
       className="menu-reveal tilt-card rounded-3xl p-5 flex items-center gap-5 cursor-pointer hover:shadow-xl group"
       style={{ backgroundColor: "var(--color-surface-container-low)" }}
     >
-      <div ref={artRef} className="w-24 h-24 rounded-full overflow-hidden shrink-0 relative shadow-md">
+      <div ref={artRef} className="menu-reveal-art w-24 h-24 rounded-full overflow-hidden shrink-0 relative shadow-md">
         <MenuArt item={item} sizes="96px" iconSize="2.5rem" className="transition-transform duration-700 group-hover:scale-110" />
       </div>
       <div className="flex-1 min-w-0 space-y-1">
@@ -182,7 +183,7 @@ function BentoCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
     >
       <div
         ref={artRef}
-        className="w-full sm:w-2/5 aspect-square organic-shape overflow-hidden relative shadow-inner shrink-0"
+        className="menu-reveal-art w-full sm:w-2/5 aspect-square organic-shape overflow-hidden relative shadow-inner shrink-0"
         style={{ backgroundColor: "var(--color-secondary-fixed)" }}
       >
         <MenuArt item={item} sizes="(max-width: 640px) 100vw, 240px" iconSize="4.5rem" className="transition-transform duration-700 group-hover:scale-110" />
@@ -220,7 +221,7 @@ function GridCard({ item, onOpen }: { item: MenuItem; onOpen: OpenFn }) {
       className="menu-reveal tilt-card rounded-3xl p-3 flex flex-col cursor-pointer group hover:shadow-xl glass-panel"
       style={{ backgroundColor: "var(--color-surface-container)" }}
     >
-      <div ref={artRef} className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+      <div ref={artRef} className="menu-reveal-art relative aspect-[4/5] rounded-2xl overflow-hidden">
         <MenuArt item={item} sizes="(max-width: 768px) 50vw, 280px" iconSize="4.5rem" className="transition-transform duration-700 group-hover:scale-110" />
       </div>
       <div className="px-2 pt-4 pb-2 flex flex-col gap-2 flex-1">
@@ -359,11 +360,31 @@ export default function MenuExperience() {
       const els = gsap.utils.toArray<HTMLElement>(".menu-reveal");
       // Animate the standalone `translate` property so it never fights the CSS tilt `transform`
       gsap.set(els, { opacity: 0, translate: "0px 50px" });
+      // Each photo uncovers itself from the bottom up, like a curtain rising,
+      // while settling from a slight zoom
+      gsap.set(".menu-reveal-art", { clipPath: "inset(100% 0% 0% 0%)", scale: 1.08 });
       ScrollTrigger.batch(els, {
         start: "top 90%",
         once: true,
-        onEnter: (batch) =>
-          gsap.to(batch, { opacity: 1, translate: "0px 0px", duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: true }),
+        onEnter: (batch) => {
+          gsap.to(batch, { opacity: 1, translate: "0px 0px", duration: 0.8, stagger: 0.08, ease: EASE_OUT, overwrite: true });
+          // Not everything that rises in has a photo (e.g. headings)
+          const arts = batch.map((el) => el.querySelector(".menu-reveal-art")).filter((el) => el !== null);
+          if (!arts.length) return;
+          gsap.to(
+            arts,
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              scale: 1,
+              duration: 0.9,
+              stagger: 0.08,
+              delay: 0.1,
+              ease: EASE_IN_OUT,
+              // Clear it afterwards: the photo is cloned when it flies to the cart
+              clearProps: "clipPath,scale",
+            }
+          );
+        },
       });
     }, rootRef);
     ScrollTrigger.refresh();

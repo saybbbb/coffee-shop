@@ -7,6 +7,7 @@ import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
 import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
+import RollingPrice from "@/components/RollingPrice";
 import { describeOptions, useCart, type PlacedOrder } from "./CartProvider";
 import { STAGES, useOrderStage } from "./orderStages";
 
@@ -174,9 +175,7 @@ export default function CartDrawer() {
                           <QtyButton icon="add" label="Increase" onClick={() => cart.setQty(l.key, l.qty + 1)} />
                         </div>
                       </div>
-                      <span className="font-mono font-bold text-sm" style={{ color: "var(--color-secondary)" }}>
-                        {formatPrice(l.unitPrice * l.qty)}
-                      </span>
+                      <RollingPrice value={l.unitPrice * l.qty} className="font-mono font-bold text-sm" style={{ color: "var(--color-secondary)" }} />
                     </li>
                   ))}
                 </ul>
@@ -213,12 +212,11 @@ export default function CartDrawer() {
                     <span className="text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
                       {count} item{count === 1 ? "" : "s"}
                     </span>
-                    <span
+                    <RollingPrice
+                      value={subtotal}
                       className="text-2xl font-extrabold"
                       style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-                    >
-                      {formatPrice(subtotal)}
-                    </span>
+                    />
                   </div>
                   <button type="submit" className="nurvana-btn-solid w-full justify-center">
                     <span>Place Pickup Order</span>

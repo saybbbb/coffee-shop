@@ -82,9 +82,19 @@ function FloatingPhoto({
       className="fixed top-0 left-0 z-[45] w-[230px] aspect-[4/5] rounded-[22px] overflow-hidden shadow-2xl pointer-events-none ring-4 ring-white opacity-0"
       aria-hidden="true"
     >
-      {/* All photos are stacked and crossfaded, so swapping is instant */}
+      {/* All photos are stacked and crossfaded, so swapping is instant. A brief
+          blur while they cross melts one drink into the next instead of showing
+          two photos on top of each other. */}
       {BOARD_ITEMS.map((item) => (
-        <div key={item.id} className="absolute inset-0 transition-opacity duration-300" style={{ opacity: activeId === item.id ? 1 : 0 }}>
+        <div
+          key={item.id}
+          className="board-photo-layer absolute inset-0"
+          style={
+            activeId === item.id
+              ? { opacity: 1, filter: "blur(0px)", scale: "1" }
+              : { opacity: 0, filter: "blur(6px)", scale: "1.06" }
+          }
+        >
           <MenuArt item={item} sizes="230px" iconSize="4rem" />
         </div>
       ))}

@@ -235,7 +235,14 @@ export function setupStoryScroll(isMobile: boolean) {
     .fromTo(words, { opacity: 0.14 }, { opacity: 1, stagger: 0.012, duration: 0.06, ease: "none" }, 0.04)
     .fromTo(q(".story-pill"), { scale: 0.6 }, { scale: 1, stagger: 0.12, duration: 0.08, ease: "back.out(2)" }, 0.08)
     // Collage drifts into place, layers at different speeds for depth
-    .fromTo(q(".story-photo-main"), { y: 60, opacity: 0.4 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0)
+    // The main photo rises into frame from the bottom up. The clip reaches past
+    // the sides and bottom so the photo's drop shadow is never cut off.
+    .fromTo(
+      q(".story-photo-main"),
+      { y: 60, opacity: 0.4, clipPath: "inset(45% -15% -15% -15%)" },
+      { y: 0, opacity: 1, clipPath: "inset(0% -15% -15% -15%)", duration: 0.4, ease: "power2.out" },
+      0
+    )
     .fromTo(q(".story-photo-polaroid"), { y: 140, rotate: 14 }, { y: 0, rotate: 6, duration: 0.45, ease: "power2.out" }, 0.05)
     .fromTo(q(".story-photo-round"), { y: 100, scale: 0.8 }, { y: 0, scale: 1, duration: 0.45, ease: "power2.out" }, 0.1)
     // The badge is pressed onto the collage like a stamp: it drops from above

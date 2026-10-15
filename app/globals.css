@@ -11,6 +11,7 @@
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* strong ease-out: UI entering/leaving, presses */
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* iOS-like drawer curve */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* strong ease-in-out: on-screen reveals */
 }
 
 @theme inline {
@@ -686,7 +687,7 @@ body:has([data-order-pill]) .toast-dock {
   animation: faq-fade-up 0.35s ease-out both;
 }
 @keyframes faq-fade-up {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -893,4 +894,33 @@ html.lenis, html.lenis body {
 .option-chip:active {
   translate: 0 0;
   scale: 0.97;
+}
+
+/* ---- Rolling prices: changed digits roll in (up when the price rises) ---- */
+.rolling-price {
+  display: inline-flex;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  vertical-align: bottom;
+}
+.rolling-price > span {
+  display: inline-block;
+  white-space: pre;
+}
+.rolling-price > .is-new {
+  animation: roll-from-below 0.38s var(--ease-out) both;
+}
+.rolling-price[data-dir="down"] > .is-new {
+  animation-name: roll-from-above;
+}
+@keyframes roll-from-below {
+  from { transform: translateY(75%); opacity: 0; filter: blur(2px); }
+}
+@keyframes roll-from-above {
+  from { transform: translateY(-75%); opacity: 0; filter: blur(2px); }
+}
+
+/* Menu board's floating photo: drinks melt into each other as you move down the list */
+.board-photo-layer {
+  transition: opacity 0.3s ease, filter 0.3s ease, scale 0.4s var(--ease-out);
 }
