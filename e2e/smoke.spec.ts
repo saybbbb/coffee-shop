@@ -84,6 +84,24 @@ test.describe("navigation", () => {
   });
 });
 
+test.describe("top bar", () => {
+  test("section links fit between the logo and the buttons", async ({ page }, info) => {
+    test.skip(info.project.name !== "laptop", "the link bar only shows on large screens");
+    await openSite(page);
+    for (const width of [1024, 1280, 1366]) {
+      await page.setViewportSize({ width, height: 768 });
+      const box = async (sel: string) => (await page.locator(sel).first().boundingBox())!;
+      const logo = await box('header a[aria-label="Nurvana Café home"]');
+      const bar = await box('header nav[aria-label="Sections"]');
+      const actions = await box('header a[href="/menu"]');
+      expect(logo.x + logo.width, `logo clears the bar at ${width}px`).toBeLessThan(bar.x);
+      expect(bar.x + bar.width, `bar clears the buttons at ${width}px`).toBeLessThan(actions.x);
+    }
+    // Every section in the bar is reachable from it
+    await expect(page.locator("header [data-bar-link]")).toHaveText(["Story", "Bean to Cup", "Lineup", "Team", "Kind Words", "Visit"]);
+  });
+});
+
 test.describe("accessibility", () => {
   for (const path of ["/", "/menu"]) {
     test(`every visible button and link on ${path} has a readable name`, async ({ page }) => {

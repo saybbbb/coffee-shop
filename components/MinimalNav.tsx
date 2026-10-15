@@ -21,7 +21,7 @@ const SECTIONS: SectionItem[] = [
   { id: "process", label: "Bean to Cup", inBar: "Bean to Cup" },
   { id: "menu", label: "The Menu", inBar: "Lineup" },
   { id: "team", label: "Our Team", inBar: "Team" },
-  { id: "reviews", label: "Kind Words" },
+  { id: "reviews", label: "Kind Words", inBar: "Kind Words" },
   { id: "visit", label: "Visit Us", inBar: "Visit" },
 ];
 const BAR_LINKS = SECTIONS.filter((s) => s.inBar);
