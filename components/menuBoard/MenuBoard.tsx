@@ -79,12 +79,22 @@ function FloatingPhoto({
     <div
       ref={ref}
       data-board-photo
-      className="fixed top-0 left-0 z-[45] w-[230px] aspect-[4/5] rounded-[22px] overflow-hidden shadow-2xl pointer-events-none ring-4 ring-white opacity-0"
+      className="fixed top-0 left-0 z-[45] w-[230px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl pointer-events-none ring-4 ring-white opacity-0"
       aria-hidden="true"
     >
-      {/* All photos are stacked and crossfaded, so swapping is instant */}
+      {/* All photos are stacked and crossfaded, so swapping is instant. A brief
+          blur while they cross melts one drink into the next instead of showing
+          two photos on top of each other. */}
       {BOARD_ITEMS.map((item) => (
-        <div key={item.id} className="absolute inset-0 transition-opacity duration-300" style={{ opacity: activeId === item.id ? 1 : 0 }}>
+        <div
+          key={item.id}
+          className="board-photo-layer absolute inset-0"
+          style={
+            activeId === item.id
+              ? { opacity: 1, filter: "blur(0px)", scale: "1" }
+              : { opacity: 0, filter: "blur(6px)", scale: "1.06" }
+          }
+        >
           <MenuArt item={item} sizes="230px" iconSize="4rem" />
         </div>
       ))}
@@ -146,7 +156,7 @@ function BoardLine({
           {item.tags && (
             <span className="flex flex-wrap gap-1.5 mt-1.5">
               {item.tags.map((t) => (
-                <span key={t} className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}>
+                <span key={t} className="text-xs md:text-[11px] font-mono uppercase tracking-wider" style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}>
                   {t}
                 </span>
               ))}
@@ -204,7 +214,7 @@ export default function MenuBoard({ onOpen }: { onOpen: (item: MenuItem) => void
         <div className="board-head flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 md:mb-8">
           <div className="space-y-2">
             <span
-              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
+              className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-amber-900/10"
               style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
             >
               04 / The Menu
@@ -253,7 +263,7 @@ export default function MenuBoard({ onOpen }: { onOpen: (item: MenuItem) => void
             {COLUMNS.map((col) => (
               <div key={col.title}>
                 <h3
-                  className="board-col-title text-[11px] font-mono uppercase tracking-[0.25em] pb-2 mb-1 border-b"
+                  className="board-col-title text-xs md:text-[11px] font-mono uppercase tracking-[0.2em] pb-2 mb-1 border-b"
                   style={{ color: "var(--color-outline)", borderColor: "var(--color-outline-variant)", fontFamily: "var(--font-label)" }}
                 >
                   {col.title}

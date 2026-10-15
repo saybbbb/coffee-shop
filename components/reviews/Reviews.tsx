@@ -101,7 +101,7 @@ export default function Reviews({ onOpen }: { onOpen: (item: MenuItem) => void }
       <div className="reviews-head max-w-[1300px] mx-auto w-full px-4 sm:px-6 md:px-16 mb-6 md:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-5">
         <div className="space-y-2">
           <span
-            className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
+            className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
             style={{ fontFamily: "var(--font-label)" }}
           >
             06 / Kind Words

@@ -231,7 +231,7 @@ export default function MinimalNav() {
                     </span>
                   ) : (
                     <span
-                      className="nav-glass absolute right-8 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider whitespace-nowrap opacity-0 translate-x-1 pointer-events-none transition-[opacity,translate] duration-200 ease-[var(--ease-out)] group-hover:opacity-100 group-hover:translate-x-0"
+                      className="nav-glass absolute right-8 px-2.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider whitespace-nowrap opacity-0 translate-x-1 pointer-events-none transition-[opacity,translate] duration-200 ease-[var(--ease-out)] group-hover:opacity-100 group-hover:translate-x-0"
                       style={{ fontFamily: "var(--font-label)" }}
                     >
                       {s.label}
@@ -255,11 +255,11 @@ export default function MinimalNav() {
           aria-label="Navigation"
         >
           <div
-            className="w-full max-w-md rounded-3xl p-7 text-white shadow-2xl relative border border-white/10"
+            className="w-full max-w-md rounded-3xl p-7 text-white shadow-2xl relative border border-hairline"
             onClick={(e) => e.stopPropagation()}
             style={{ backgroundColor: "color-mix(in srgb, var(--color-primary) 94%, black)" }}
           >
-            <div className="flex justify-between items-center pb-5 border-b border-white/10">
+            <div className="flex justify-between items-center pb-5 border-b border-hairline">
               <span className="text-xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                 Nurvana Café
               </span>
@@ -304,7 +304,7 @@ export default function MinimalNav() {
               Full Menu &amp; Ordering
             </TransitionLink>
 
-            <div className="pt-5 mt-5 border-t border-white/10 text-xs text-stone-400 font-mono flex justify-between items-center gap-3">
+            <div className="pt-5 mt-5 border-t border-hairline text-xs text-stone-400 font-mono flex justify-between items-center gap-3">
               <span>Fair Trade &amp; Small Batch</span>
               <OpenBadge dark />
             </div>

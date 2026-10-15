@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
 import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
+import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
+import RollingPrice from "@/components/RollingPrice";
 import { describeOptions, useCart, type PlacedOrder } from "./CartProvider";
 import { STAGES, useOrderStage } from "./orderStages";
 
@@ -60,6 +62,9 @@ export default function CartDrawer() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, close]);
+
+  // On touch screens, swipe the drawer back off to the right to close it
+  useSwipeToDismiss(panelRef, { axis: "x", onDismiss: close, enabled: isOpen });
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,9 +175,7 @@ export default function CartDrawer() {
                           <QtyButton icon="add" label="Increase" onClick={() => cart.setQty(l.key, l.qty + 1)} />
                         </div>
                       </div>
-                      <span className="font-mono font-bold text-sm" style={{ color: "var(--color-secondary)" }}>
-                        {formatPrice(l.unitPrice * l.qty)}
-                      </span>
+                      <RollingPrice value={l.unitPrice * l.qty} className="font-mono font-bold text-sm" style={{ color: "var(--color-secondary)" }} />
                     </li>
                   ))}
                 </ul>
@@ -209,12 +212,11 @@ export default function CartDrawer() {
                     <span className="text-sm" style={{ color: "var(--color-on-surface-variant)" }}>
                       {count} item{count === 1 ? "" : "s"}
                     </span>
-                    <span
+                    <RollingPrice
+                      value={subtotal}
                       className="text-2xl font-extrabold"
                       style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-                    >
-                      {formatPrice(subtotal)}
-                    </span>
+                    />
                   </div>
                   <button type="submit" className="nurvana-btn-solid w-full justify-center">
                     <span>Place Pickup Order</span>
@@ -369,14 +371,14 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
       >
         <div
-          className="confirm-stamp absolute -top-3 -right-3 w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed text-[10px] font-mono uppercase tracking-widest leading-tight"
+          className="confirm-stamp absolute -top-3 -right-3 w-24 h-24 rounded-full flex items-center justify-center border-2 border-dashed text-xs md:text-[11px] font-mono uppercase tracking-widest leading-tight"
           style={{ borderColor: "var(--color-secondary-fixed-dim)", color: "var(--color-secondary-fixed-dim)" }}
         >
           Nurvana
           <br />
           Approved
         </div>
-        <p className="confirm-reveal text-[11px] font-mono uppercase tracking-[0.2em] text-amber-200/80">Order number</p>
+        <p className="confirm-reveal text-xs md:text-[11px] font-mono uppercase tracking-[0.16em] text-amber-200/80">Order number</p>
         <p className="confirm-reveal text-7xl font-black tracking-tight my-1" style={{ fontFamily: "var(--font-display)" }}>
           #{order.number}
         </p>

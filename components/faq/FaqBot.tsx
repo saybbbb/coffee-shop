@@ -46,7 +46,7 @@ function TypedText({ text, onDone }: { text: string; onDone: () => void }) {
 function ItemRow({ item, onView }: { item: MenuItem; onView: (i: MenuItem) => void }) {
   const artRef = useRef<HTMLDivElement>(null);
   return (
-    <li className="flex items-center gap-3 p-2 pr-2.5 rounded-2xl bg-white/70 border" style={{ borderColor: "var(--color-outline-variant)" }}>
+    <li className="flex items-center gap-3 p-2 pr-2.5 rounded-[20px] bg-white/70 border" style={{ borderColor: "var(--color-outline-variant)" }}>
       <div ref={artRef} className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0">
         <MenuArt item={item} sizes="44px" iconSize="1.3rem" />
       </div>
@@ -249,7 +249,7 @@ export default function FaqBot() {
           ref={panelRef}
           role="dialog"
           aria-label="Ask Nurvana"
-          className="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:w-[390px] z-[65] flex flex-col rounded-[26px] shadow-2xl overflow-hidden origin-bottom-left border"
+          className="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:w-[390px] z-[65] flex flex-col rounded-[28px] shadow-2xl overflow-hidden origin-bottom-left border"
           style={{
             height: "min(600px, calc(100dvh - 7rem))",
             backgroundColor: "var(--color-surface)",
@@ -343,7 +343,7 @@ export default function FaqBot() {
               <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_upward</span>
             </button>
           </form>
-          <p className="text-[10px] text-center pb-2 pt-1" style={{ color: "var(--color-outline)" }}>
+          <p className="text-[11px] text-center pb-2 pt-1" style={{ color: "var(--color-outline)" }}>
             Quick answers from our menu &amp; café info · not a live person
           </p>
         </div>

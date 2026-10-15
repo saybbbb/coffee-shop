@@ -77,7 +77,7 @@ function Stamp() {
           <path id="story-stamp-circle" d="M70 70 m -54 0 a 54 54 0 1 1 108 0 a 54 54 0 1 1 -108 0" />
         </defs>
         <circle cx="70" cy="70" r="68" fill="var(--color-primary)" />
-        <text fill="#f6e0b9" fontFamily="Space Mono, monospace" fontSize="10.5">
+        <text fill="#f6e0b9" style={{ fontFamily: "var(--font-label)" }} fontSize="10.5">
           {/* textLength stretches the text to exactly one lap of the circle */}
           <textPath href="#story-stamp-circle" textLength="336" lengthAdjust="spacing">
             {STAMP_TEXT}
@@ -152,12 +152,12 @@ export default function OurStory() {
           <div className="lg:col-span-7 space-y-6 md:space-y-7">
             <div className="story-kicker flex items-center gap-3 flex-wrap">
               <span
-                className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
+                className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-amber-900/10"
                 style={{ color: "var(--color-secondary)", fontFamily: "var(--font-label)" }}
               >
                 02 / Our Story
               </span>
-              <h2 id="story-heading" className="text-xs font-mono uppercase tracking-[0.2em]" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
+              <h2 id="story-heading" className="text-xs font-mono uppercase tracking-[0.16em]" style={{ color: "var(--color-outline)", fontFamily: "var(--font-label)" }}>
                 Brewed with intention
               </h2>
             </div>
@@ -235,7 +235,14 @@ export function setupStoryScroll(isMobile: boolean) {
     .fromTo(words, { opacity: 0.14 }, { opacity: 1, stagger: 0.012, duration: 0.06, ease: "none" }, 0.04)
     .fromTo(q(".story-pill"), { scale: 0.6 }, { scale: 1, stagger: 0.12, duration: 0.08, ease: "back.out(2)" }, 0.08)
     // Collage drifts into place, layers at different speeds for depth
-    .fromTo(q(".story-photo-main"), { y: 60, opacity: 0.4 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0)
+    // The main photo rises into frame from the bottom up. The clip reaches past
+    // the sides and bottom so the photo's drop shadow is never cut off.
+    .fromTo(
+      q(".story-photo-main"),
+      { y: 60, opacity: 0.4, clipPath: "inset(45% -15% -15% -15%)" },
+      { y: 0, opacity: 1, clipPath: "inset(0% -15% -15% -15%)", duration: 0.4, ease: "power2.out" },
+      0
+    )
     .fromTo(q(".story-photo-polaroid"), { y: 140, rotate: 14 }, { y: 0, rotate: 6, duration: 0.45, ease: "power2.out" }, 0.05)
     .fromTo(q(".story-photo-round"), { y: 100, scale: 0.8 }, { y: 0, scale: 1, duration: 0.45, ease: "power2.out" }, 0.1)
     // The badge is pressed onto the collage like a stamp: it drops from above

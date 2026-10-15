@@ -1,6 +1,7 @@
 "use client";
 
 import { gsap } from "gsap";
+import { EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROCESS } from "@/data/process";
 import MenuArt from "@/components/menu/MenuArt";
@@ -29,7 +30,7 @@ export default function BeanToCup() {
       <div className="relative md:absolute md:top-0 md:inset-x-0 z-10 max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 pt-20 md:pt-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
           <span
-            className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
+            className="inline-block text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full bg-white/10 text-amber-200"
             style={{ fontFamily: "var(--font-label)" }}
           >
             03 / Bean to Cup
@@ -53,7 +54,7 @@ export default function BeanToCup() {
             <li key={step.id} className="flex-1 flex flex-col gap-2">
               <span
                 data-process-tick={i}
-                className="process-tick text-[11px] font-mono uppercase tracking-wider"
+                className="process-tick text-xs md:text-[11px] font-mono uppercase tracking-wider"
                 style={{ fontFamily: "var(--font-label)" }}
               >
                 {String(i + 1).padStart(2, "0")} {step.title}
@@ -75,7 +76,7 @@ export default function BeanToCup() {
               className="process-panel md:w-[min(78vw,1000px)] shrink-0 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 md:gap-12 items-center"
             >
               {/* Photo with parallax inner layer */}
-              <div className="relative aspect-[4/3] md:aspect-auto md:h-[58vh] rounded-[28px] overflow-hidden shadow-2xl ring-1 ring-white/10">
+              <div className="process-photo relative aspect-[4/3] md:aspect-auto md:h-[58vh] rounded-[28px] overflow-hidden shadow-2xl ring-1 ring-white/10">
                 <div className="process-photo absolute inset-y-0 -inset-x-[10%]">
                   <MenuArt
                     item={{ id: step.id, name: `${step.title}: ${step.kicker}`, image: step.image, icon: step.icon, tint: step.tint, focus: step.focus }}
@@ -85,7 +86,7 @@ export default function BeanToCup() {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
                 <span
-                  className="absolute bottom-4 left-4 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-black/35 backdrop-blur-sm"
+                  className="absolute bottom-4 left-4 px-3 py-1 rounded-full text-xs md:text-[11px] font-mono uppercase tracking-wider bg-black/35 backdrop-blur-sm"
                   style={{ fontFamily: "var(--font-label)" }}
                 >
                   Step {i + 1} of {PROCESS.length}
@@ -112,7 +113,7 @@ export default function BeanToCup() {
                   {step.facts.map((f) => (
                     <li
                       key={f}
-                      className="px-3 py-1 rounded-full text-xs font-mono border border-amber-200/25 text-amber-100"
+                      className="px-3 py-1 rounded-full text-xs font-mono border border-hairline-strong text-amber-100"
                       style={{ fontFamily: "var(--font-label)" }}
                     >
                       {f}
@@ -152,11 +153,17 @@ export function setupBeanToCupScroll(isMobile: boolean) {
 
   if (isMobile) {
     panels.forEach((panel) => {
-      gsap.fromTo(
-        panel,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: panel, start: "top 85%", once: true } }
-      );
+      const trigger = { trigger: panel, start: "top 85%", once: true };
+      gsap.fromTo(panel, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE_OUT, scrollTrigger: trigger });
+      // The step's photo uncovers itself from the bottom up
+      const photo = panel.querySelector(".process-photo");
+      if (photo) {
+        gsap.fromTo(
+          photo,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 1, delay: 0.1, ease: EASE_IN_OUT, clearProps: "clipPath", scrollTrigger: { ...trigger } }
+        );
+      }
     });
     return;
   }

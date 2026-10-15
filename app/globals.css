@@ -11,6 +11,7 @@
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* strong ease-out: UI entering/leaving, presses */
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* iOS-like drawer curve */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* strong ease-in-out: on-screen reveals */
 }
 
 @theme inline {
@@ -69,11 +70,17 @@
   --color-error-container:          #ffdad6;
   --color-on-error-container:       #93000a;
 
+  /* Hairlines on dark surfaces (footer, nav menu, glass chips over photos):
+     the same warm cream at two strengths, so every edge belongs to one system */
+  --color-hairline:        rgba(246, 224, 185, 0.14);
+  --color-hairline-strong: rgba(246, 224, 185, 0.28);
+
   /* Typography */
-  --font-display:     "Bricolage Grotesque", system-ui, sans-serif;
-  --font-body:        "Be Vietnam Pro", system-ui, sans-serif;
-  --font-label:       "Space Mono", monospace;
-  --font-handwritten: "Epilogue", serif;
+  /* The variables come from next/font in app/layout.tsx */
+  --font-display:     var(--font-bricolage), system-ui, sans-serif;
+  --font-body:        var(--font-vietnam), system-ui, sans-serif;
+  --font-label:       var(--font-mono), monospace;
+  --font-handwritten: var(--font-epilogue), serif;
 
   /* Spacing */
   --spacing-unit:              8px;
@@ -96,6 +103,15 @@ body {
   position: relative;
 }
 
+/* Headlines share their words evenly across lines (no lone word on the last
+   line); body text avoids a single orphaned word at the end of a paragraph */
+h1, h2, h3, h4, blockquote {
+  text-wrap-style: balance;
+}
+p, li, figcaption {
+  text-wrap-style: pretty;
+}
+
 /* Material Symbols icon font */
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
@@ -112,6 +128,14 @@ body {
   -webkit-font-feature-settings: "liga";
   font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  /* An icon is always one square; before the font loads, the word inside
+     ("shopping_bag") can't stretch the layout */
+  width: 1em;
+  overflow: hidden;
+}
+/* Hidden until the icon font has loaded (see ICONS_READY_SCRIPT in layout.tsx) */
+html:not([data-icons="ready"]) .material-symbols-outlined {
+  visibility: hidden;
 }
 
 /* ---- Texture overlay (noise film grain) ---- */
@@ -292,7 +316,7 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   font-size: 14px;
   letter-spacing: 0.05em;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  transition: background-color 0.2s, color 0.2s, translate 0.25s var(--ease-out), scale 160ms var(--ease-out);
 }
 .nurvana-btn-outline:hover {
   background-color: var(--color-primary);
@@ -313,11 +337,10 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 24px -12px rgba(51, 33, 13, 0.6);
-  transition: transform 160ms var(--ease-out), box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: translate 0.25s var(--ease-out), scale 160ms var(--ease-out), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .nurvana-btn-solid:hover {
   background-color: var(--color-primary-container);
-  transform: translateY(-1px);
   box-shadow: 0 16px 30px -12px rgba(51, 33, 13, 0.7);
 }
 /* Quick-add "+": a crisp press, then a slower spin into the check mark */
@@ -329,9 +352,7 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
     color 0.2s ease;
 }
 
-.nurvana-btn-solid:active {
-  transform: translateY(0) scale(0.98);
-}
+
 
 /* ---- Hero headline: layered shadows lift it off the busy video ---- */
 .hero-title {
@@ -374,7 +395,7 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: translate 0.25s var(--ease-out), scale 160ms var(--ease-out), background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .hero-cta-primary {
   background-color: var(--color-secondary-fixed);
@@ -383,7 +404,6 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
 }
 .hero-cta-primary:hover {
   background-color: #fdf9f4;
-  transform: translateY(-2px);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.65);
 }
 .hero-cta-secondary {
@@ -396,7 +416,6 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
 .hero-cta-secondary:hover {
   border-color: #fdf9f4;
   background-color: rgba(253, 249, 244, 0.12);
-  transform: translateY(-2px);
 }
 .hero-cta-primary:focus-visible,
 .hero-cta-secondary:focus-visible {
@@ -499,22 +518,20 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   color: var(--color-primary);
   background: var(--color-secondary-fixed);
   border: 1px solid var(--color-secondary-fixed-dim);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: translate 0.25s var(--ease-out), scale 160ms var(--ease-out), box-shadow 0.2s ease;
 }
 .quiz-cta:hover {
-  transform: translateY(-2px);
   box-shadow: 0 10px 22px -12px rgba(51, 33, 13, 0.55);
 }
 .quiz-option {
   border-color: var(--color-outline-variant);
   background: var(--color-surface-container-low);
-  transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, background-color 0.2s, translate 0.25s var(--ease-out), scale 160ms var(--ease-out);
 }
 .quiz-option:hover,
 .quiz-option:focus-visible {
   border-color: var(--color-primary);
   background: var(--color-secondary-fixed);
-  transform: translateY(-2px);
 }
 
 /* ---- Our Story: rotating stamp ---- */
@@ -607,11 +624,10 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   color: #fdf9f4;
   border: 1px solid rgba(253, 249, 244, 0.22);
   background: rgba(0, 0, 0, 0.2);
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, translate 0.25s var(--ease-out), scale 160ms var(--ease-out);
 }
 .social-pill:hover,
 .social-pill:focus-visible {
-  transform: translateY(-2px);
   border-color: transparent;
 }
 /* Each platform's own colour on hover */
@@ -673,12 +689,11 @@ body:has([data-order-pill]) .toast-dock {
   color: var(--color-primary);
   background: var(--color-surface);
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, translate 0.25s var(--ease-out), scale 160ms var(--ease-out);
 }
 .faq-chip:hover {
   background: var(--color-secondary-fixed);
   border-color: var(--color-secondary-fixed-dim);
-  transform: translateY(-1px);
 }
 .faq-dot {
   width: 7px;
@@ -695,7 +710,7 @@ body:has([data-order-pill]) .toast-dock {
   animation: faq-fade-up 0.35s ease-out both;
 }
 @keyframes faq-fade-up {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -715,7 +730,7 @@ body:has([data-order-pill]) .toast-dock {
   color: var(--color-on-surface-variant);
   background-color: var(--color-surface);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, scale 160ms var(--ease-out);
 }
 .option-chip:hover {
   border-color: var(--color-secondary);
@@ -740,7 +755,7 @@ body:has([data-order-pill]) .toast-dock {
   border: 1px solid var(--color-outline-variant);
   color: var(--color-on-surface-variant);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, scale 160ms var(--ease-out);
 }
 .filter-chip:hover {
   border-color: var(--color-primary);
@@ -864,3 +879,71 @@ html.lenis, html.lenis body {
 }
 
 
+
+/* ---- Lift and press ----
+   Hover lifts only on real mice: on a phone a tap would leave the button stuck
+   "lifted". Keyboard focus gets the same lift. Uses the separate translate /
+   scale properties so the lift and the press never overwrite each other. */
+@media (hover: hover) and (pointer: fine) {
+  .hero-cta-primary:hover,
+  .hero-cta-secondary:hover,
+  .quiz-cta:hover,
+  .quiz-option:hover,
+  .social-pill:hover {
+    translate: 0 -2px;
+  }
+  .nurvana-btn-solid:hover,
+  .faq-chip:hover {
+    translate: 0 -1px;
+  }
+}
+.hero-cta-primary:focus-visible,
+.hero-cta-secondary:focus-visible,
+.quiz-option:focus-visible,
+.social-pill:focus-visible {
+  translate: 0 -2px;
+}
+
+/* Everything you can press gives a little under your finger */
+.hero-cta-primary:active,
+.hero-cta-secondary:active,
+.nurvana-btn-solid:active,
+.nurvana-btn-outline:active,
+.quiz-cta:active,
+.quiz-option:active,
+.social-pill:active,
+.faq-chip:active,
+.filter-chip:active,
+.option-chip:active {
+  translate: 0 0;
+  scale: 0.97;
+}
+
+/* ---- Rolling prices: changed digits roll in (up when the price rises) ---- */
+.rolling-price {
+  display: inline-flex;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  vertical-align: bottom;
+}
+.rolling-price > span {
+  display: inline-block;
+  white-space: pre;
+}
+.rolling-price > .is-new {
+  animation: roll-from-below 0.38s var(--ease-out) both;
+}
+.rolling-price[data-dir="down"] > .is-new {
+  animation-name: roll-from-above;
+}
+@keyframes roll-from-below {
+  from { transform: translateY(75%); opacity: 0; filter: blur(2px); }
+}
+@keyframes roll-from-above {
+  from { transform: translateY(-75%); opacity: 0; filter: blur(2px); }
+}
+
+/* Menu board's floating photo: drinks melt into each other as you move down the list */
+.board-photo-layer {
+  transition: opacity 0.3s ease, filter 0.3s ease, scale 0.4s var(--ease-out);
+}

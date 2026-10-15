@@ -11,6 +11,9 @@ gsap.registerPlugin(CustomEase);
 /** Strong ease-out: starts fast, settles softly. Entrances and exits. */
 export const EASE_OUT = CustomEase.create("nurvana-out", "0.23, 1, 0.32, 1");
 
+/** Strong ease-in-out: things moving or being revealed on screen. */
+export const EASE_IN_OUT = CustomEase.create("nurvana-in-out", "0.77, 0, 0.175, 1");
+
 /** iOS-like drawer curve for things that slide in from an edge. */
 export const EASE_DRAWER = CustomEase.create("nurvana-drawer", "0.32, 0.72, 0, 1");
 

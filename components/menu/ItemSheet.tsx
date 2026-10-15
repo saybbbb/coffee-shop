@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
+import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 import { MILKS, SIZES, allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { useCart, unitPriceFor } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
+import RollingPrice from "@/components/RollingPrice";
 import QuickAdd from "./QuickAdd";
 
 /** Detail + customise sheet. Bottom sheet on mobile, centred card on desktop. */
@@ -63,6 +65,9 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // On phones it's a bottom sheet: swipe it down to close
+  useSwipeToDismiss(panelRef, { axis: "y", onDismiss: close, maxWidth: 768 });
+
   const handleAdd = () => {
     add(item, { size, milk, qty, from: artRef.current });
     close();
@@ -86,6 +91,8 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
       >
         {/* Art */}
         <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px] overflow-hidden">
+          {/* Grab handle: hints that the sheet can be swiped down (phones only) */}
+          <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 w-10 h-1.5 rounded-full bg-white/80 shadow" aria-hidden="true" />
           <div ref={artRef} className="absolute inset-0">
             <MenuArt item={item} sizes="(max-width: 768px) 100vw, 450px" iconSize="7rem" />
           </div>
@@ -104,7 +111,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
               {item.notes.map((n) => (
                 <span
                   key={n}
-                  className="px-2.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider glass-panel"
+                  className="px-2.5 py-1 rounded-full text-xs md:text-[11px] font-mono uppercase tracking-wider glass-panel"
                   style={{ color: "var(--color-primary)", fontFamily: "var(--font-label)" }}
                 >
                   {n}
@@ -122,7 +129,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
                 {item.tags.map((t) => (
                   <span
                     key={t}
-                    className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    className="text-xs md:text-[11px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
                     style={{
                       backgroundColor: "var(--color-secondary-fixed)",
                       color: "var(--color-on-secondary-fixed)",
@@ -210,7 +217,7 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
             </div>
             <button onClick={handleAdd} className="nurvana-btn-solid flex-1 justify-between">
               <span>Add to Order</span>
-              <span className="font-mono">{formatPrice(unit * qty)}</span>
+              <RollingPrice value={unit * qty} className="font-mono" />
             </button>
           </div>
         </div>
@@ -226,7 +233,7 @@ function PairsWith({ item }: { item: MenuItem }) {
     <div className="space-y-2">
       <p className="sheet-label">Pairs well with</p>
       <div
-        className="flex items-center gap-3 p-2.5 pr-3 rounded-2xl border"
+        className="flex items-center gap-3 p-2 pr-3 rounded-[20px] border"
         style={{ borderColor: "var(--color-outline-variant)", backgroundColor: "var(--color-surface-container-low)" }}
       >
         <div ref={thumbRef} className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0">
