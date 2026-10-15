@@ -17,6 +17,20 @@ export const metadata: Metadata = {
   },
   description:
     "Nurvana Café — artisanal coffee brewed for you. Small-batch roasted beans, seasonal drinks, and a warm community space.",
+  // Link previews (Messenger, Facebook, Discord…). The image itself is app/opengraph-image.jpg
+  // (regenerate with `npm run og:image`); on Vercel, Next fills in the site's address automatically.
+  openGraph: {
+    type: "website",
+    siteName: "Nurvaná Café",
+    locale: "en_PH",
+    title: "Nurvaná Café — Sip the Brew. Feel Brand New.",
+    description: "Specialty coffee and pastries at PHINMA COC, Cagayan de Oro. Browse the menu and order ahead for pickup.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nurvaná Café — Sip the Brew. Feel Brand New.",
+    description: "Specialty coffee and pastries at PHINMA COC, Cagayan de Oro. Order ahead for pickup.",
+  },
 };
 
 export default function RootLayout({

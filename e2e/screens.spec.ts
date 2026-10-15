@@ -61,3 +61,9 @@ test("@screens footer", async ({ page }, info) => {
   await page.waitForTimeout(800);
   await page.locator("#footer").screenshot({ path: `e2e/screens/${info.project.name}/footer-full.png` });
 });
+
+test("@screens 404 page", async ({ page }, info) => {
+  await openSite(page, "/this-page-does-not-exist");
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: `e2e/screens/${info.project.name}/not-found.png` });
+});
