@@ -14,8 +14,7 @@ import BeanToCup, { setupBeanToCupScroll } from "@/components/process/BeanToCup"
 import OurStory, { setupStoryScroll } from "@/components/story/OurStory";
 import { usePageTransition } from "@/components/transition/PageTransition";
 import Footer from "@/components/Footer";
-import TeamCard from "@/components/team/TeamCard";
-import { TEAM } from "@/data/team";
+import TeamStrips, { setupTeamScroll } from "@/components/team/TeamStrips";
 
 
 export default function Home() {
@@ -23,8 +22,6 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLDivElement>(null);
-  const teamRef = useRef<HTMLElement>(null);
-  const teamGridRef = useRef<HTMLDivElement>(null);
   const [openItem, setOpenItem] = useState<MenuItem | null>(null);
   const { go } = usePageTransition();
 
@@ -84,47 +81,8 @@ export default function Home() {
       // 3. SIGNATURE LINEUP — printed menu board (pinned on desktop)
       setupMenuBoardScroll(isMobile);
 
-      // 4. OUR TEAM PIN & 3D CARDS REVEAL
-      if (teamRef.current && teamGridRef.current) {
-        const teamTl = gsap.timeline({
-          scrollTrigger: {
-            id: "team-trigger",
-            trigger: teamRef.current,
-            start: isMobile ? "top 80%" : "top top",
-            end: isMobile ? "bottom 20%" : "+=100%",
-            pin: !isMobile,
-            scrub: 0.6,
-            anticipatePin: 1,
-          },
-        });
-
-        const teamCards = teamGridRef.current.querySelectorAll(".team-scrolly-card");
-
-        if (!isMobile) {
-          teamTl
-            .fromTo(
-              teamCards,
-              { opacity: 0, scale: 0.85, y: 50, z: -80 },
-              {
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                z: 0,
-                stagger: 0.04,
-                ease: "power2.out",
-                duration: 0.4,
-              },
-              0
-            )
-            .to({}, { duration: 0.6 });
-        } else {
-          teamTl.fromTo(
-            teamCards,
-            { opacity: 0.4, y: 20 },
-            { opacity: 1, y: 0, stagger: 0.06, duration: 0.8, ease: "power2.out" }
-          );
-        }
-      }
+      // 4. OUR TEAM — expanding portrait strips (pinned on desktop)
+      setupTeamScroll(isMobile);
 
       // 5. KIND WORDS + 6. VISIT US — registered last, in page order
       setupReviewsScroll(isMobile);
@@ -261,53 +219,8 @@ export default function Home() {
       {/* ─── SECTION 4: SIGNATURE LINEUP (menu board + Find your brew quiz) ── */}
       <MenuBoard onOpen={setOpenItem} />
 
-      {/* ─── SECTION 4: OUR TEAM (Responsive Showcase & Mobile Carousel) ──── */}
-      <section
-        id="team"
-        ref={teamRef}
-        className="relative w-full min-h-[100dvh] py-16 md:py-0 md:h-screen flex flex-col justify-center overflow-hidden perspective-container"
-        style={{ backgroundColor: "var(--color-surface-container-low)" }}
-        aria-label="Our Team"
-      >
-        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 md:px-16 w-full preserve-3d">
-          <div className="text-center max-w-2xl mx-auto mb-6 md:mb-10 space-y-1.5 md:space-y-2">
-            <span
-              className="inline-block text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-900/10"
-              style={{
-                color: "var(--color-secondary)",
-                fontFamily: "var(--font-label)",
-              }}
-            >
-              05 / Our Team
-            </span>
-            <h2
-              className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight"
-              style={{ fontFamily: "var(--font-display)", color: "var(--color-primary)" }}
-            >
-              The Craftsmen &amp; Visionaries
-            </h2>
-            <p
-              className="hidden md:block italic text-lg"
-              style={{ fontFamily: "var(--font-handwritten)", color: "var(--color-on-surface-variant)" }}
-            >
-              Tap a go-to order to try what the team drinks.
-            </p>
-            <p className="text-[11px] font-mono text-stone-500 md:hidden pt-1">
-              Swipe to view all 5 team members →
-            </p>
-          </div>
-
-          {/* Cards Container: Horizontal Scroll on Mobile, 5-col Grid on Desktop */}
-          <div
-            ref={teamGridRef}
-            className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory py-2 px-1 no-scrollbar touch-pan-x preserve-3d"
-          >
-            {TEAM.map((member) => (
-              <TeamCard key={member.name} member={member} onOpen={setOpenItem} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ─── SECTION 5: OUR TEAM (expanding portrait strips) ────────────── */}
+      <TeamStrips onOpen={setOpenItem} />
 
       {/* ─── KIND WORDS (customer quotes) ───────────────────────────────── */}
       <Reviews onOpen={setOpenItem} />

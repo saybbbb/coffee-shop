@@ -381,6 +381,56 @@ html[data-intro="skip"] .intro-overlay {
   outline-offset: 3px;
 }
 
+/* ---- Our Team: expanding portrait strips ---- */
+/* Phones: stacked bands; the open one grows tall */
+.team-strip {
+  height: 96px;
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.team-strip.is-active {
+  height: min(460px, 70vh);
+}
+.team-spine {
+  display: none;
+}
+/* Laptops: side by side; the open one widens */
+@media (min-width: 768px) {
+  .team-strip {
+    height: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    transition: flex-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  }
+  .team-strip.is-active {
+    height: auto;
+    flex-grow: 4.2;
+    box-shadow: 0 30px 60px -30px rgba(41, 24, 6, 0.6);
+  }
+  .team-spine {
+    display: block;
+    writing-mode: vertical-rl;
+    transform: translateX(-50%) rotate(180deg);
+    letter-spacing: 0.04em;
+  }
+  .team-band-label {
+    display: none;
+  }
+  /* Keep text from re-wrapping while the strip is still widening */
+  .team-details {
+    min-width: 340px;
+  }
+}
+.team-details {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.team-details.is-shown {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.45s ease 0.25s, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+
 /* ---- Signature Lineup: printed menu card ---- */
 .board-card {
   background:

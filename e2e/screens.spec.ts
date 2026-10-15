@@ -44,3 +44,13 @@ test("@screens lineup interactions", async ({ page }, info) => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: `${dir}/quiz-result.png` });
 });
+
+test("@screens team strips", async ({ page }, info) => {
+  await openSite(page);
+  await jumpToSection(page, "team", 0.7);
+  const strip = page.getByRole("button", { name: "Lourence D. Labe, Coffee Sommelier" });
+  if (info.project.name === "laptop") await strip.hover();
+  else await strip.click();
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: `e2e/screens/${info.project.name}/team-open.png` });
+});

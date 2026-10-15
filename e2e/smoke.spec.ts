@@ -93,6 +93,20 @@ test.describe("signature lineup", () => {
   });
 });
 
+test.describe("our team", () => {
+  test("strips open on hover/tap and the go-to order opens the drink", async ({ page }, info) => {
+    await openSite(page);
+    await jumpToSection(page, "team", 0.6);
+    const strip = page.getByRole("button", { name: "Charles B. Henares, Pastry Chef" });
+    await expect(page.getByRole("button", { name: /Sent Japhet M\. Cagas/ })).toHaveAttribute("aria-expanded", "true");
+    if (info.project.name === "laptop") await strip.hover();
+    else await strip.click();
+    await expect(strip).toHaveAttribute("aria-expanded", "true");
+    await page.getByRole("button", { name: "Charles's go-to order: Butter Croissant" }).click();
+    await expect(page.getByRole("dialog", { name: "Butter Croissant" })).toBeVisible();
+  });
+});
+
 test.describe("navigation", () => {
   test("Full Menu goes to the menu page and Visit Us comes back home", async ({ page }) => {
     await openSite(page);
