@@ -27,7 +27,7 @@ export default function QuickAdd({
         setTimeout(() => setDone(false), 1400);
       }}
       onKeyDown={(e) => e.stopPropagation()}
-      className={`relative ${small ? "w-9 h-9" : "w-11 h-11"} rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-md transition-all duration-300 hover:scale-110 active:scale-95 ${
+      className={`relative ${small ? "w-9 h-9" : "w-11 h-11"} rounded-full flex items-center justify-center shrink-0 cursor-pointer shadow-md quick-add hover:scale-110 active:scale-[0.94] ${
         done ? "rotate-[360deg]" : ""
       }`}
       style={{

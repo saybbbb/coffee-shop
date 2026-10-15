@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { prefersReducedMotion } from "@/lib/motion";
 import { answer, STARTER_QUESTIONS, type BotAction, type BotReply } from "@/lib/faq";
 import { allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { usePageTransition } from "@/components/transition/PageTransition";
@@ -16,9 +17,6 @@ const WELCOME: BotReply = {
   text: "Hi! I'm the Nurvana helper. Ask me about our menu, hours, pickup orders or how to find us.",
   followUps: STARTER_QUESTIONS,
 };
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** Reveals bot text a few words at a time so replies feel typed, not pasted. */
 function TypedText({ text, onDone }: { text: string; onDone: () => void }) {
@@ -168,7 +166,8 @@ export default function FaqBot() {
   // Open / close animation, Escape to close, focus the input
   useEffect(() => {
     if (!open) return;
-    gsap.fromTo(panelRef.current, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(1.6)" });
+    if (prefersReducedMotion()) gsap.fromTo(panelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+    else gsap.fromTo(panelRef.current, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(1.6)" });
     inputRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);

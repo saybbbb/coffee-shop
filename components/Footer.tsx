@@ -102,7 +102,7 @@ export default function Footer() {
                   />
                   <button
                     type="submit"
-                    className="px-7 py-3.5 rounded-full text-xs font-mono uppercase tracking-wider font-semibold transition-all duration-300 hover:scale-105 shrink-0 shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                    className="px-7 py-3.5 rounded-full text-xs font-mono uppercase tracking-wider font-semibold transition-[scale] duration-200 ease-[var(--ease-out)] hover:scale-105 active:scale-[0.97] shrink-0 shadow-lg cursor-pointer flex items-center justify-center gap-2"
                     style={{ backgroundColor: "var(--color-secondary-fixed, #f6e0b9)", color: "var(--color-primary, #33210d)", fontFamily: "var(--font-label)" }}
                   >
                     <span>Subscribe</span>
@@ -264,7 +264,7 @@ export default function Footer() {
             </button>
             <button
               onClick={scrollToTop}
-              className="px-3.5 py-1.5 rounded-full bg-amber-950/80 border border-amber-800/40 text-stone-300 hover:text-white hover:border-amber-400 transition-all flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer group"
+              className="px-3.5 py-1.5 rounded-full bg-amber-950/80 border border-amber-800/40 text-stone-300 hover:text-white hover:border-amber-400 transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer group"
               aria-label="Back to top"
             >
               <span>Top</span>

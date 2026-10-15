@@ -7,6 +7,12 @@
    ============================================================ */
 
 /* --- Nurvana Design Tokens --- */
+/* Motion curves (the same ones live in lib/motion.ts for GSAP) */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* strong ease-out: UI entering/leaving, presses */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* iOS-like drawer curve */
+}
+
 @theme inline {
   /* Colors — warm earthy material palette */
   --color-primary:                  #33210d;
@@ -270,7 +276,7 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
 /* ---- Nurvana hover utility classes ---- */
 .nurvana-bento-card {
   background-color: var(--color-surface-container);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 .nurvana-bento-card:hover {
   background-color: var(--color-surface-container-high);
@@ -307,13 +313,22 @@ html[data-intro="playing"] body > *:not(.intro-overlay) {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 24px -12px rgba(51, 33, 13, 0.6);
-  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: transform 160ms var(--ease-out), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .nurvana-btn-solid:hover {
   background-color: var(--color-primary-container);
   transform: translateY(-1px);
   box-shadow: 0 16px 30px -12px rgba(51, 33, 13, 0.7);
 }
+/* Quick-add "+": a crisp press, then a slower spin into the check mark */
+.quick-add {
+  transition:
+    scale 160ms var(--ease-out),
+    rotate 500ms var(--ease-out),
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
 .nurvana-btn-solid:active {
   transform: translateY(0) scale(0.98);
 }
@@ -700,7 +715,7 @@ body:has([data-order-pill]) .toast-dock {
   color: var(--color-on-surface-variant);
   background-color: var(--color-surface);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .option-chip:hover {
   border-color: var(--color-secondary);
@@ -725,7 +740,7 @@ body:has([data-order-pill]) .toast-dock {
   border: 1px solid var(--color-outline-variant);
   color: var(--color-on-surface-variant);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 .filter-chip:hover {
   border-color: var(--color-primary);
@@ -838,10 +853,12 @@ html.lenis, html.lenis body {
     scroll-behavior: auto !important;
   }
   
+  /* Fewer, gentler animations, not none: movement is dropped, but colour and
+     fade changes still transition so hover and selection feedback stays */
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow !important;
     scroll-behavior: auto !important;
   }
 }
