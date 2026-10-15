@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, ReactNode } from "react";
 import { gsap } from "gsap";
+import { EASE_OUT, prefersReducedMotion } from "@/lib/motion";
 
 export interface ToastInput {
   message: string;
@@ -27,7 +28,14 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     if (timer.current) clearTimeout(timer.current);
     const el = elRef.current;
     if (!el) return setToast(null);
-    gsap.to(el, { y: 24, opacity: 0, duration: 0.25, ease: "power2.in", onComplete: () => setToast(null) });
+    gsap.to(el, {
+      ...(prefersReducedMotion() ? {} : { y: 16, scale: 0.97 }),
+      opacity: 0,
+      duration: 0.2,
+      ease: EASE_OUT,
+      // Only clear the toast this animation was for, never a newer one
+      onComplete: () => setToast((t) => (t && el.dataset.toastId === String(t.id) ? null : t)),
+    });
     // Never leave a toast stuck if animation frames are paused
     timer.current = setTimeout(() => setToast(null), 400);
   }, []);
@@ -35,6 +43,8 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
   const notify = useCallback(
     (t: ToastInput) => {
       if (timer.current) clearTimeout(timer.current);
+      // A new toast cancels the old one's exit, so that exit can't remove it
+      if (elRef.current) gsap.killTweensOf(elRef.current);
       setToast({ ...t, id: nextId.current++ });
       timer.current = setTimeout(dismiss, t.action ? 4200 : 3000);
     },
@@ -44,6 +54,10 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
   // Pop in each new toast
   useEffect(() => {
     if (!toast || !elRef.current) return;
+    if (prefersReducedMotion()) {
+      gsap.fromTo(elRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: EASE_OUT });
+      return;
+    }
     gsap.fromTo(elRef.current, { y: 30, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" });
   }, [toast]);
 
@@ -59,6 +73,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={toast.id}
             ref={elRef}
+            data-toast-id={toast.id}
             className="pointer-events-auto flex items-center gap-3 max-w-md w-full sm:w-auto pl-3 pr-2 py-2 rounded-full shadow-2xl"
             style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
           >

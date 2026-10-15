@@ -238,7 +238,9 @@ export function setupStoryScroll(isMobile: boolean) {
     .fromTo(q(".story-photo-main"), { y: 60, opacity: 0.4 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 0)
     .fromTo(q(".story-photo-polaroid"), { y: 140, rotate: 14 }, { y: 0, rotate: 6, duration: 0.45, ease: "power2.out" }, 0.05)
     .fromTo(q(".story-photo-round"), { y: 100, scale: 0.8 }, { y: 0, scale: 1, duration: 0.45, ease: "power2.out" }, 0.1)
-    .fromTo(q(".story-stamp"), { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.25, ease: "back.out(1.7)" }, 0.2)
+    // The badge is pressed onto the collage like a stamp: it drops from above
+    // the page, speeding up until it lands, instead of growing out of nothing
+    .fromTo(q(".story-stamp"), { opacity: 0, scale: 1.6, rotate: -40 }, { opacity: 1, scale: 1, rotate: 0, duration: 0.14, ease: "power3.in" }, 0.22)
     // Stats rise and count up
     .fromTo(q(".story-stat"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, stagger: 0.04, duration: 0.12 }, 0.5);
   counts.forEach((el, i) => tl.add(countUp(el).duration(0.25), 0.52 + i * 0.04));

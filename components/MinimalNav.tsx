@@ -137,9 +137,10 @@ export default function MinimalNav() {
           <nav aria-label="Sections" className="hidden lg:block pointer-events-auto">
             <div ref={barRef} className="nav-glass relative flex items-center gap-1 p-1 rounded-full">
               <span
-                className="nav-highlight absolute top-1 bottom-1 rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                className="nav-highlight absolute top-1 bottom-1 left-0 rounded-full transition-[transform,width,opacity] duration-500 ease-[var(--ease-out)]"
                 style={{
-                  left: highlight?.left ?? 0,
+                  // Slides with transform (cheap); only the width follows the link's size
+                  transform: `translateX(${highlight?.left ?? 0}px)`,
                   width: highlight?.width ?? 0,
                   opacity: highlight ? 1 : 0,
                 }}
@@ -230,13 +231,13 @@ export default function MinimalNav() {
                     </span>
                   ) : (
                     <span
-                      className="nav-glass absolute right-8 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider whitespace-nowrap opacity-0 translate-x-1 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0"
+                      className="nav-glass absolute right-8 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider whitespace-nowrap opacity-0 translate-x-1 pointer-events-none transition-[opacity,translate] duration-200 ease-[var(--ease-out)] group-hover:opacity-100 group-hover:translate-x-0"
                       style={{ fontFamily: "var(--font-label)" }}
                     >
                       {s.label}
                     </span>
                   )}
-                  <span className={`side-dot block rounded-full transition-all duration-300 ${isActive ? "is-active" : ""}`} />
+                  <span className={`side-dot block rounded-full transition-[width,height,opacity,transform,background-color,box-shadow] duration-300 ${isActive ? "is-active" : ""}`} />
                 </button>
               );
             })}

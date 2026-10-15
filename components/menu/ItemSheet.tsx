@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
 import { MILKS, SIZES, allItems, formatPrice, type MenuItem } from "@/data/menu";
 import { useCart, unitPriceFor } from "@/components/cart/CartProvider";
 import MenuArt from "./MenuArt";
@@ -31,11 +32,13 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
     };
     setTimeout(finish, 450);
     const isMobile = window.innerWidth < 768;
-    gsap.to(backdropRef.current, { opacity: 0, duration: 0.25 });
+    const reduced = prefersReducedMotion();
+    gsap.killTweensOf([backdropRef.current, panelRef.current]);
+    gsap.to(backdropRef.current, { opacity: 0, duration: 0.25, ease: EASE_OUT });
     gsap.to(panelRef.current, {
-      ...(isMobile ? { y: "100%" } : { y: 30, opacity: 0, scale: 0.97 }),
-      duration: 0.3,
-      ease: "power2.in",
+      ...(reduced ? { opacity: 0 } : isMobile ? { y: "100%" } : { y: 16, opacity: 0, scale: 0.97 }),
+      duration: reduced ? 0.2 : isMobile ? 0.35 : 0.25,
+      ease: isMobile ? EASE_DRAWER : EASE_OUT,
       onComplete: finish,
     });
   };
@@ -43,11 +46,12 @@ export default function ItemSheet({ item, onClose }: { item: MenuItem; onClose: 
   useEffect(() => {
     window.__lenis?.stop();
     const isMobile = window.innerWidth < 768;
-    gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+    const reduced = prefersReducedMotion();
+    gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: EASE_OUT });
     gsap.fromTo(
       panelRef.current,
-      isMobile ? { y: "100%" } : { y: 40, opacity: 0, scale: 0.96 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }
+      reduced ? { opacity: 0 } : isMobile ? { y: "100%" } : { y: 40, opacity: 0, scale: 0.96 },
+      { y: 0, opacity: 1, scale: 1, duration: reduced ? 0.2 : isMobile ? 0.5 : 0.4, ease: isMobile ? EASE_DRAWER : EASE_OUT }
     );
 
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();

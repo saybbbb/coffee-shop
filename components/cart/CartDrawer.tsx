@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { gsap } from "gsap";
+import { EASE_DRAWER, EASE_OUT, prefersReducedMotion } from "@/lib/motion";
 import { formatPrice } from "@/data/menu";
 import MenuArt from "@/components/menu/MenuArt";
 import { describeOptions, useCart, type PlacedOrder } from "./CartProvider";
@@ -26,24 +27,35 @@ export default function CartDrawer() {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    // Always continue from wherever the panel is right now, so reopening it
+    // mid-close (or closing mid-open) reverses smoothly instead of jumping,
+    // and a stale close can't hide a drawer that has just been reopened
+    const reduced = prefersReducedMotion();
+    gsap.killTweensOf([root, backdropRef.current, panelRef.current]);
     if (!isOpen) {
-      gsap.to(backdropRef.current, { opacity: 0, duration: 0.3 });
+      gsap.to(backdropRef.current, { opacity: 0, duration: 0.25, ease: EASE_OUT });
       gsap.to(panelRef.current, {
-        x: "100%",
-        duration: 0.4,
-        ease: "power3.in",
+        ...(reduced ? { opacity: 0 } : { x: "100%" }),
+        duration: reduced ? 0.2 : 0.35,
+        ease: EASE_DRAWER,
         onComplete: () => gsap.set(root, { autoAlpha: 0 }),
       });
       return;
     }
     gsap.set(root, { autoAlpha: 1 });
-    gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-    gsap.fromTo(panelRef.current, { x: "100%" }, { x: 0, duration: 0.55, ease: "power3.out" });
-    gsap.fromTo(
-      ".cart-line",
-      { opacity: 0, x: 30 },
-      { opacity: 1, x: 0, stagger: 0.05, delay: 0.2, duration: 0.4, ease: "power2.out" }
-    );
+    gsap.to(backdropRef.current, { opacity: 1, duration: 0.3, ease: EASE_OUT });
+    if (reduced) {
+      gsap.set(panelRef.current, { x: 0 });
+      gsap.to(panelRef.current, { opacity: 1, duration: 0.2, ease: EASE_OUT });
+    } else {
+      gsap.set(panelRef.current, { opacity: 1 });
+      gsap.to(panelRef.current, { x: 0, duration: 0.5, ease: EASE_DRAWER });
+      gsap.fromTo(
+        ".cart-line",
+        { opacity: 0, x: 30 },
+        { opacity: 1, x: 0, stagger: 0.05, delay: 0.15, duration: 0.4, ease: EASE_OUT }
+      );
+    }
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -277,12 +289,59 @@ function Brewing() {
 }
 
 
+const BEAN_COUNT = 16;
+
+/** A little coffee bean for the confirmation burst. */
+function Bean() {
+  return (
+    <svg viewBox="0 0 20 26" className="w-full h-full" aria-hidden="true">
+      <ellipse cx="10" cy="13" rx="9" ry="12" fill="#b07a45" />
+      <path d="M10 2 C 5 9, 15 17, 10 24" fill="none" stroke="#5a3519" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => void }) {
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(".confirm-stamp", { scale: 0, rotate: -30 }, { scale: 1, rotate: -8, duration: 0.7, ease: "back.out(2)" });
-      gsap.fromTo(".confirm-reveal", { opacity: 0, y: 16 }, { opacity: 1, y: 0, stagger: 0.08, delay: 0.25, duration: 0.5, ease: "power2.out" });
+      const reveal = () =>
+        gsap.fromTo(".confirm-reveal", { opacity: 0, y: 16 }, { opacity: 1, y: 0, stagger: 0.06, duration: 0.45, ease: EASE_OUT });
+
+      if (prefersReducedMotion()) {
+        gsap.fromTo(".confirm-stamp", { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        gsap.fromTo(".confirm-reveal", { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        return;
+      }
+
+      const tl = gsap.timeline();
+      // The ticket arrives, then gets stamped: the stamp drops from above the
+      // paper and accelerates into it, the ticket flinches, and beans fly out
+      tl.fromTo(".confirm-ticket", { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: EASE_OUT })
+        .fromTo(
+          ".confirm-stamp",
+          { opacity: 0, scale: 1.8, rotate: -24 },
+          { opacity: 1, scale: 1, rotate: -8, duration: 0.26, ease: "power3.in" },
+          0.3
+        )
+        .addLabel("impact")
+        .fromTo(".confirm-ticket", { scale: 0.975 }, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.45)" }, "impact")
+        .add(() => {
+          gsap.utils.toArray<HTMLElement>(".confirm-bean").forEach((bean) => {
+            const angle = gsap.utils.random(-160, -20) * (Math.PI / 180); // mostly upward
+            const power = gsap.utils.random(70, 170);
+            const dx = Math.cos(angle) * power;
+            const rise = Math.sin(angle) * power; // negative = up
+            gsap.set(bean, { x: 0, y: 0, opacity: 1, scale: gsap.utils.random(0.6, 1.1), rotate: gsap.utils.random(0, 360) });
+            gsap.to(bean, { x: dx * 1.6, rotate: `+=${gsap.utils.random(-540, 540)}`, duration: 1.3, ease: "power1.out" });
+            // Up fast, then gravity pulls it back down past the ticket
+            gsap.timeline()
+              .to(bean, { y: rise, duration: 0.4, ease: "power2.out" })
+              .to(bean, { y: rise + 260, duration: 0.9, ease: "power2.in" })
+              .to(bean, { opacity: 0, duration: 0.3, ease: "none" }, "-=0.3");
+          });
+        }, "impact")
+        .add(reveal, "impact+=0.05");
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -294,10 +353,19 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
   });
 
   return (
-    <div ref={rootRef} className="flex-1 overflow-y-auto px-6 py-6 space-y-6" data-lenis-prevent>
+    <div ref={rootRef} className="relative flex-1 overflow-y-auto overflow-x-hidden px-6 py-6 space-y-6" data-lenis-prevent>
+      {/* Beans that burst out when the stamp lands (decorative) */}
+      <div className="absolute left-1/2 top-24 z-20 pointer-events-none" aria-hidden="true">
+        {Array.from({ length: BEAN_COUNT }, (_, i) => (
+          <span key={i} className="confirm-bean absolute -left-2 -top-2.5 w-4 h-5 opacity-0">
+            <Bean />
+          </span>
+        ))}
+      </div>
+
       {/* Ticket */}
       <div
-        className="relative rounded-3xl p-6 text-center overflow-hidden"
+        className="confirm-ticket relative rounded-3xl p-6 text-center overflow-hidden"
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
       >
         <div
@@ -328,15 +396,15 @@ function Confirmation({ order, onDone }: { order: PlacedOrder; onDone: () => voi
       <ol className="confirm-reveal relative flex justify-between">
         <div className="absolute top-5 left-[16%] right-[16%] h-0.5" style={{ backgroundColor: "var(--color-outline-variant)" }} />
         <div
-          className="absolute top-5 left-[16%] h-0.5 transition-all duration-700"
-          style={{ backgroundColor: "var(--color-primary)", width: `${(current / (STAGES.length - 1)) * 68}%` }}
+          className="absolute top-5 left-[16%] right-[16%] h-0.5 origin-left transition-transform duration-700 ease-[var(--ease-out)]"
+          style={{ backgroundColor: "var(--color-primary)", transform: `scaleX(${current / (STAGES.length - 1)})` }}
         />
         {STAGES.map((s, i) => {
           const done = i <= current;
           return (
             <li key={s.label} className="relative z-10 flex flex-col items-center gap-2 w-1/3">
               <span
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-[background-color,color,transform] duration-500 ease-[var(--ease-out)] ${
                   i === current && i < STAGES.length - 1 ? "animate-pulse" : ""
                 }`}
                 style={{

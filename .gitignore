@@ -46,3 +46,8 @@ next-env.d.ts
 /blob-report/
 /playwright/.cache/
 /e2e/screens/
+
+# local AI-assistant tooling (skills, preview config)
+/.agents/
+/.claude/
+/skills-lock.json

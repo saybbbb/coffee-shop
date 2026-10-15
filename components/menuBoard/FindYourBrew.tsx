@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { gsap } from "gsap";
+import { EASE_OUT, prefersReducedMotion } from "@/lib/motion";
 import { formatPrice, type MenuItem } from "@/data/menu";
 import { QUESTIONS, describeMatch, findYourBrew, type QuizAnswers } from "@/lib/findYourBrew";
 import MenuArt from "@/components/menu/MenuArt";
@@ -19,7 +20,8 @@ export default function FindYourBrew({ onClose, onOpen }: { onClose: () => void;
 
   useEffect(() => {
     window.__lenis?.stop();
-    gsap.fromTo(panelRef.current, { opacity: 0, y: 30, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" });
+    if (prefersReducedMotion()) gsap.fromTo(panelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+    else gsap.fromTo(panelRef.current, { opacity: 0, y: 30, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" });
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => {
@@ -30,7 +32,7 @@ export default function FindYourBrew({ onClose, onOpen }: { onClose: () => void;
 
   // Each step slides in
   useEffect(() => {
-    gsap.fromTo(bodyRef.current, { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" });
+    gsap.fromTo(bodyRef.current, { opacity: 0, x: prefersReducedMotion() ? 0 : 24 }, { opacity: 1, x: 0, duration: 0.35, ease: EASE_OUT });
   }, [step]);
 
   const choose = (key: string, value: string) => {
