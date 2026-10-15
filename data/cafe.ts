@@ -17,7 +17,7 @@ export const CAFE = {
     city: "Cagayan de Oro City, 9000 Misamis Oriental",
   },
   phone: "+63 992 299 5926",
-  email: "hello@nurvanacafe.com",
+  email: "nurvanacafe@gmail.com",
   hours: [
     { label: "Mon – Fri", days: [1, 2, 3, 4, 5], open: "07:00", close: "20:00" },
     { label: "Saturday", days: [6], open: "08:00", close: "21:00" },
@@ -93,4 +93,15 @@ export const ANNOUNCEMENT: { label: string; text: string; short: string; href: s
   text: "Pumpkin Spice Chai & Honey Lavender Latte are back",
   short: "Pumpkin Spice Chai is back",
   href: "/menu#seasonal",
+};
+
+/**
+ * Social pages. Paste the full links here, e.g.
+ *   url: "https://www.instagram.com/yourhandle", handle: "@yourhandle"
+ * Until a url is filled in, its button shows a "link coming soon" message
+ * instead of sending people to the wrong page.
+ */
+export const SOCIALS = {
+  instagram: { label: "Instagram", handle: "@nurvanacafe", url: "https://www.instagram.com/nurvanacafe" },
+  facebook: { label: "Facebook", handle: "Nurvaná Café", url: "https://www.facebook.com/p/Nurvan%C3%A1-Caf%C3%A9-61595033108776/" },
 };

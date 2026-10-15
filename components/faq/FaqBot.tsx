@@ -158,6 +158,13 @@ export default function FaqBot() {
   const nextId = useRef(1);
   const { go } = usePageTransition();
 
+  // Other parts of the site (e.g. the footer's "Ask Nurvana" link) can open the helper
+  useEffect(() => {
+    const openHelper = () => setOpen(true);
+    window.addEventListener("nurvana:open-faq", openHelper);
+    return () => window.removeEventListener("nurvana:open-faq", openHelper);
+  }, []);
+
   // Open / close animation, Escape to close, focus the input
   useEffect(() => {
     if (!open) return;

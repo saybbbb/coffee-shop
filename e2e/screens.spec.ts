@@ -54,3 +54,10 @@ test("@screens team strips", async ({ page }, info) => {
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `e2e/screens/${info.project.name}/team-open.png` });
 });
+
+test("@screens footer", async ({ page }, info) => {
+  await openSite(page);
+  await jumpToSection(page, "footer", 0);
+  await page.waitForTimeout(800);
+  await page.locator("#footer").screenshot({ path: `e2e/screens/${info.project.name}/footer-full.png` });
+});

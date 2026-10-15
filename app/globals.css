@@ -561,6 +561,66 @@ html[data-intro="skip"] .intro-overlay {
 }
 
 
+/* ---- Footer ---- */
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fdf9f4;
+  border: 1px solid rgba(253, 249, 244, 0.22);
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+.social-pill:hover,
+.social-pill:focus-visible {
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+/* Each platform's own colour on hover */
+.social-instagram:hover,
+.social-instagram:focus-visible {
+  background: linear-gradient(45deg, #f9ce34, #ee2a7b 50%, #6228d7);
+}
+.social-facebook:hover,
+.social-facebook:focus-visible {
+  background: #1877f2;
+}
+.footer-link {
+  position: relative;
+  color: rgb(214 211 209);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.footer-link:hover {
+  color: var(--color-secondary-fixed);
+}
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+/* Giant sign-off wordmark: cream fading into the footer */
+.footer-wordmark {
+  background: linear-gradient(to bottom, #f6e0b9 0%, rgba(246, 224, 185, 0.55) 55%, rgba(246, 224, 185, 0.06) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* ---- Toasts stack above the order status pill when it's showing ---- */
 .toast-dock {
   transition: bottom 0.3s ease;
