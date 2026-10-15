@@ -24,7 +24,7 @@ export const TEAM: TeamMember[] = [
     goTo: "artisanal-espresso",
     tint: "caramel",
     icon: "local_fire_department",
-    photo: "/team/sent.png",
+    photo: "/team/sent-v2.png", // bump the filename when replacing a photo, or caches keep the old one
   },
   {
     name: "Honeylyn Faith R. Delsocora",
