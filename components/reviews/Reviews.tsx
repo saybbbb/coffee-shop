@@ -174,5 +174,6 @@ export function setupReviewsScroll(isMobile: boolean) {
     .fromTo(head, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0)
     .fromTo(rows[0], { opacity: 0, xPercent: 12 }, { opacity: 1, xPercent: 0, duration: 0.35, ease: "power2.out" }, 0.05)
     .fromTo(rows[1], { opacity: 0, xPercent: -12 }, { opacity: 1, xPercent: 0, duration: 0.35, ease: "power2.out" }, 0.1)
+    .addLabel("revealed") // nav jumps land here (see lib/scrollToSection.ts)
     .to({}, { duration: 0.5 });
 }

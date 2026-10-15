@@ -243,6 +243,7 @@ export function setupStoryScroll(isMobile: boolean) {
     .fromTo(q(".story-stat"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, stagger: 0.04, duration: 0.12 }, 0.5);
   counts.forEach((el, i) => tl.add(countUp(el).duration(0.25), 0.52 + i * 0.04));
 
+  tl.addLabel("revealed"); // nav jumps land here (see lib/scrollToSection.ts)
   // Desktop: hold the finished section for a moment before moving on
   if (!isMobile) tl.to({}, { duration: 0.2 });
 }

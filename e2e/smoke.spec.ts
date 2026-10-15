@@ -127,6 +127,35 @@ test.describe("navigation", () => {
   });
 });
 
+test.describe("section jumps", () => {
+  // Bean to Cup is excluded: its later panels reveal as you scroll sideways
+  const LINKS = [
+    ["Story", "story"],
+    ["Lineup", "menu"],
+    ["Team", "team"],
+    ["Kind Words", "reviews"],
+    ["Visit", "visit"],
+  ] as const;
+
+  test("top-bar links land with the section fully revealed", async ({ page }, info) => {
+    test.skip(info.project.name !== "laptop", "the link bar only shows on large screens");
+    await openSite(page);
+    for (const [label, id] of LINKS) {
+      await page.locator("header nav").getByRole("button", { name: label, exact: true }).click();
+      await page.waitForTimeout(2200); // glide + scrub catch-up
+      // Anything GSAP faded in must be fully visible by the time we land
+      const faded = await page.evaluate((id) => {
+        const section = document.getElementById(id)!;
+        return [...section.querySelectorAll<HTMLElement>("[style*='opacity']")]
+          .filter((el) => el.getBoundingClientRect().height > 0)
+          .filter((el) => parseFloat(getComputedStyle(el).opacity) < 0.99)
+          .map((el) => `${el.className.toString().slice(0, 40)} → ${getComputedStyle(el).opacity}`);
+      }, id);
+      expect(faded, `${label} should be fully revealed`).toEqual([]);
+    }
+  });
+});
+
 test.describe("top bar", () => {
   test("section links fit between the logo and the buttons", async ({ page }, info) => {
     test.skip(info.project.name !== "laptop", "the link bar only shows on large screens");

@@ -306,6 +306,7 @@ export function setupMenuBoardScroll(isMobile: boolean) {
     .fromTo(q(".board-line"), { opacity: 0, x: -16 }, { opacity: 1, x: 0, stagger: 0.035, duration: 0.12, ease: "power2.out" }, 0.15)
     .fromTo(q(".board-leader"), { scaleX: 0 }, { scaleX: 1, transformOrigin: "left center", stagger: 0.035, duration: 0.12, ease: "none" }, 0.18);
 
+  tl.addLabel("revealed"); // nav jumps land here (see lib/scrollToSection.ts)
   if (isMobile) tl.timeScale(0.6);
   else tl.to({}, { duration: 0.35 });
 }

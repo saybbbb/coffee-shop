@@ -210,6 +210,7 @@ export function setupTeamScroll(isMobile: boolean) {
     // Strips rise in one after another
     .fromTo(q(".team-strip"), { opacity: 0, yPercent: 18 }, { opacity: 1, yPercent: 0, stagger: 0.06, duration: 0.3, ease: "power3.out" }, 0.05);
 
+  tl.addLabel("revealed"); // nav jumps land here (see lib/scrollToSection.ts)
   if (isMobile) tl.timeScale(0.6);
   else tl.to({}, { duration: 0.45 });
 }

@@ -218,6 +218,7 @@ export function setupVisitScroll(isMobile: boolean) {
     .fromTo(q(".visit-photo"), { opacity: 0, y: 40, rotate: 4 }, { opacity: 1, y: 0, rotate: -5, duration: 0.3, ease: "back.out(1.6)" }, 0.3)
     .fromTo(q(".visit-item"), { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.04, ease: "power2.out" }, 0.12);
 
+  tl.addLabel("revealed"); // nav jumps land here (see lib/scrollToSection.ts)
   // Desktop: hold the finished layout for the rest of the pin
   if (!isMobile) tl.to({}, { duration: 0.45 });
   // Phones: the same reveal plays once in real time
