@@ -27,6 +27,9 @@ function matches(item: MenuItem, filterId: string) {
   return item.tags?.some((t) => f.match.includes(t)) ?? false;
 }
 
+/** Where the category bar sticks (just under the floating nav); matches `top-[76px]` below. */
+const STICKY_TOP = 76;
+
 /** Room to leave above a category when scrolling to it: nav + the sticky category bar. */
 const MENU_SCROLL_OFFSET = 200;
 
@@ -365,6 +368,25 @@ export default function MenuExperience() {
     }, rootRef);
     ScrollTrigger.refresh();
     return () => ctx.revert();
+  }, [filter]);
+
+  // Filtering shortens the page. If the visitor had scrolled into the menu, glide
+  // back to the start of the results; otherwise the old scroll position can sit
+  // past the new end of the list and snap them down onto the footer.
+  const firstFilterRun = useRef(true);
+  useEffect(() => {
+    if (firstFilterRun.current) {
+      firstFilterRun.current = false;
+      return;
+    }
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    window.__lenis?.resize(); // the page height just changed
+    const resultsTop = sentinel.getBoundingClientRect().top + window.scrollY - STICKY_TOP;
+    if (window.scrollY > resultsTop) {
+      if (window.__lenis) window.__lenis.scrollTo(resultsTop, { duration: 0.8, force: true });
+      else window.scrollTo({ top: resultsTop, behavior: "smooth" });
+    }
   }, [filter]);
 
   // Scroll-spy for the category tabs

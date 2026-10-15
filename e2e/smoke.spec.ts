@@ -56,6 +56,22 @@ test.describe("menu & ordering", () => {
     expect(errors).toEqual([]);
   });
 
+  test("changing a filter while scrolled down shows the results, not the footer", async ({ page }) => {
+    await openSite(page, "/menu");
+    // Scroll deep into the full menu, then pick a filter that leaves only a few drinks
+    await page.getByRole("button", { name: "From the Oven" }).click();
+    await page.waitForTimeout(1400);
+    await page.getByRole("button", { name: "Seasonal", exact: true }).click();
+    await page.waitForTimeout(1400);
+    const { footerVisible, resultsTop } = await page.evaluate(() => ({
+      footerVisible: document.getElementById("footer")!.getBoundingClientRect().top < window.innerHeight,
+      resultsTop: document.getElementById("cat-seasonal")!.getBoundingClientRect().top,
+    }));
+    expect(footerVisible, "the footer should not be in view").toBe(false);
+    expect(resultsTop, "results should start just under the category bar").toBeGreaterThan(150);
+    expect(resultsTop).toBeLessThan(500);
+  });
+
   test("filters narrow the menu", async ({ page }) => {
     await openSite(page, "/menu");
     await page.getByRole("button", { name: "Vegan", exact: true }).click();
@@ -121,7 +137,7 @@ test.describe("navigation", () => {
     await expect(page).toHaveURL(/\/menu$/);
     await expect(page.getByRole("heading", { name: /Our Menu/ })).toBeVisible();
 
-    await page.locator("#footer").getByRole("button", { name: /Visit Us/ }).click();
+    await page.locator("#footer").getByRole("button", { name: "Visit us", exact: true }).click();
     await expect(page).toHaveURL(/\/#visit$/);
     await expect(page.locator("#visit-heading")).toBeInViewport({ timeout: 6_000 });
   });
@@ -196,10 +212,23 @@ test.describe("accessibility", () => {
   }
 });
 
+test.describe("footer", () => {
+  test("Instagram and Facebook open the café's real pages in a new tab", async ({ page }) => {
+    await openSite(page);
+    const footer = page.locator("#footer");
+    const ig = footer.getByRole("link", { name: /^Instagram/ });
+    const fb = footer.getByRole("link", { name: /^Facebook/ });
+    await expect(ig).toHaveAttribute("href", "https://www.instagram.com/nurvanacafe");
+    await expect(fb).toHaveAttribute("href", /facebook\.com\/p\/Nurvan/);
+    for (const link of [ig, fb]) await expect(link).toHaveAttribute("target", "_blank");
+    await expect(footer).toContainText("@nurvanacafe");
+  });
+});
+
 test.describe("Ask Nurvana", () => {
   test("answers a price question from the menu data", async ({ page }) => {
     await openSite(page);
-    await page.getByRole("button", { name: /Ask Nurvana/ }).click();
+    await page.getByRole("button", { name: /^Ask Nurvana:/ }).click(); // the floating launcher
     const chat = page.getByRole("dialog", { name: "Ask Nurvana" });
     await chat.getByLabel("Your question").fill("how much is the matcha");
     await chat.getByRole("button", { name: "Send" }).click();
